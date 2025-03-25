@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    require_once "db-config.php";
+    include("functions/applicant-login-check.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,20 +13,19 @@
     <link rel="stylesheet" href="home-style.css">
 </head>
 <body>
+    <script src="javascript/page-scripts.js"></script>
     <div class="navbar">
         <div class="navbar-contents">
             <div class="navbar-links">
                 <ul>
                     <li><a href="#" id="logo">ToniFowler</a></li>
-                    <li><a href="#">Jobs</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Status</a></li>
+                    <li><a href="home-page.php">Jobs</a></li>
                     <li><a href="#">About Us</a></li>
                 </ul>
             </div>
             <div class="los">
-                <li><a id="los" href="#">Log In</a></li>
-                <li><a id="los" href="#">Sign Up</a></li>
+                <li><a id="los" href="login.php">Log In</a></li>
+                <li><a id="los" href="sign-up-choice.php">Sign Up</a></li>
             </div>
         </div>
     </div>
@@ -46,5 +51,40 @@
         </div>
         <button>SEARCH</button>
     </div>
+    <div class="job-selection">
+        <div class="job-categories">
+            <h1>Categories</h1>
+        </div>
+        <div class="job-vacancies">
+            <h1>Find Job Vacancies</h1>
+            <div class="job-vacancy-categories">
+                <ul>
+                    <li><a href="#">Skills</a></li>
+                    <li><a href="#">Location</a></li>
+                    <li><a href="#">Roles</a></li>
+                    <li><a href="#">Company</a></li>
+                </ul>
+                <div class="job-vacancy-blocks">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <p>CONTACT US:</p>
+            <P>09##########</P>
+            <div class="social-links">
+                <a href="#"><img src="assets/images/mail.png"></a>
+                <a href="#"><img src="assets/images/communication.png"></a>
+            </div>
+            <hr>
+            <div class="idk-texts">
+                <p>WebTitle 2025</p>
+                <p>|</p>
+                <p>All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    <script src="javascript/page-scripts.js"></script>
     <div class="container">
         <form action="login.php" method="post">
             <div class="sign-up-container">
@@ -32,8 +33,7 @@
                     </div>
                 </div>
                 <div class="signup-actions">
-                    <a href="#">CREATE ACCOUNT</a>
-                    <p>Already have an account? <a href="#">Log In</a></p>
+                    <p>Already have an account? <a href="login.php">Log In</a></p>
                 </div>
             </div>
         </form>

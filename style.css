@@ -17,7 +17,7 @@ body {
 
 .login-container {
     border: none;
-    height: 450px;
+    height: 480px;
     width: 600px;
     display: flex;
     flex-direction: column;
@@ -37,7 +37,7 @@ body {
     display: flex;
     align-content: center;
     flex-direction: column;
-    padding: 50px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     width: 80%;
     gap: 50px;
 }
@@ -217,4 +217,37 @@ body {
                 text-align: left;
             }
 
+.login-selection {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Inter", serif;
+    font-weight: 600;
+    font-size: 18px;
+}
+    .login-selection select {
+        background-color: transparent;
+        border: none;
+        flex: 1;
+        font-family: "Inter", serif;
+        font-size: 16px;
+        color: #1E1E1E;
+        padding: 5px;
+    }
+    .login-selection select:focus {
+        border: 1px solid #3A3960;
+        border: none;
+        outline: none;
+    }
+
+    .login-selection option {
+        background-color: white;
+        color: #1E1E1E;
+        font-family: "Inter", serif;
+        font-weight: regular;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+    }
     

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="home-style.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-contents">
+            <div class="navbar-links">
+                <ul>
+                    <li><a href="#" id="logo">ToniFowler</a></li>
+                    <li><a href="home-page.php">Jobs</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+            <div class="los">
+                <li><a id="los" href="login.php">Log In</a></li>
+                <li><a id="los" href="sign-up-choice.php">Sign Up</a></li>
+            </div>
+        </div>
+    </div>
+    <div class="about-page-content">
+        <div class="about-us-banner">
+            <div class="about-us-motto">
+                <h1>Unlock Your Future.</h1>
+                <h2>Find the right job for you.</h2>
+                <button id="find-a-job">Find a Job!</button>
+            </div>
+            <div class="banner-icon">
+                <img src="assets/images/businessman.png">
+            </div>
+        </div>
+        <div class="about-text">
+            <div class="about-us-text">
+                <h1>About Us</h1>
+                <p>JobMatcher is a cutting-edge job recommendation and applicant tracking system designed to 
+                    streamline the hiring process for both job seekers and employers. By leveraging the power of 
+                    content-based filtering algorithms, we match candidates with jobs based on their unique skills, 
+                    experiences, and preferences. Our platform empowers job seekers to find their perfect fit, 
+                    while helping employers quickly identify qualified candidates who align with their job 
+                    descriptions.
+                </p>
+            </div>
+            <div class="about-us-text">
+                <h1 id="empty-h1"></h1>
+                <p>
+                    At JobMatcher, we believe in simplifying the hiring process. We aim to provide 
+                    intelligent and personalized recommendations that save time, reduce recruitment 
+                    costs, and create better matches between employers and talent. Our system not only 
+                    focuses on finding jobs for applicants but also helps employers track and manage 
+                    applicants efficiently, ensuring a smooth recruitment journey from start to finish.
+                </p>
+            </div>
+            <div class="about-us-text">
+                <h1>Mission</h1>
+                <p>
+                Our mission is to revolutionize the recruitment industry by offering a data-driven, 
+                efficient, and user-friendly platform that connects talented individuals with job 
+                opportunities tailored to their skills, preferences, and career goals. We strive to 
+                enhance the hiring process for employers and job seekers by using advanced 
+                content-based filtering algorithms that create personalized, accurate job 
+                recommendations, making the process faster and more effective.
+                </p>
+            </div>
+            <div class="about-us-text">
+                <h1>Vision</h1>
+                <p>Our vision is to become the leading job matching and applicant tracking platform, 
+                    helping individuals find meaningful employment while enabling organizations to 
+                    hire the best talent efficiently. We envision a future where job seekers and 
+                    employers are seamlessly connected through technology, reducing the barriers to 
+                    hiring and creating a more accessible, inclusive, and dynamic job market.
+                </p>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <p>CONTACT US:</p>
+            <P>09##########</P>
+            <div class="social-links">
+                <a href="#"><img src="assets/images/mail.png"></a>
+                <a href="#"><img src="assets/images/communication.png"></a>
+            </div>
+            <hr>
+            <div class="idk-texts">
+                <p>WebTitle 2025</p>
+                <p>|</p>
+                <p>All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript" src="javascript/page-scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" language="javascript"></script>
+    <script type="text/javascript" src="javascript/page-scripts.js">
+        window.onload = function() {
+            applyFadeInAnimation();
+        }
+    </script>
+</body>
+</html>
