@@ -1,3 +1,11 @@
+<?php 
+    session_start();
+    require_once "db-config.php";
+    include("functions/applicant-login-check.php");
+
+    $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,20 +13,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="home-style.css">
+    <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
     <div class="navbar">
         <div class="navbar-contents">
             <div class="navbar-links">
                 <ul>
-                    <li><a href="#" id="logo">ToniFowler</a></li>
+                    <li><a href="#" id="logo">TechSync</a></li>
                     <li><a href="home-page.php">Jobs</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <?php if ($user_data): ?>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Status</a></li>
+                    <?php endif; ?>
+                    <li><a href="about-us-page.php">About Us</a></li>
                 </ul>
             </div>
             <div class="los">
-                <li><a id="los" href="login.php">Log In</a></li>
-                <li><a id="los" href="sign-up-choice.php">Sign Up</a></li>
+                <?php if ($user_data): ?>
+                    <li><p id="los-name"><?php echo $user_data['applicant_name']; ?></p></li>
+                    <form method="post" action="home-page.php">
+                        <input type="submit" name="logout" value="Log Out">
+                    </form>
+                <?php else: ?>
+                    <li><a id="los" href="login.php">Log In</a></li>
+                    <li><a id="los" href="sign-up-choice.php">Sign Up</a></li>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -91,13 +111,5 @@
             </div>
         </div>
     </footer>
-    <script type="text/javascript" src="javascript/page-scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript"></script>
-    <script type="text/javascript" src="javascript/page-scripts.js">
-        window.onload = function() {
-            applyFadeInAnimation();
-        }
-    </script>
 </body>
 </html>
