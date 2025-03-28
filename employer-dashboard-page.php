@@ -35,8 +35,12 @@
                 </ul>
             </div>
             <div class="company-name">
-                <?php if ($user_data && isset($user_data['CompanyName'])); ?>
-                <p><?php echo htmlspecialchars($user_data['CompanyName']); ?></p>
+                <?php if ($user_data && isset($user_data['CompanyName'])): ?>
+                    <p><?php echo htmlspecialchars($user_data['CompanyName']); ?></p>
+                    <form method="post" action="home-page.php">
+                        <input type="submit" name="logout" value="Log Out">
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>
