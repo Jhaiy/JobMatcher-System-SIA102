@@ -1,0 +1,266 @@
+.applicant-profile {
+    margin: 20px auto;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+}
+
+.applicant-credentials-wrapper {
+    border: none;
+    border-radius: 20px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    width: fit-content;
+    margin: auto;
+    padding: 50px 70px 50px 70px;
+}
+
+.applicant-role-editor-wrapper {
+    border: none;
+    border-radius: 20px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    width: fit-content;
+    margin: auto;
+    padding: 50px 70px 50px 70px;
+    height: auto;
+}
+
+.applicant-profile-input {
+    display: grid;
+    gap: 20px;
+    justify-content: center;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repat(2, auto);
+    padding: 20px;
+    width: 100%;
+}
+    .applicant-profile-input label {
+        font-size: 1em;
+        color: #333;
+    }
+    .applicant-profile-input input[type="text"],
+    .applicant-profile-input input[type="email"],
+    .applicant-profile-input select,
+    .applicant-profile-input input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        box-sizing: border-box;
+    }
+    .applicant-profile-input input[type="text"]:focus,
+    .applicant-profile-input input[type="email"]:focus {
+        border-color: #3A3960;
+        outline: none;
+    }
+    .applicant-profile-input select:focus {
+        border-color: #3A3960;
+        outline: none;
+    }
+
+.applicant-profile h1 {
+    text-align: center;
+}
+
+#update-profile {
+    font-size: 1.2em;
+    width: 150px;
+    margin: 0 0 0 60px;
+    background-color: #d7e4d0;
+    border: none;
+    padding: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.applicant-profile {
+    display: grid;
+
+}
+
+.hidden-category-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+}
+
+.category-div-wrapper {
+    background-color: white;
+    border: none;
+    border-radius: 20px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    width: fit-content;
+    margin: auto;
+    padding: 50px 70px 50px 70px;
+    display: grid;
+    gap: 30px;
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+}
+
+.applicant-role-group {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    width: 100%;
+    justify-content: space-between;
+}   
+    #add-button {
+        width: 20px;
+        height: 20px;
+    }
+#show-category {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#toggle-category-button {
+    grid-column: span 2;
+    margin: 20px auto;
+    display: block;
+    background-color: #d7e4d0;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    align-items: center;
+    width: 150px;
+}
+
+#show-role {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#toggle-role-button {
+    grid-column: span 4;
+    margin: 20px auto;
+    display: block;
+    background-color: #d7e4d0;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    align-items: center;
+    width: 150px;
+}
+
+.hidden-role-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+}
+
+.role-div-wrapper {
+    background-color: white;
+    border: none;
+    border-radius: 20px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    width: fit-content;
+    margin: auto;
+    padding: 50px 70px 50px 70px;
+    display: grid;
+    gap: 30px;
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, auto);
+}
+
+.applicant-skills ul {
+    list-style-type: none;
+    padding: 0 0 0 10px;
+    margin: 0;
+}
+.applicant-skills li {
+    margin: 5px 0;
+    padding: 5px 10px 5px 10px;
+    background-color: #d7e4d0;
+    border-radius: 20px;
+    display: block;
+    width: fit-content;
+}
+
+#profile-picture-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 20px auto;
+}
+
+.applicant-profile-picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers all child elements horizontally */
+    justify-content: center;
+    width: 100%; /* Ensures the container spans the full width */
+    margin: 20px auto;
+}
+.profile-picture-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    transition: transform 0.2s ease; 
+}
+    .profile-picture-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+.applicant-profile-picture input[type="file"] {
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+.profile-picture-wrapper label {
+    cursor: pointer; /* Makes the profile picture clickable */
+    display: inline-block;
+}
+
+#update-picture-button {
+    border: none;
+    background-color: white;
+    font-weight: bold;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+}

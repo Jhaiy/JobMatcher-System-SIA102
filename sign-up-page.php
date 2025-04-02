@@ -18,7 +18,6 @@
         $encryptedprovince = encryption($user_province);
         $encryptedPassword = encryption($user_password);
 
-
         $check_email_query = "SELECT * FROM applicants WHERE ApplicantEmail = '$encryptedemail'";
         $email_result = mysqli_query($link, $check_email_query);
         if (mysqli_num_rows($email_result) > 0) {

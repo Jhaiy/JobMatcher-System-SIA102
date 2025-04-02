@@ -88,60 +88,62 @@
                 </div> 
             <?php endif; ?>
         </div>
-        <div class="job-vacancies">
-            <h1>Find Job Vacancies</h1>
-            <div class="job-vacancy-categories">
-                <div class="job-vacancy-wrapper">
-                <h1>SKILLS</h1>
-                    <div class="job-vacancy-blocks">
-                        <?php if (!empty($job_vacancies)): ?>
-                            <?php foreach ($job_vacancies as $vacancy): ?>
-                                <a href="#">
-                                    <div class="job-vacancy-block">
-                                        <h3 id="vacancy-name"><?php echo htmlspecialchars($vacancy['SkillName']); ?></h3>
-                                    </div>
-                                </a>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No job vacancies found</p>
-                        <?php endif; ?>
+        <?php if (!$user_data): ?>
+            <div class="job-vacancies">
+                <h1>Find Job Vacancies</h1>
+                <div class="job-vacancy-categories">
+                    <div class="job-vacancy-wrapper">
+                    <h1>SKILLS</h1>
+                        <div class="job-vacancy-blocks">
+                            <?php if (!empty($job_vacancies)): ?>
+                                <?php foreach ($job_vacancies as $vacancy): ?>
+                                    <a href="#">
+                                        <div class="job-vacancy-block">
+                                            <h3 id="vacancy-name"><?php echo htmlspecialchars($vacancy['SkillName']); ?></h3>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>No job vacancies found</p>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                </div>
-                <div class="job-vacancy-wrapper">
-                <h1>ROLES</h1>
-                    <div class="job-vacancy-blocks">
-                        <?php if (!empty($job_roles)): ?>
-                            <?php foreach (array_slice($job_roles, 0, 20) as $role): ?>
-                                <a href="#">
-                                    <div class="job-vacancy-block">
-                                        <h3 id="vacancy-name"><?php echo htmlspecialchars($role['RoleName']); ?></h3>
-                                    </div>
-                                </a>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No job roles found</p>
-                        <?php endif; ?>
+                    <div class="job-vacancy-wrapper">
+                    <h1>ROLES</h1>
+                        <div class="job-vacancy-blocks">
+                            <?php if (!empty($job_roles)): ?>
+                                <?php foreach (array_slice($job_roles, 0, 20) as $role): ?>
+                                    <a href="#">
+                                        <div class="job-vacancy-block">
+                                            <h3 id="vacancy-name"><?php echo htmlspecialchars($role['RoleName']); ?></h3>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>No job roles found</p>
+                            <?php endif; ?>
+                        </div>
+                    <a id="view-more-button" href="#">View More</a>
                     </div>
-                <a id="view-more-button" href="#">View More</a>
-                </div>
-                <div class="job-vacancy-wrapper">
-                <h1>COMPANIES</h1>
-                    <div class="job-vacancy-blocks">
-                        <?php if (!empty($companies)): ?>
-                            <?php foreach ($companies as $company): ?>
-                                <a href="#">
-                                    <div class="job-vacancy-block">
-                                        <h3 id="vacancy-name"><?php echo htmlspecialchars(decryption($company['CompanyName'])); ?></h3>
-                                    </div>
-                                </a>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No companies found</p>
-                        <?php endif; ?>
+                    <div class="job-vacancy-wrapper">
+                    <h1>COMPANIES</h1>
+                        <div class="job-vacancy-blocks">
+                            <?php if (!empty($companies)): ?>
+                                <?php foreach ($companies as $company): ?>
+                                    <a href="#">
+                                        <div class="job-vacancy-block">
+                                            <h3 id="vacancy-name"><?php echo htmlspecialchars(decryption($company['CompanyName'])); ?></h3>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>No companies found</p>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
     <footer>
         <div class="footer-content">

@@ -430,4 +430,41 @@ body {
 
 .about-us-text h1 {
     color: #3A3960;
+    font-size: 40px;
 }
+
+.applicant-banner {
+    background-color: #3A3960;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    flex-direction: column;
+    font-family: "Inter", serif;
+    font-weight: 400;
+    padding: 80px 0 0 0;
+    gap: 10px;
+}
+    .applicant-banner #applicant-name {
+        font-size: 40px;
+    }
+    .applicant-banner #applicant-email, #applicant-address {
+        padding: 0 0 0 10px;
+    }
+    .applicant-banner #applicant-name, #applicant-email, #applicant-address{
+        text-align: left;
+        color: white;
+        margin: 0 0 0 50px;
+        width: fit-content;
+    }
+    .applicant-banner img {
+        height: 20px;
+        width: 20px;
+        margin: 0;
+        padding: 0 10px 0 0;
+        filter: brightness(0) invert(1);
+    }
+    #applicant-email, #applicant-address {
+        display: flex;
+        justify-content: left;
+    }
