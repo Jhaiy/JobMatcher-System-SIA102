@@ -19,7 +19,6 @@
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);
     $job_roles = fetch_job_roles($link);
-    $companies = fetch_companies($link);
 ?>
 
 <!DOCTYPE html>

@@ -3,7 +3,7 @@
     require_once "db-config.php";
     include("functions/applicant-login-check.php");
     include("functions/company-login-check.php");
-    include("functions/password-hash.php");
+    include_once("functions/password-hash.php");
 
     $user_data = isset($_SESSION['ApplicantID']);
     $user_profile = isset($_SESSION['ApplicantProfileID']);

@@ -65,16 +65,22 @@
     }
 
     function fetch_profile_picture($link, $applicant_id) {
-        $query = "SELECT ApplicantPic FROM applicantprofiles WHERE ApplicantProfileID = '$applicant_id'";
+        $query = "SELECT ApplicantPic FROM applicantprofiles WHERE ApplicantProfileID = ?";
         $stmt = mysqli_prepare($link, $query);
-        mysqli_stmt_bind_param($stmt, "i", $applicant_id);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        if ($row = mysqli_fetch_assoc($result)) {
-            return $row['ApplicantPic'];
+    
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "i", $applicant_id); // Bind the parameter
+            mysqli_stmt_execute($stmt); // Execute the statement
+            $result = mysqli_stmt_get_result($stmt); // Get the result
+    
+            if ($row = mysqli_fetch_assoc($result)) {
+                return $row['ApplicantPic']; // Return the profile picture
+            } else {
+                return null; // Return null if no result is found
+            }
         } else {
-            return null; // or a default image path
+            error_log("Database error: " . mysqli_error($link)); // Log any errors
+            return null;
         }
     }
 ?>

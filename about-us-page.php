@@ -32,6 +32,11 @@
             <div class="los">
                 <?php if ($user_data): ?>
                     <li><p id="los-name"><?php echo $user_data['ApplicantFName']; ?></p></li>
+                    <?php if(!empty($applicant_picture)): ?>
+                        <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
+                    <?php else: ?>
+                        <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
+                    <?php endif; ?>
                     <form method="post" action="home-page.php">
                         <input type="submit" name="logout" value="Log Out">
                     </form>

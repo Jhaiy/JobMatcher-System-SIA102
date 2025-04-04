@@ -2,7 +2,7 @@
     session_start();
     require_once "db-config.php";
     include("functions/applicant-login-check.php");
-    include("functions/password-hash.php");
+    include_once("functions/password-hash.php");
     include("functions/home-page-categories.php");
 
     $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
@@ -127,8 +127,7 @@
             echo "No file uploaded or an error occurred.";
         }
     }
-    echo "Image Path: assets/profile-uploads/" . htmlspecialchars($applicant_picture) . "<br>";
-    ?>
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -161,6 +160,11 @@
                 <div class="los">
                     <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
                         <li><p id="los-name"><?php echo htmlspecialchars($user_data['ApplicantFName']); ?></p></li>
+                        <?php if(!empty($applicant_picture)): ?>
+                            <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
+                        <?php else: ?>
+                            <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
+                        <?php endif; ?>
                         <form method="post" action="home-page.php">
                             <input type="submit" name="logout" value="Log Out">
                         </form>

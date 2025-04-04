@@ -7,6 +7,8 @@
     include("functions/home-page-categories.php");
 
     $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
+    $applicant_picture = fetch_profile_picture($link, $applicant_id);
+
 
     if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['logout'])) {
         session_unset();
@@ -19,7 +21,6 @@
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);
     $job_roles = fetch_job_roles($link);
-    $companies = fetch_companies($link);
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +52,7 @@
             <div class="los">
                 <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
                     <li><p id="los-name"><?php echo htmlspecialchars($user_data['ApplicantFName']); ?></p></li>
+                    <img id="applicant-profile-picture" src="<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
                     <form method="post" action="home-page.php">
                         <input type="submit" name="logout" value="Log Out">
                     </form>
