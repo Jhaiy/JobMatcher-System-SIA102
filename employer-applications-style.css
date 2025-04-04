@@ -1,0 +1,96 @@
+/* Applicants Section */
+.applicants-section {
+    width: 80%;
+    margin: 40px auto;
+    background: #DDE5C2;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Applicants Table */
+.applicants-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.applicants-table th {
+    background: #5C665A;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 18px;
+}
+
+.applicants-table td {
+    padding: 12px;
+    border-bottom: 2px solid #5C665A;
+    font-size: 16px;
+}
+
+.applicants-table tr:nth-child(even) {
+    background: #C4D2B0;
+}
+
+/* Ensure everything inside the name cell is aligned properly */
+.applicant-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px; /* Reduce spacing between image and text */
+}
+
+/* Round profile picture */
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd; /* Optional border */
+}
+
+/* Name styling */
+.applicant-row span {
+    font-size: 16px;
+    font-weight: bold;
+    flex-grow: 1; /* Allow the name to take up space */
+    text-align: left; /* Align the text closer to the image */
+}
+
+/* Button container */
+.applicant-actions {
+    display: flex;
+    gap: 8px; /* Reduce spacing between buttons */
+}
+
+/* Button styles */
+.applicant-actions button {
+    padding: 6px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.view-resume {
+    background: gray;
+    color: white;
+}
+
+.accept {
+    background: green;
+    color: white;
+}
+
+.decline {
+    background: red;
+    color: white;
+}
+
+.view-resume:hover,
+.accept:hover,
+.decline:hover {
+    opacity: 0.8;
+}

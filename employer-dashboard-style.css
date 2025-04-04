@@ -297,3 +297,68 @@ body {
 #company-icon-banner {
     margin: 0;
 }
+
+
+/* Dashboard Section */
+.dashboard-container {
+    padding: 40px;
+    background-color: #F3F4F6; /* Light gray background */
+    border-radius: 10px;
+}
+
+/* Grid Layout */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Individual Card */
+.dashboard-card {
+    background-color: #D1E7D0; /* Light green background */
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Card Hover Effect */
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Icon */
+.dashboard-card img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+/* Card Title */
+.dashboard-card h2 {
+    font-size: 25px;
+    font-weight: bold;
+    color: #3A3960;
+}
+
+/* Card Description */
+.dashboard-card p {
+    font-size: 25px;
+    color: #5E5E5E;
+}
+
+
+
+/* Table Inside Card */
+.dashboard-card table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.dashboard-card table td {
+    padding: 5px;
+    font-size: 25px;
+}

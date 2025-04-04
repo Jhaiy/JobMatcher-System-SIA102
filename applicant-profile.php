@@ -127,8 +127,8 @@
             echo "No file uploaded or an error occurred.";
         }
     }
-    echo "Image Path: assets/profile-uploads/" . htmlspecialchars($user_data['ApplicantPic']) . "<br>";
-?>
+    echo "Image Path: assets/profile-uploads/" . htmlspecialchars($applicant_picture) . "<br>";
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -139,6 +139,8 @@
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="category-style.css">
     <link rel="stylesheet" href="applicant-profile-style.css">
+    <link rel="stylesheet" href="applicant-status-style.css">
+
     <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
@@ -150,10 +152,10 @@
                         <li><a href="#" id="logo">TechSync</a></li>
                         <li><a href="home-page.php">Jobs</a></li>
                         <?php if ($user_data): ?>
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">Status</a></li>
+                            <li><a href="applicant-profile.php">Profile</a></li>
+                            <li><a href="applicant-status.php">Status</a></li>
                         <?php endif; ?>
-                        <li><a href="about-us-page.php">About Us</a></li>
+                        <li><a href="applicant-about-us.php">About Us</a></li>
                     </ul>
                 </div>
                 <div class="los">

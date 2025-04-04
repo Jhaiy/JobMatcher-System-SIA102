@@ -1,0 +1,68 @@
+.status-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #e6f2e6; /* Light greenish background */
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ FIX: Status Card */
+.status-card {
+    background-color: #d8e6d3; /* Light green */
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ✅ FIX: Status Info Section */
+.status-info {
+    flex: 1;
+}
+
+.status-card h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.status-card p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+/* ✅ FIX: Buttons */
+.status-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status-buttons button {
+    background-color: #4d6657;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100px;
+}
+
+.status-buttons button:hover {
+    background-color: #3a4d41;
+}
+/* Footer */
+footer {
+    background-color: #2c2c5e;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}

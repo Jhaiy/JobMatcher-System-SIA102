@@ -3,8 +3,9 @@
     require_once "db-config.php";
     include("functions/applicant-login-check.php");
     include("functions/password-hash.php");
-    
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+
+    function create_user_account($link) {
         $user_fname = $_POST['first-name'];
         $user_lname = $_POST['last-name'];
         $user_email = $_POST['email'];
@@ -18,32 +19,37 @@
         $encryptedprovince = encryption($user_province);
         $encryptedPassword = encryption($user_password);
 
+        $create_user_profile = "INSERT applicantprofiles () VALUES ()";
+        $create_user_profile_result = mysqli_query($link, $create_user_profile);
+        $applicant_id = mysqli_insert_id($link);
+        $sql_query = "INSERT INTO applicants (ApplicantID, ApplicantFName, ApplicantLName, ApplicantEmail, ApplicantPass, ApplicantCity, ApplicantProvince, 
+                    ApplicantProfileID) VALUES ('$applicant_id', '$encryptedfname', '$encryptedlname', '$encryptedemail', '$encryptedPassword', '$encryptedcity', 
+                    '$encryptedprovince', '$applicant_id')";
+
+        $result = mysqli_query($link, $sql_query);
+        if (empty($user_email) && empty($user_password) && empty($user_fname) && empty($user_lname) && empty($user_city) && empty($user_province)) {
+            echo "Please input all fields";
+        }
+
+        if ($result) {
+            $_SESSION['ApplicantID'] = $applicant_id;
+            header("Location: home-page.php");
+            exit;
+        } else {
+            echo mysqli_error($link);
+        }
+    }
+    
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $user_email = $_POST["email"];
+        $encryptedemail = encryption($user_email);
         $check_email_query = "SELECT * FROM applicants WHERE ApplicantEmail = '$encryptedemail'";
         $email_result = mysqli_query($link, $check_email_query);
+        
         if (mysqli_num_rows($email_result) > 0) {
             echo "Account already exists";
         } else {
-            if (!empty($user_email) && !empty($user_password) && !empty($user_fname) && !empty($user_lname) && !empty($user_city) && !empty($user_province)) {
-                $profile_query = "INSERT INTO applicantprofiles () VALUES ()";
-                $profile_result = mysqli_query($link, $profile_query);
-                if ($profile_result) {
-                    $applicant_id = mysqli_insert_id($link);
-                    $sql_query = "INSERT INTO applicants (ApplicantID, ApplicantFName, ApplicantLName, ApplicantEmail, ApplicantPass, ApplicantCity, ApplicantProvince, ApplicantProfileID) VALUES ('$applicant_id', '$encryptedfname', '$encryptedlname', '$encryptedemail', '$encryptedPassword', '$encryptedcity', '$encryptedprovince', '$applicant_id')";
-                    $result = mysqli_query($link, $sql_query);
-
-                    if ($result) {
-                        $_SESSION['ApplicantID'] = $applicant_id;
-                        header("Location: home-page.php");
-                        exit;
-                    } else {
-                        echo "Error: " . mysqli_error($link);
-                    }
-                } else {
-                    echo "Error: " . mysqli_error($link);
-                }
-            } else {
-                echo "Error: " . mysqli_error($link); 
-            }
+            create_user_account($link);
         }
     }
 ?>

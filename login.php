@@ -5,75 +5,42 @@
     include("functions/company-login-check.php");
     include("functions/password-hash.php");
 
-    if (isset($_POST['login-as'])) {
-        $login_as = $_POST['login-as'];
-    } else {
-        $login_as = null;
-    }
+    $user_data = isset($_SESSION['ApplicantID']);
+    $user_profile = isset($_SESSION['ApplicantProfileID']);
 
     if (isset($_SESSION['ApplicantID'])) {
         header("Location: home-page.php");
         exit;
     }
 
-    if (isset($_SESSION['CompanyID'])) {
-        header("Location: employer-dashboard-page.php");
-        exit;
-    }
+    function check_if_user_password_exists($link, $verifyEmailHash, $verifyPasswordHash, $user_data) {
+        $sql_query = "SELECT * FROM applicants WHERE ApplicantEmail = '$verifyEmailHash'";
+        $result = mysqli_query($link, $sql_query);
+        $user_data = mysqli_fetch_assoc($result);
 
-    $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
-    $user_data = isset($_SESSION['CompanyID']) ? check_login_company($link) : null;
+        if ($result && mysqli_num_rows($result) < 0) {
+            echo mysqli_error($link);   
+        }
+
+        if($user_data['ApplicantPass'] === $verifyPasswordHash) {
+            $_SESSION['ApplicantID'] = $user_data['ApplicantID'];
+            $_SESSION['ApplicantFName'] = $user_data['ApplicantFName'];
+            $_SESSION['ApplicantLName'] = $user_data['ApplicantLName'];
+            header("Location: home-page.php");
+            exit;
+        } else {
+            echo "Invalid email or password";
+        }
+    }
     
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $verifyPasswordHash = encryption($password);
         $verifyEmailHash = encryption($email);
+
         if (!empty($email) && !empty($password)) {
-            if ($login_as == 'applicant') {
-                $sql_query = "SELECT * FROM applicants WHERE ApplicantEmail = '$verifyEmailHash'";
-                $result = mysqli_query($link, $sql_query);
-                if ($result) {
-                    if($result && mysqli_num_rows($result) > 0) {
-                        $user_data = mysqli_fetch_assoc($result);
-                        if($user_data['ApplicantPass'] === $verifyPasswordHash) {
-                            $_SESSION['ApplicantID'] = $user_data['ApplicantID'];
-                            $_SESSION['ApplicantFName'] = $user_data['ApplicantFName'];
-                            $_SESSION['ApplicantLName'] = $user_data['ApplicantLName'];
-                            header("Location: home-page.php");
-                            exit;
-                        } else {
-                            echo "Invalid email or password";
-                        }
-                    } else {
-                        echo "Invalid email or password";
-                    }
-                } else {
-                    echo "Error: " . mysqli_error($link); 
-                }
-            } else if ($login_as == 'employer') {
-                $sql_query = "SELECT * FROM company WHERE CompanyEmail = '$verifyEmailHash'";
-                $result = mysqli_query($link, $sql_query);
-                if ($result) {
-                    if(mysqli_num_rows($result) > 0) {
-                        $user_data = mysqli_fetch_assoc($result);
-                        if($user_data['CompanyPass'] === $verifyPasswordHash) {
-                            $_SESSION['CompanyID'] = $user_data['CompanyID'];
-                            $_SESSION['CompanyName'] = $user_data['CompanyName'];
-                            header("Location: company-dashboard.php");
-                            exit;
-                        } else {
-                            echo "Invalid email or password";
-                        }
-                    } else {
-                        echo "Invalid email or password";
-                    }
-                } else {
-                    echo "Error: " . mysqli_error($link); 
-                }
-            } else {
-                echo "Please select a role";
-            }
+            check_if_user_password_exists($link, $verifyEmailHash, $verifyPasswordHash, $user_data);
         } else {
             echo "Please fill in all fields";
         }
@@ -96,14 +63,6 @@
             <div class="login-container">
                 <h1>LOG IN</h1>
                 <div class="credentials">
-                    <div class="login-selection">
-                        <label for="login-as">LOG IN AS:</label>
-                        <select name="login-as" id="login-as" required>
-                            <option value="" disabled selected>Select Role</option>
-                            <option name = "applicant" value="applicant">Applicant</option>
-                            <option name = "employer" value="employer">Employer</option>
-                        </select>
-                    </div>
                     <div class="email-container">
                         <img id="email-icon" src="assets/images/profile.png"> 
                         <input type="text" name="email" id="email-input" class="form-control" placeholder="Email">

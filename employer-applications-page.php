@@ -22,6 +22,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
+    <link rel="stylesheet" href="employer-joblisting-style.css">
+    <link rel="stylesheet" href="employer-applications-style.css">
+
 </head>
 <body>
     <div class="navbar">
@@ -52,7 +55,6 @@
                 <?php if ($user_data && isset($user_data['CompanyName'])); ?>
                 <h1><?php echo htmlspecialchars($user_data['CompanyName']); ?></h1>
                 <h2>Description</h2>
-                <input type="submit" value="Add Listing" name="add-listing" id="add-listing-button">
             </div>
             <div class="banner-icon">
                 <img id="company-icon-banner" src="assets/images/employer.png" alt="Employer Icon">
@@ -60,6 +62,44 @@
         </div>
     </div>   
 </div>
+
+<!--Application -->
+
+<div class="applicants-section">
+    <h2>Applicants</h2>
+    <table class="applicants-table">
+        <tr>
+            <th>Name</th> <!-- Keep only the Name column -->
+        </tr>
+        <tr>
+            <td>
+                <div class="applicant-row">
+                <img src="assets/images/profile1.png" alt="Profile" class="profile-pic">
+                    <span>jobet</span>
+                    <div class="applicant-actions">
+                        <button class="view-resume">View Resume</button>
+                        <button class="accept">Accept</button>
+                        <button class="decline">Decline</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="applicant-row">
+                <img src="assets/images/profile2.png" alt="Profile" class="profile-pic">
+                    <span>charity</span>
+                    <div class="applicant-actions">
+                        <button class="view-resume">View Resume</button>
+                        <button class="accept">Accept</button>
+                        <button class="decline">Decline</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
 
     <footer>
         <div class="footer-content">
