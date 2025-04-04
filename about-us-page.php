@@ -31,7 +31,7 @@
             </div>
             <div class="los">
                 <?php if ($user_data): ?>
-                    <li><p id="los-name"><?php echo $user_data['applicant_name']; ?></p></li>
+                    <li><p id="los-name"><?php echo $user_data['ApplicantFName']; ?></p></li>
                     <form method="post" action="home-page.php">
                         <input type="submit" name="logout" value="Log Out">
                     </form>

@@ -1,5 +1,6 @@
 <?php
     include("db-config.php");
+    include("password-hash.php");
 
     function check_login($link) {
         if (isset($_SESSION['ApplicantID'])) {
