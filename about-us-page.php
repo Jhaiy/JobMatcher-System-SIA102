@@ -2,8 +2,11 @@
     session_start();
     require_once "db-config.php";
     include("functions/applicant-login-check.php");
+    include("functions/home-page-categories.php");
 
     $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
+    $applicant_id = isset($_SESSION['ApplicantID']) ? $_SESSION['ApplicantID'] : null;
+    $applicant_picture = fetch_profile_picture($link, $applicant_id);
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +26,7 @@
                     <li><a href="#" id="logo">TechSync</a></li>
                     <li><a href="home-page.php">Jobs</a></li>
                     <?php if ($user_data): ?>
-                        <li><a href="#">Profile</a></li>
+                        <li><a href="applicant-profile.php">Profile</a></li>
                         <li><a href="#">Status</a></li>
                     <?php endif; ?>
                     <li><a href="about-us-page.php">About Us</a></li>

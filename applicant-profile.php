@@ -139,7 +139,6 @@
     <link rel="stylesheet" href="category-style.css">
     <link rel="stylesheet" href="applicant-profile-style.css">
     <link rel="stylesheet" href="applicant-status-style.css">
-
     <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
@@ -337,4 +336,20 @@
             </div>
         </form>
     </form>
+    <footer>
+        <div class="footer-content">
+            <p>CONTACT US:</p>
+            <P>09##########</P>
+            <div class="social-links">
+                <a href="#"><img src="assets/images/mail.png"></a>
+                <a href="#"><img src="assets/images/communication.png"></a>
+            </div>
+            <hr>
+            <div class="idk-texts">
+                <p>WebTitle 2025</p>
+                <p>|</p>
+                <p>All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
 </body>

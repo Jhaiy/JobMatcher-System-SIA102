@@ -435,7 +435,8 @@ body {
 
 .applicant-banner {
     background-color: #3A3960;
-    height: 200px;
+    min-height: 150px;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: left;
@@ -476,3 +477,8 @@ body {
         object-fit: cover;
         margin: 20px auto;
     }
+
+#edit-profile-button {
+    text-decoration: none;
+    color: black;
+}

@@ -56,13 +56,3 @@
 .status-buttons button:hover {
     background-color: #3a4d41;
 }
-/* Footer */
-footer {
-    background-color: #2c2c5e;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}

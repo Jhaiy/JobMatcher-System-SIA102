@@ -1,5 +1,6 @@
 .applicant-profile {
     margin: 20px auto;
+    padding: 0 300px;
     display: grid;
     justify-content: center;
     justify-items: center;
@@ -11,16 +12,15 @@
     border-radius: 20px;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     width: fit-content;
-    margin: auto;
+    margin: 0;
     padding: 50px 70px 50px 70px;
 }
 
 .applicant-role-editor-wrapper {
     border: none;
     border-radius: 20px;
-    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     width: fit-content;
-    margin: auto;
+    margin: 0;
     padding: 50px 70px 50px 70px;
     height: auto;
 }

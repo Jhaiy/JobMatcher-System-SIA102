@@ -41,7 +41,7 @@
                     <li><a href="#" id="logo">TechSync</a></li>
                     <li><a href="home-page.php">Jobs</a></li>
                     <?php if ($user_data): ?>
-                        <li><a href="#">Profile</a></li>
+                        <li><a href="applicant-profile.php">Profile</a></li>
                         <li><a href="#">Status</a></li>
                     <?php endif; ?>
                     <li><a href="about-us-page.php">About Us</a></li>
@@ -51,7 +51,9 @@
                 <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
                     <li><p id="los-name"><?php echo htmlspecialchars($user_data['ApplicantFName']); ?></p></li>
                     <?php if (!empty($applicant_picture)): ?>
-                        <img id="profile-picture-preview" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
+                        <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
+                    <?php else: ?>
+                        <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
                     <?php endif; ?>
                     <form method="post" action="home-page.php">
                         <input type="submit" name="logout" value="Log Out">
@@ -75,7 +77,29 @@
     <div class="job-selection">
         <div class="job-categories">
             <?php if ($user_data): ?>
-                <h1>Recommendations</h1>   
+                <h1>Recommendations</h1>
+                <?php
+                    $applicant_id = $_SESSION['ApplicantID'];
+                    $fetch_applicant_skills = "
+                    SELECT skills.SkillName
+                    FROM applicantskills 
+                    INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
+                    WHERE applicantskills.ApplicantID = ?";
+                    $stmt = mysqli_prepare($link, $fetch_applicant_skills);
+                    mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $applicant_skills[] = $row['SkillName'];
+                        }
+                    } else {
+                        echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
+                    }
+
+                    mysqli_stmt_close($stmt);
+                ?>
             <?php else: ?>
                 <h1>Categories</h1>
                 <div class="job-recommendation-blocks">
