@@ -18,7 +18,6 @@
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);
     $job_roles = fetch_job_roles($link);
-    $companies = fetch_companies($link);
 ?>
 
 <!DOCTYPE html>
@@ -40,8 +39,8 @@
                     <li><a href="#" id="logo">TechSync</a></li>
                     <li><a href="home-page.php">Jobs</a></li>
                     <?php if ($user_data): ?>
-                        <li><a href="applicant-profile.php">Profile</a></li>
-                        <li><a href="applicant-status.php">Status</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Status</a></li>
                     <?php endif; ?>
                     <li><a href="about-us-page.php">About Us</a></li>
                 </ul>
@@ -69,52 +68,10 @@
 
     </div>
     <div class="job-selection">
-        <?php if ($user_data): ?>
-            <!-- Logged-in View -->
-            <div class="available-jobs-section">
-                <h1>Available Jobs</h1>
-                <div class="job-listings">
-                    <?php $available_jobs = fetch_available_jobs($link); ?>
-                    
-                    <?php if (!empty($available_jobs)): ?>
-                        <?php foreach ($available_jobs as $job): ?>
-                            <div class="job-card">
-                                <h3><?php echo htmlspecialchars($job['JobTitle']); ?></h3>
-                                <p class="company-name"><?php echo htmlspecialchars($job['CompanyName']); ?></p>
-                                <p class="job-location"><?php echo htmlspecialchars($job['Location']); ?></p>
-                                <button class="apply-button">Apply Now</button>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="no-jobs">No available jobs at this time</p>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <div class="featured-companies-section">
-                <h1>Featured Companies</h1>
-                <div class="company-logos">
-                    <?php if (!empty($companies)): ?>
-                        <?php foreach (array_slice($companies, 0, 6) as $company): ?>
-                            <div class="company-logo">
-                                <?php if (!empty($company['LogoPath'])): ?>
-                                    <img src="<?php echo htmlspecialchars($company['LogoPath']); ?>" 
-                                         alt="<?php echo htmlspecialchars(decryption($company['CompanyName'])); ?>">
-                                <?php else: ?>
-                                    <div class="company-name-fallback">
-                                        <?php echo htmlspecialchars(decryption($company['CompanyName'])); ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="no-companies">No featured companies</p>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php else: ?>
-            <!-- Non-logged-in View -->
-            <div class="job-categories">
+        <div class="job-categories">
+            <?php if ($user_data): ?>
+                <h1>Recommendations</h1>   
+            <?php else: ?>
                 <h1>Categories</h1>
                 <div class="job-recommendation-blocks">
                     <?php if (!empty($job_categories)): ?>
@@ -129,10 +86,9 @@
                         <p>No job categories found</p>
                     <?php endif; ?>
                 </div> 
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
-    
     <footer>
         <div class="footer-content">
             <p>CONTACT US:</p>

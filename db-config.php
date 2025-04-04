@@ -2,7 +2,7 @@
     $host = "localhost";
     $user= "root";
     $password= "";
-    $db = "test_jobmatcher";
+    $db = "techsync_db";
 
     $link = mysqli_connect($host, $user, $password, $db);
 

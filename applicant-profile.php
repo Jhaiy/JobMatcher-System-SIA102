@@ -262,8 +262,8 @@
                     <form method="post" action="applicant-profile.php" enctype="multipart/form-data">
                         <div class="profile-picture-wrapper">
                             <label for="profile-picture">
-                                <?php if (isset($user_data['ApplicantPic']) && !empty($user_data['ApplicantPic'])): ?>
-                                    <img src="assets/profile-uploads/<?php echo htmlspecialchars($user_data['ApplicantPic']); ?>" alt="Profile Picture" id="profile-picture-preview">
+                                <?php if (!empty($applicant_picture)): ?>
+                                    <img src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture" id="profile-picture-preview">
                                 <?php else: ?>
                                     <img src="assets/profile-uploads/user.png" alt="Default Profile Picture" id="profile-picture-preview">
                                 <?php endif; ?>

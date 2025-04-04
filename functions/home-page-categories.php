@@ -47,21 +47,6 @@
         return $job_roles;
     }
 
-    function fetch_companies($link) {
-        $companies = [];
-        $sql = "SELECT CompanyID, CompanyName, LogoPath FROM company";
-        $result = mysqli_query($link, $sql);
-
-        if (!$result) {
-            error_log("Database error: " . mysqli_error($link));
-            return $companies;
-        }
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            $companies[] = $row;
-        }
-        return $companies;
-    }
 
     function fetch_skills($link) {
         $applicant_skills = [];
@@ -80,48 +65,16 @@
     }
 
     function fetch_profile_picture($link, $applicant_id) {
-        $applicant_picture = null;
-        $sql = "SELECT ApplicantPic FROM applicantprofiles WHERE ApplicantProfileID = ?";
-        $stmt = mysqli_prepare($link, $sql);
-    
-        if (!$stmt) {
-            error_log("Prepare failed: " . mysqli_error($link));
-            return null;
-        }
-    
+        $query = "SELECT ApplicantPic FROM applicantprofiles WHERE ApplicantProfileID = '$applicant_id'";
+        $stmt = mysqli_prepare($link, $query);
         mysqli_stmt_bind_param($stmt, "i", $applicant_id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-    
-        if ($result && $row = mysqli_fetch_assoc($result)) {
-            $applicant_picture = $row['ApplicantPic'];
-        }
-    
-        mysqli_stmt_close($stmt);
-        return $applicant_picture;
-    }
 
-    // NEW FUNCTION: Fetch available jobs for logged-in users
-    function fetch_available_jobs($link) {
-        $jobs = [];
-        $sql = "SELECT j.JobID, j.JobTitle, j.Location, j.Salary, 
-                       c.CompanyID, c.CompanyName, c.LogoPath
-                FROM jobs j
-                JOIN company c ON j.CompanyID = c.CompanyID
-                WHERE j.Status = 'Open'
-                ORDER BY j.PostDate DESC
-                LIMIT 6";
-        
-        $result = mysqli_query($link, $sql);
-
-        if (!$result) {
-            error_log("Database error: " . mysqli_error($link));
-            return $jobs;
+        if ($row = mysqli_fetch_assoc($result)) {
+            return $row['ApplicantPic'];
+        } else {
+            return null; // or a default image path
         }
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            $jobs[] = $row;
-        }
-        return $jobs;
     }
 ?>
