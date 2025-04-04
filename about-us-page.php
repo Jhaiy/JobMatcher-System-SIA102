@@ -27,7 +27,7 @@
                     <li><a href="#" id="logo">TechSync</a></li>
                     <li><a href="home-page.php">Jobs</a></li>
                     <?php if ($user_data): ?>
-                        <li><a href="#">Profile</a></li>
+                        <li><a href="applicant-profile.php">Profile</a></li>
                         <li><a href="#">Status</a></li>
                     <?php endif; ?>
                     <li><a href="about-us-page.php">About Us</a></li>
@@ -36,6 +36,11 @@
             <div class="los">
                 <?php if ($user_data): ?>
                     <li><p id="los-name"><?php echo $user_data['ApplicantFName']; ?></p></li>
+                    <?php if(!empty($applicant_picture)): ?>
+                        <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
+                    <?php else: ?>
+                        <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
+                    <?php endif; ?>
                     <form method="post" action="home-page.php">
                         <input type="submit" name="logout" value="Log Out">
                     </form>
@@ -46,7 +51,7 @@
             </div>
         </div>
     </div>
-    <div class="about-page-content">
+    < class="about-page-content">
         <div class="about-us-banner">
             <div class="about-us-motto">
                 <h1>Unlock Your Future.</h1>
@@ -97,10 +102,9 @@
                     employers are seamlessly connected through technology, reducing the barriers to 
                     hiring and creating a more accessible, inclusive, and dynamic job market.
                 </p>
-             </div>
         </div>
     </div>
-    <div class="contact-us-container">
+<div class="contact-us-container">
         <h1>Contact Us</h1>
         <form method="POST" action="submit-contact.php">
         <div class="form-row name-row">
