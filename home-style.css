@@ -368,6 +368,10 @@ body {
         width: 40px;
     }
 
+.about-page-content{
+    margin-bottom: 40px;
+}
+
 .about-us-banner {
     background-color: #3A3960;
     height: auto;

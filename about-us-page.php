@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="home-style.css">
+    <link rel="stylesheet" href="applicant-about-us-style.css">
     <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
@@ -50,7 +51,7 @@
             </div>
         </div>
     </div>
-    <div class="about-page-content">
+    < class="about-page-content">
         <div class="about-us-banner">
             <div class="about-us-motto">
                 <h1>Unlock Your Future.</h1>
@@ -103,6 +104,31 @@
                 </p>
         </div>
     </div>
+<div class="contact-us-container">
+        <h1>Contact Us</h1>
+        <form method="POST" action="submit-contact.php">
+        <div class="form-row name-row">
+            <input type="text" id="first-name" name="first-name" placeholder="First Name" required>
+            <input type="text" id="last-name" name="last-name" placeholder="Last Name" required>
+        </div>
+
+        <div class="form-row">
+            <input type="email" id="email" name="email" placeholder="Work Email Address" required>
+        </div>
+
+        <div class="form-row">
+            <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required>
+        </div>
+
+        <div class="form-row">
+            <textarea id="message" name="message" rows="5" placeholder="Message" required></textarea>
+        </div>
+
+        <div class="form-row">
+            <button type="submit" name="submit">SUBMIT</button>
+        </div>
+    </form>
+</div>
     <footer>
         <div class="footer-content">
             <p>CONTACT US:</p>
