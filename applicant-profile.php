@@ -153,7 +153,7 @@
                             <li><a href="applicant-profile.php">Profile</a></li>
                             <li><a href="applicant-status.php">Status</a></li>
                         <?php endif; ?>
-                        <li><a href="applicant-about-us.php">About Us</a></li>
+                        <li><a href="about-us-page.php">About Us</a></li>
                     </ul>
                 </div>
                 <div class="los">

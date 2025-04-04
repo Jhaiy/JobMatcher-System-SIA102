@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="home-style.css">
+    <link rel="stylesheet" href="applicant-about-us-style.css">
     <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
@@ -26,7 +27,7 @@
                     <li><a href="#" id="logo">TechSync</a></li>
                     <li><a href="home-page.php">Jobs</a></li>
                     <?php if ($user_data): ?>
-                        <li><a href="applicant-profile.php">Profile</a></li>
+                        <li><a href="#">Profile</a></li>
                         <li><a href="#">Status</a></li>
                     <?php endif; ?>
                     <li><a href="about-us-page.php">About Us</a></li>
@@ -35,11 +36,6 @@
             <div class="los">
                 <?php if ($user_data): ?>
                     <li><p id="los-name"><?php echo $user_data['ApplicantFName']; ?></p></li>
-                    <?php if(!empty($applicant_picture)): ?>
-                        <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
-                    <?php else: ?>
-                        <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
-                    <?php endif; ?>
                     <form method="post" action="home-page.php">
                         <input type="submit" name="logout" value="Log Out">
                     </form>
@@ -101,8 +97,34 @@
                     employers are seamlessly connected through technology, reducing the barriers to 
                     hiring and creating a more accessible, inclusive, and dynamic job market.
                 </p>
+             </div>
         </div>
     </div>
+    <div class="contact-us-container">
+        <h1>Contact Us</h1>
+        <form method="POST" action="submit-contact.php">
+        <div class="form-row name-row">
+            <input type="text" id="first-name" name="first-name" placeholder="First Name" required>
+            <input type="text" id="last-name" name="last-name" placeholder="Last Name" required>
+        </div>
+
+        <div class="form-row">
+            <input type="email" id="email" name="email" placeholder="Work Email Address" required>
+        </div>
+
+        <div class="form-row">
+            <input type="tel" id="mobile" name="mobile" placeholder="Mobile Number" required>
+        </div>
+
+        <div class="form-row">
+            <textarea id="message" name="message" rows="5" placeholder="Message" required></textarea>
+        </div>
+
+        <div class="form-row">
+            <button type="submit" name="submit">SUBMIT</button>
+        </div>
+    </form>
+</div>
     <footer>
         <div class="footer-content">
             <p>CONTACT US:</p>
