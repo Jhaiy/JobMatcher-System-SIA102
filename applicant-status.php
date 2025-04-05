@@ -3,7 +3,7 @@
     session_start();
     require_once "db-config.php";
     include("functions/applicant-login-check.php");
-    include("functions/password-hash.php");
+    include_once("functions/password-hash.php");
     include("functions/home-page-categories.php");
 
     $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
@@ -26,10 +26,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About US</title>
+    <title>Applicantions</title>
     <link rel="stylesheet" href="applicant-status-style.css">
     <link rel="stylesheet" href="home-style.css">
-
     <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
