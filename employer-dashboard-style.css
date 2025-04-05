@@ -362,3 +362,10 @@ body {
     padding: 5px;
     font-size: 25px;
 }
+
+#listing-link {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+}

@@ -95,7 +95,9 @@
                             $applicant_skills[] = $row['SkillName'];
                         }
                     } else {
+                        echo '<div class="skill-null">';
                         echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
+                        echo '</div>';
                     }
 
                     mysqli_stmt_close($stmt);
@@ -116,6 +118,23 @@
                     <?php endif; ?>
                 </div> 
             <?php endif; ?>
+        </div>
+        <div class="job-categories">
+            <?php if ($user_data): ?>
+                <h1>Categories</h1>
+                <div class="job-recommendation-card">
+                <?php if (!empty($job_categories)): ?>
+                    <?php foreach ($job_categories as $category): ?>
+                        <div class="card-contents">
+                            <h2 id="category-name"><?php echo htmlspecialchars($category['CategoryName']); ?></h2>
+                            <p id="category-description"><?php echo htmlspecialchars($category['CategoryDescription']); ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No job categories found</p>
+                <?php endif; ?>
+            <?php endif; ?>
+            </div>
         </div>
     </div>
     <footer>

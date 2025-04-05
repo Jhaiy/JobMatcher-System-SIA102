@@ -484,5 +484,65 @@ body {
 
 #edit-profile-button {
     text-decoration: none;
-    color: black;
+    color: white;
 }
+
+.skill-null {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 20px 0;
+}
+    .skill-null button {
+        background-color: #5F6F65;
+        border: none;
+        border-radius: 20px;
+        height: 40px;
+        font-family: "Inter", serif;
+        font-weight: 200;
+        font-size: 20px;
+        padding: 0 20px 0 20px;
+        color: white;
+        margin: 0 20px 0 20px;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    }
+
+.job-recommendation-card {
+    display: flex;
+    margin: 20px 0 20px 0;
+    background-color: white;
+    border-radius: 10px;
+    padding: 50px;
+    overflow-x: scroll;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+    position: relative;
+    height: auto;
+    gap: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+    .card-contents {
+        width: auto;
+        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+        border-radius: 10px;
+        padding: 20px;
+        min-width: 300px;
+        scroll-snap-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+        .card-contents:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+    .card-contents h2 {
+        font-size: 20px;
+        color: #3A3960;
+        margin: 0;
+        text-align: center;
+    }
+    .card-contents p {
+        font-size: 16px;
+        text-align: left;
+    }

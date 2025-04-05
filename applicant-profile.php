@@ -73,7 +73,6 @@
         $applicant_bday = encryption($_POST['applicant-birthdate']);
         $applicant_email = encryption($_POST['email']);
         $applicant_contact = encryption($_POST['contact-number']);
-        $applicant_pass = encryption($_POST['password']);
         $applicant_blklot = encryption($_POST['blklot']);
         $applicant_street = encryption($_POST['street']);
         $applicant_barangay = encryption($_POST['barangay']);
@@ -138,7 +137,6 @@
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="category-style.css">
     <link rel="stylesheet" href="applicant-profile-style.css">
-    <link rel="stylesheet" href="applicant-status-style.css">
     <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
@@ -150,8 +148,8 @@
                         <li><a href="#" id="logo">TechSync</a></li>
                         <li><a href="home-page.php">Jobs</a></li>
                         <?php if ($user_data): ?>
-                            <li><a href="applicant-profile.php">Profile</a></li>
-                            <li><a href="applicant-status.php">Status</a></li>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="#">Status</a></li>
                         <?php endif; ?>
                         <li><a href="about-us-page.php">About Us</a></li>
                     </ul>
@@ -159,7 +157,7 @@
                 <div class="los">
                     <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
                         <li><p id="los-name"><?php echo htmlspecialchars($user_data['ApplicantFName']); ?></p></li>
-                        <?php if(!empty($applicant_picture)): ?>
+                        <?php if (!empty($applicant_picture)): ?>
                             <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
                         <?php else: ?>
                             <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
@@ -336,20 +334,4 @@
             </div>
         </form>
     </form>
-    <footer>
-        <div class="footer-content">
-            <p>CONTACT US:</p>
-            <P>09##########</P>
-            <div class="social-links">
-                <a href="#"><img src="assets/images/mail.png"></a>
-                <a href="#"><img src="assets/images/communication.png"></a>
-            </div>
-            <hr>
-            <div class="idk-texts">
-                <p>WebTitle 2025</p>
-                <p>|</p>
-                <p>All Rights Reserved</p>
-            </div>
-        </div>
-    </footer>
 </body>

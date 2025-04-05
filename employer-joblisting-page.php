@@ -55,7 +55,6 @@
                 <?php if ($user_data && isset($user_data['CompanyName'])); ?>
                 <h1><?php echo htmlspecialchars($user_data['CompanyName']); ?></h1>
                 <h2>Description</h2>
-                <input type="submit" value="Add Listing" name="add-listing" id="add-listing-button">
             </div>
             <div class="banner-icon">
                 <img id="company-icon-banner" src="assets/images/employer.png" alt="Employer Icon">

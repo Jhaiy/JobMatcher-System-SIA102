@@ -1,20 +1,18 @@
 <?php
     session_start();
     require_once "db-config.php";
-    include("functions/applicant-login-check.php");
     include("functions/company-login-check.php");
     include_once("functions/password-hash.php");
 
-    $user_data = isset($_SESSION['ApplicantID']);
-    $user_profile = isset($_SESSION['ApplicantProfileID']);
+    $user_data = isset($_SESSION['CompanyID']);
 
-    if (isset($_SESSION['ApplicantID'])) {
-        header("Location: home-page.php");
+    if (isset($_SESSION['CompanyID'])) {
+        header("Location: employer-dashboard-page.php");
         exit;
     }
 
     function check_if_user_password_exists($link, $verifyEmailHash, $verifyPasswordHash, $user_data) {
-        $sql_query = "SELECT * FROM applicants WHERE ApplicantEmail = '$verifyEmailHash'";
+        $sql_query = "SELECT * FROM company WHERE CompanyEmail = '$verifyEmailHash'";
         $result = mysqli_query($link, $sql_query);
         $user_data = mysqli_fetch_assoc($result);
 
@@ -22,11 +20,10 @@
             echo mysqli_error($link);   
         }
 
-        if($user_data['ApplicantPass'] === $verifyPasswordHash) {
-            $_SESSION['ApplicantID'] = $user_data['ApplicantID'];
-            $_SESSION['ApplicantFName'] = $user_data['ApplicantFName'];
-            $_SESSION['ApplicantLName'] = $user_data['ApplicantLName'];
-            header("Location: home-page.php");
+        if($user_data['CompanyPass'] === $verifyPasswordHash) {
+            $_SESSION['CompanyID'] = $user_data['CompanyID'];
+            $_SESSION['CompanyName'] = $user_data['CompanyName'];
+            header("Location: employer-dashboard-page.php");
             exit;
         } else {
             echo "Invalid email or password";
@@ -59,9 +56,9 @@
 <body>
     <script src="javascript/page-scripts.js"></script>
     <div class="container">
-        <form action="login.php" method="post">
+        <form action="login-company.php" method="post">
             <div class="login-container">
-                <h1>Join as an Applicant</h1>
+                <h1>Company Sign In</h1>
                 <div class="credentials">
                     <div class="email-container">
                         <img id="email-icon" src="assets/images/profile.png"> 

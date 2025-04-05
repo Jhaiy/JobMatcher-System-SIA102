@@ -2,7 +2,7 @@
     session_start();
     require_once "db-config.php";
     include("functions/applicant-login-check.php");
-    include("functions/password-hash.php");
+    include_once("functions/password-hash.php");
 
 
     function create_user_account($link) {
