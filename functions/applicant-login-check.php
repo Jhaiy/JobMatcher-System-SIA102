@@ -1,6 +1,6 @@
 <?php
     include("db-config.php");
-    include("password-hash.php");
+    include_once("password-hash.php");
 
     function check_login($link) {
         if (isset($_SESSION['ApplicantID'])) {
@@ -20,7 +20,7 @@
                 return false;
             }
         }
-        header("Location: login.php");
+        header("Location: home-page.php");
         die;
     }
 ?>

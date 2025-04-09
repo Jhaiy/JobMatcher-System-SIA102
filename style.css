@@ -37,8 +37,7 @@ body {
     display: flex;
     align-content: center;
     flex-direction: column;
-    padding: 50px 0px 0px 0px;
-    width: 80%;
+    width: 100%;
     gap: 50px;
 }
 
@@ -111,11 +110,10 @@ body {
                     width: 25%;
                 }
 
-/* Sign Up Page */
-
-.sign-up-container {
+/* Sign Up Modal */
+.sign-up-container-company {
     border: none;
-    height: 620px;
+    height: 800px;
     width: 600px;
     display: flex;
     flex-direction: column;
@@ -125,79 +123,74 @@ body {
     font-family: "Inter", serif;
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
-
-    .sign-up-container h1 {
-        color: #3A3960;
-        margin: 30px 0 0 0;
-    }
-
-.choice-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    gap: 30px;
+.sign-up-container-company h1 {
+    color: #3A3960;
+    margin: 30px 0 0 0;
 }
 
-    .hiring-container button, .employee-container button {
-        background-color: #5F6F65;
-        border: none;
-        color: white;
-        width: 250px;
-        height: 150px;
-        border-radius: 10px;
-        font-family: "Inter", serif;
-        font-weight: bold;
-        font-size: 15px;
-        cursor: pointer;
-        position: relative;
-        transition: background-color 0.3s ease;
-    }
-        .hiring-container button:hover, .employee-container button:hover {
-            background-color: #4d5a52;
-        }
-        .hiring-container button::after, .employee-container button::after {
-            content: '✔';
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 20px;
-            height: 20px;
-            color: green;
-            font-size: 20px;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .hiring-container button:hover::after, .employee-container button:hover::after {
-            display: flex;
-        }
+/* Choice Section */
+.choice-container {
+    display: flex;
+    flex-direction: row; /* change from column to row */
+    justify-content: center;
+    align-items: center;
+    gap: 40px; /* spacing between boxes */
+    margin-top: 30px;
+    width: 100%;
+}
 
-    .signup-actions {
-        display: flex;
-        justify-items: center;
-        align-items: center;
-        flex-direction: column;
-    }  
-        .signup-actions p {
-            margin: 0 0 20px 0;
-            color: #1E1E1E;
-        }
+.hiring-container, .employee-container {
+    flex: 0 0 auto;
+}
+.hiring-container button, .employee-container button {
+    background-color: #5F6F65;
+    border: none;
+    color: white;
+    width: 250px;
+    height: 150px;
+    border-radius: 10px;
+    font-family: "Inter", serif;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+.hiring-container button:hover, .employee-container button:hover {
+    background-color: #4d5a52;
+}
+.hiring-container button::after, .employee-container button::after {
+    content: '✔';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    color: green;
+    font-size: 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.hiring-container button:hover::after, .employee-container button:hover::after {
+    display: flex;
+}
 
-        .signup-actions a {
-            color: #1E1E1E;
-            font-size: 14px;
-            text-decoration: underline;
-        }
-
-        .choice-icons {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin: 0 0 0 10px;
-        }
-            .cylinder {
-                content: '';
+/* Icon + Label Layout Fix */
+.choice-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+.choice-icons img {
+    height: 80px;
+    width: 80px;
+    object-fit: contain;
+}
+.cylinder {
+    content: '';
                 position: absolute;
                 left: 90%;
                 top: 5%;
@@ -205,54 +198,15 @@ body {
                 height: 20px;
                 background-color: white;
                 border-radius: 50%;
-            }
-
-            #hiring-img, #employee-img {
-                height: 50px;
-                width: 50px;
-            }
-
-            .hiring-container h2, .employee-container h2 {
-                margin: 0 0 0 15px;
-                text-align: left;
-            }
-
-.login-selection {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    font-family: "Inter", serif;
-    font-weight: 600;
-    font-size: 18px;
 }
-    .login-selection select {
-        background-color: transparent;
-        border: none;
-        flex: 1;
-        font-family: "Inter", serif;
-        font-size: 16px;
-        color: #1E1E1E;
-        padding: 5px;
-    }
-    .login-selection select:focus {
-        border: 1px solid #3A3960;
-        border: none;
-        outline: none;
-    }
 
-    .login-selection option {
-        background-color: white;
-        color: #1E1E1E;
-        font-family: "Inter", serif;
-        font-weight: regular;
-        font-size: 16px;
-        border: none;
-        border-radius: 10px;
-    }
+.hiring-container h2, .employee-container h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 16px;
+}
 
-/* Sign Up Page */
-
+/* Sign Up Form Inputs */
 .sign-up-inputs {
     position: relative;
     display: flex;
@@ -263,9 +217,18 @@ body {
     margin: 50px 0 0 0;
     width: 90%;
 }
-    .sign-up-inputs input,
-    .input-group select {
-        flex-grow: 1;
+
+.company-registration,
+.employee-registration {
+    display: none;
+    flex-direction: column;
+    gap: 20px; /* Increased gap here too for uniformity */
+    width: 100%;
+}
+
+.sign-up-inputs input,
+.input-group select {
+    flex-grow: 1;
         flex-shrink: 1;
         background-color: white;
         border: none;
@@ -278,39 +241,30 @@ body {
         height: 40px;
         box-sizing: border-box;
         color: black;
-    }
-    .sign-up-inputs input:focus {
-        border: none;
-        outline: none;
-    }
-    .input-group select:focus {
-        border: none;
-        outline: none;
-    }
-    .signup-actions {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        margin: auto;
-    }
-    .signup-actions label p {
-        font-size: 14px;
-        margin: 0;
-    }
-    .input-group {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: row;
-        gap: 20px;
-        width: 100%;
-        margin: 0;
-    }
-        .invalid {
-            border: 2px solid red;
-        }
+}
 
+/* Focus state for inputs */
+.sign-up-inputs input:focus,
+.input-group select:focus {
+    outline: none;
+}
+
+/* Input Group Layout */
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    gap: 20px; /* Space between input group items */
+    width: 100%;
+    margin: 0;
+}
+
+.invalid {
+    border: 2px solid red;
+}
+
+/* Sign Up Footer Buttons */
 .sign-up-choices {
     display: flex;
     justify-content: space-between;
@@ -320,8 +274,9 @@ body {
     margin: auto;
     gap: 10px;
 }
-    #proceed {
-        background-color: #3A3960;
+
+#proceed {
+    background-color: #3A3960;
         border: none;
         border-radius: 10px;
         color: white;
@@ -331,31 +286,97 @@ body {
         font-size: 20px;
         padding: 5px;
         width: 25%;
-    }
-    #cancel-button {
-        color: black;
-    }
+}
 
-    #sign-up-type {
-        margin: 0;
-        padding: 0;
-        font-size: 12px;
-    }
+#cancel-button {
+    text-decoration: none;
+    color: #3A3960;
+    font-weight: 500;
+    font-size: 16px;
+}
 
-    .sign-up-container-company {
-        border: none;
-        height: 800px;
-        width: 600px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-radius: 10px;
-        background-color: #C9DABF;
-        font-family: "Inter", serif;
-        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-    }
-    .sign-up-container-company h1 {
-        color: #3A3960;
-        margin: 30px 0 0 0;
-    }
+/* Terms Section */
+.signup-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    font-size: 13px;
+    color: #333;
+}
 
+.signup-actions input[type="checkbox"] {
+    width: auto;
+    height: auto;
+}
+
+/* Extra */
+.sign-up-type {
+    font-size: 14px;
+    color: #3A3960;
+    margin-bottom: 10px;
+}
+
+/* Inputs for City, Province, and Others */
+.input-group select,
+.input-group input {
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: white;
+    border: 1px solid #5F6F65;
+    border-radius: 5px;
+    font-family: "Inter", serif;
+    font-weight: 400;
+    font-size: 16px;
+    padding: 8px;
+    width: 48%;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.input-group select:focus,
+.input-group input:focus {
+    outline: none;
+    border-color: #3A3960;
+}
+
+/* Styling for Blk/Lot, Street, Zip Code, and other inputs */
+.input-group input[type="text"] {
+    background-color: #f9f9f9;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 8px;
+    width: 48%;
+}
+.input-group input[type="text"]:focus {
+    border-color: #3A3960;
+}
+
+/* Inputs (password, etc.) */
+input[type="password"] {
+    background-color: #f9f9f9;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+input[type="password"]:focus {
+    border-color: #3A3960;
+}
+
+/* Styling for Email input */
+input[type="email"] {
+    background-color: #f9f9f9;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+input[type="email"]:focus {
+    border-color: #3A3960;
+}

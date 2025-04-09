@@ -16,6 +16,11 @@
         die;
     }
 
+    if (!isset($_SESSION['ApplicantID'])) {
+        header("Location: home-page.php");
+        exit;
+    }
+
     if (isset($_POST['work-type'])) {
         $selected_work_types = $_POST['work-type']; // Array of selected work type IDs
     }

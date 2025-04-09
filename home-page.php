@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once "db-config.php";
+    require_once "db-config.php"; // Database connection
     include("functions/applicant-login-check.php");
     include_once("functions/password-hash.php");
     include("functions/home-page-categories.php");
@@ -8,20 +8,53 @@
     $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
     $applicant_id = isset($_SESSION['ApplicantID']) ? $_SESSION['ApplicantID'] : null;
     $applicant_picture = fetch_profile_picture($link, $applicant_id);
+    $user_profile = isset($_SESSION['ApplicantProfileID']);
 
+    // Log out functionality
     if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['logout'])) {
         session_unset();
         session_destroy();
-        header("Location: login.php");
+        header("Location: home-page.php");
         die;
     }
-
 
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);
     $job_roles = fetch_job_roles($link);
-?>
 
+    function check_if_user_password_exists($link, $verifyEmailHash, $verifyPasswordHash, $user_data) {
+        $sql_query = "SELECT * FROM applicants WHERE ApplicantEmail = '$verifyEmailHash'";
+        $result = mysqli_query($link, $sql_query);
+        $user_data = mysqli_fetch_assoc($result);
+
+        if ($result && mysqli_num_rows($result) < 0) {
+            echo mysqli_error($link);   
+        }
+
+        if($user_data['ApplicantPass'] === $verifyPasswordHash) {
+            $_SESSION['ApplicantID'] = $user_data['ApplicantID'];
+            $_SESSION['ApplicantFName'] = $user_data['ApplicantFName'];
+            $_SESSION['ApplicantLName'] = $user_data['ApplicantLName'];
+            header("Location: home-page.php");
+            exit;
+        } else {
+            echo "Invalid email or password";
+        }
+    }
+    
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $verifyPasswordHash = encryption($password);
+        $verifyEmailHash = encryption($email);
+
+        if (!empty($email) && !empty($password)) {
+            check_if_user_password_exists($link, $verifyEmailHash, $verifyPasswordHash, $user_data);
+        } else {
+            echo "Please fill in all fields";
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,12 +92,13 @@
                         <input type="submit" name="logout" value="Log Out">
                     </form>
                 <?php else: ?>
-                    <li><a id="los" href="login.php">Log In</a></li>
-                    <li><a id="los" href="sign-up-choice.php">Sign Up</a></li>
-                <?php endif; ?>
+                    <li><a id="los" href="#" onclick="showDiv('loginModal')">Log In</a></li>
+                    <li><a id="los" href="#">Sign Up</a></li>
+                    <?php endif; ?>
             </div>
         </div>
     </div>
+
     <div class="search-outer">
         <h1>Navigate to success.</h1>
         <div class="search-bar">
@@ -137,6 +171,38 @@
             </div>
         </div>
     </div>
+    <?php if(!$user_data): ?>
+        <form action="home-page.php" method="post">
+            <div id="loginModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="closeLogin">&times;</span>
+                    <div class="credentials">
+                        <h1>Join as an Applicant</h1>
+                        <div class="email-container">
+                            <img id="email-icon" src="assets/images/profile.png"> 
+                            <input type="email" name="email" id="email-input" class="form-control" placeholder="Email" required>
+                        </div>
+                        <div class="password-container">
+                            <img id="password-icon" src="assets/images/padlock.png">
+                            <input type="password" name="password" id="password-input" class="form-control" placeholder="Password" required>
+                        </div>
+                        <div class="login-actions">
+                            <div class="password-forgot">
+                                <a href="#">Forgot Password?</a>
+                            </div>
+                        </div>
+                        <div class="login-button">
+                            <button type="submit" name="login-button" class="btn-login">Log In</button>
+                        </div>
+                        </form>
+                        <div class="signup-actions" style="text-align: center; margin-top: 10px;">
+                            <p>Don't have an account? <a href="#" id="signUpLinkFromLogin">Sign Up</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    <?php endif; ?>
     <footer>
         <div class="footer-content">
             <p>CONTACT US:</p>
