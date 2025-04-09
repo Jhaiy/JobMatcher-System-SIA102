@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-    < class="about-page-content">
+    <div class="about-page-content">
         <div class="about-us-banner">
             <div class="about-us-motto">
                 <h1>Unlock Your Future.</h1>

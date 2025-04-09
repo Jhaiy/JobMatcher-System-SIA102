@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="employer-joblisting-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
+
+
 </head>
 <body>
     <div class="navbar">
@@ -78,7 +80,7 @@
                     <p>Description</p>
                 </div>
                 <div class="job-actions">
-                <button id="viewDetailsBtn">View Details</button>
+                <button class="view-details" data-id="1">View Details</button>
                 <button class="applicants">Applicants</button>
                 </div>
             </div>
@@ -107,58 +109,6 @@
             </div>
         </div>
     </footer>
-
-  <!-- Modal Structure -->
-  <div id="detailsModal" class="modal" style="display: none;">
-  <div class="modal-content custom-modal">
-    <span class="close">&times;</span>
-    
-    <!-- Header -->
-    <div class="modal-header">
-      <img src="assets/images/office-building.png">
-      <div class="title-section">
-        <h2 class="title">Title</h2>
-        <p class="description">Description</p>
-      </div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-      <div class="tabs">
-        <button class="tab active" data-tab="job-details-tab">Job Details</button>
-        <button class="tab" data-tab="about-us-tab">About Us</button>
-      </div>
-    </div>
-
-    <!-- Details Section (Visible by default) -->
-    <div class="content-section" id="job-details-section">
-      <p class="section-label">General Requirements</p>
-      <h1></h1>
-      <hr />
-      <p class="section-label">Roles</p>
-      <h1></h1>
-      <hr />
-    </div>
-
-    <!-- About Us Section (Hidden by default) -->
-    <div class="tab-content" id="about-us-tab" style="display: none;">
-      <div class="content-section">
-        <p class="section-label">Company Overview</p>
-        <h1></h1>
-        <hr />
-        <p class="section-label">Sample</p>
-        <h1></h1>
-        <hr />
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="button-container">
-      <button class="edit-button">Edit Info</button>
-    </div>
-  </div>
-</div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascript/page-scripts.js"></script>
 </body>
