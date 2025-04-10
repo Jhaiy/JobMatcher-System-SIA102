@@ -30,7 +30,7 @@ engine = create_engine('mysql+pymysql://root:@localhost/techsync_db')
 
 @app.route('/', methods=['GET'])
 def process_role_description():
-    applicant_id = request.args.get('applicant_id', 10)
+    applicant_id = request.args.get('applicant_id', 0, type=int)
     fetch_job_skills = """
         SELECT skills.SkillDescription, skills.SkillName
         FROM skills
@@ -69,7 +69,7 @@ def process_role_description():
     applicant_skill_features = tfidf.transform([combined_skills])
 
     similarity_scores = cosine_similarity(applicant_skill_features, features).flatten()
-    top_similar_skills = sorted(enumerate(similarity_scores), key=lambda x: x[1], reverse=True)[:5]
+    top_similar_skills = sorted(enumerate(similarity_scores), key=lambda x: x[1], reverse=True)[:10]
 
     recommendations = {
         "JobIndex": applicant_id,

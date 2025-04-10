@@ -16,7 +16,6 @@
         die;
     }
 
-
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);
     $job_roles = fetch_job_roles($link);
@@ -28,7 +27,11 @@
         curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
-        file_put_contents('api_response.log', $response);
+        if (curl_errno($ch)) {
+            echo "cURL Error: " . curl_error($ch);
+        } else {
+            $recommendations = json_decode($response, true);
+        }
     }
 ?>
 
@@ -87,49 +90,38 @@
     <div class="job-selection">
         <div class="job-categories">
             <?php if ($user_data): ?>
+                
                 <h1>Recommendations</h1>
-                <?php
-                    $applicant_id = $_SESSION['ApplicantID'];
-                    $fetch_applicant_skills = "
-                    SELECT skills.SkillName
-                    FROM applicantskills 
-                    INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
-                    WHERE applicantskills.ApplicantID = ?";
-                    $stmt = mysqli_prepare($link, $fetch_applicant_skills);
-                    mysqli_stmt_bind_param($stmt, "i", $applicant_id);
-                    mysqli_stmt_execute($stmt);
-                    $result = mysqli_stmt_get_result($stmt);
-
-                    if (mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $applicant_skills[] = $row['SkillName'];
-                        }
+                <?php if ($user_data): ?>
+                    <?php 
+                        $applicant_id = $_SESSION['ApplicantID'];
+                        $api_url = "http://127.0.0.1:5000/?applicant_id=" . $applicant_id;
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, $api_url);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $response = curl_exec($ch);
                         if (curl_errno($ch)) {
-                            echo "cURL Error:" . curl_error($ch);
+                            echo "cURL Error: " . curl_error($ch);
                         } else {
                             $recommendations = json_decode($response, true);
-                            if (!empty($recommendations['Recommendations'])) {
-                                foreach ($recommendations['Recommendations'] as $recommendation) {
-                                    $skillID = isset($recommendation['SkillID']) ? htmlspecialchars($recommendation['SkillID']) : 'N/A';
-                                    $skillDescription = isset($recommendation['SkillDescription']) ? htmlspecialchars($recommendation['SkillDescription']) : 'N/A';
-                                    $skillName = isset($recommendation['SkillName']) ? htmlspecialchars($recommendation['SkillName']) : 'N/A';
+                        }
+                        if (!empty($recommendations['Recommendations'])) {
+                            foreach ($recommendations['Recommendations'] as $recommendation) {
+                                $jobSkillID = isset($recommendation['JobSkillID']) ? htmlspecialchars($recommendation['JobSkillID']) : 'N/A';
+                                $skillDescription = isset($recommendation['SkillDescription']) ? htmlspecialchars($recommendation['SkillDescription']) : 'N/A';
+                                $skillName = isset($recommendation['SkillName']) ? htmlspecialchars($recommendation['SkillName']) : 'N/A';
+                                $similarityScore = isset($recommendation['SimilarityScore']) ? number_format((float)$recommendation['SimilarityScore'], 2) : 'N/A';
                 
-                                    echo "<p>Skill Name: $skillName</p>";
-                                    echo "<p>Skill: $skillDescription</p>";
-                                }
-                            } else {
-                                echo "<p>No recommendations found.</p>";
+                                echo "<p><strong>Skill Name:</strong> $skillName</p>";
+                                echo "<p><strong>Skill Description:</strong> $skillDescription</p>";
+                                echo "<hr>";
                             }
                         }
-                        curl_close($ch);
-                    } else {
-                        echo '<div class="skill-null">';
-                        echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
-                        echo '</div>';
-                    }
-
-                    mysqli_stmt_close($stmt);
-                ?>
+                    ?>
+                <?php else: ?>
+                    <h1>Recommendations</h1>
+                    <p>Please log in to see your recommendations.</p>
+                <?php endif; ?>
             <?php else: ?>
                 <h1>Categories</h1>
                 <div class="job-recommendation-blocks">
