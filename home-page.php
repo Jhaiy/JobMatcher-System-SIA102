@@ -20,6 +20,16 @@
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);
     $job_roles = fetch_job_roles($link);
+
+    if (isset($_SESSION['ApplicantID'])) {
+        $applicant_id = $_SESSION['ApplicantID'];
+        $api_url = "http://127.0.0.1:5000/?applicant_id=" . $applicant_id;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $api_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        file_put_contents('api_response.log', $response);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -94,6 +104,24 @@
                         while ($row = mysqli_fetch_assoc($result)) {
                             $applicant_skills[] = $row['SkillName'];
                         }
+                        if (curl_errno($ch)) {
+                            echo "cURL Error:" . curl_error($ch);
+                        } else {
+                            $recommendations = json_decode($response, true);
+                            if (!empty($recommendations['Recommendations'])) {
+                                foreach ($recommendations['Recommendations'] as $recommendation) {
+                                    $skillID = isset($recommendation['SkillID']) ? htmlspecialchars($recommendation['SkillID']) : 'N/A';
+                                    $skillDescription = isset($recommendation['SkillDescription']) ? htmlspecialchars($recommendation['SkillDescription']) : 'N/A';
+                                    $skillName = isset($recommendation['SkillName']) ? htmlspecialchars($recommendation['SkillName']) : 'N/A';
+                
+                                    echo "<p>Skill Name: $skillName</p>";
+                                    echo "<p>Skill: $skillDescription</p>";
+                                }
+                            } else {
+                                echo "<p>No recommendations found.</p>";
+                            }
+                        }
+                        curl_close($ch);
                     } else {
                         echo '<div class="skill-null">';
                         echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';

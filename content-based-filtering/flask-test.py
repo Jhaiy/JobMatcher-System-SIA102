@@ -10,6 +10,7 @@ nltk.download('punkt_tab')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 nltk.download('punkt_tab')
+nltk.download('stopwords')
 import pymysql
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -31,12 +32,12 @@ engine = create_engine('mysql+pymysql://root:@localhost/techsync_db')
 def process_role_description():
     applicant_id = request.args.get('applicant_id', 10)
     fetch_job_skills = """
-        SELECT skills.SkillDescription
+        SELECT skills.SkillDescription, skills.SkillName
         FROM skills
     """
     applicant_skills_query = """
-        SELECT applicantskills.ApplicantID, skills.SkillDescription
-        FROM applicantskills 
+        SELECT applicantskills.ApplicantID, skills.SkillName, skills.SkillDescription
+        FROM applicantskills
         INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
         WHERE applicantskills.ApplicantID = %s
     """
@@ -47,27 +48,28 @@ def process_role_description():
 
     skill_description = pd.read_sql(fetch_job_skills, con=engine)
 
+    skill_description = skill_description.drop_duplicates(subset=['SkillDescription'])
     skill_description['SkillDescription'] = skill_description['SkillDescription'].str.lower()
     skill_description['SkillDescription'] = skill_description['SkillDescription'].apply(lambda x: re.sub(r'[^a-zA-Z]', ' ', x))
     skill_description['SkillDescription'] = skill_description['SkillDescription'].apply(lambda x: re.sub(r'\s+', ' ', x))
-    skill_description['SkillDescription'] = skill_description['SkillDescription'].apply(lambda x: nltk.word_tokenize(x))
-    skill_description['SkillDescription'] = skill_description['SkillDescription'].apply(lambda x: ' '.join(x))
+    
     stop_words = nltk.corpus.stopwords.words('english')
-    description = []
+    skill_description['SkillDescription'] = skill_description['SkillDescription'].apply(
+        lambda x: ' '.join([word for word in nltk.word_tokenize(x) if word not in stop_words ])
+    )
 
     applicant_skills_filtered = applicant_skills[applicant_skills['ApplicantID'] == applicant_id]
+
     combined_skills = ' '.join(applicant_skills_filtered['SkillDescription'].str.lower().tolist())
+    combined_skills = re.sub(r'[^a-zA-Z]', ' ', combined_skills)
+    combined_skills = re.sub(r'\s+', ' ', combined_skills).strip()
 
     tfidf = TfidfVectorizer()
     features = tfidf.fit_transform(skill_description['SkillDescription'])
     applicant_skill_features = tfidf.transform([combined_skills])
 
-    for sentence in skill_description['SkillDescription']:
-        filtered_sentence = [word for word in sentence if word not in stop_words or len(word) < 3]
-        description.append(filtered_sentence)
-
     similarity_scores = cosine_similarity(applicant_skill_features, features).flatten()
-    top_similar_skills = sorted(enumerate(similarity_scores), key=lambda x: x[1], reverse=True)[:10]
+    top_similar_skills = sorted(enumerate(similarity_scores), key=lambda x: x[1], reverse=True)[:5]
 
     recommendations = {
         "JobIndex": applicant_id,
@@ -76,7 +78,8 @@ def process_role_description():
             {
                 "JobSkillID": idx,
                 "SimilarityScore": score,
-                "SkillDescription": skill_description['SkillDescription'].iloc[idx]
+                "SkillDescription": skill_description['SkillDescription'].iloc[idx],
+                "SkillName": skill_description['SkillName'].iloc[idx]
             }
             for idx, score, in top_similar_skills
         ]
