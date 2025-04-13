@@ -15,6 +15,10 @@
         die;
     }
 
+    if (!isset($_SESSION['ApplicantID'])) {
+        header("Location: login.php");
+        exit();
+    }
 
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);

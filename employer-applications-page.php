@@ -12,6 +12,11 @@
         header("Location: login.php");
         die;
     }
+
+    if (!isset($_SESSION['CompanyID'])) {
+        header("Location: login-company.php");
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>

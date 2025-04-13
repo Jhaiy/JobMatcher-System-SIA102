@@ -9,6 +9,11 @@
     $applicant_id = isset($_SESSION['ApplicantID']) ? $_SESSION['ApplicantID'] : null;
     $applicant_picture = fetch_profile_picture($link, $applicant_id);
 
+    if (!isset($_SESSION['ApplicantID'])) {
+        header("Location: login.php");
+        exit();
+    }
+
     if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['logout'])) {
         session_unset();
         session_destroy();
