@@ -19,7 +19,6 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
-app.config['MYSQL_UNIX_SOCKET'] = '/opt/lampp/var/mysql/mysql.sock'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
@@ -31,7 +30,7 @@ engine = create_engine('mysql+pymysql://root:@localhost/techsync_db')
 
 @app.route('/', methods=['GET'])
 def process_role_description():
-    applicant_id = request.args.get('applicant_id', 12, type=int)
+    applicant_id = request.args.get('applicant_id', 10, type=int)
     fetch_job_skills = """
         SELECT skills.SkillDescription, skills.SkillName
         FROM skills

@@ -94,17 +94,6 @@
                 <h1>Recommendations</h1>
                 <?php if ($user_data): ?>
                     <?php 
-                        $applicant_id = $_SESSION['ApplicantID'];
-                        $api_url = "http://127.0.0.1:5000/?applicant_id=" . $applicant_id;
-                        $ch = curl_init();
-                        curl_setopt($ch, CURLOPT_URL, $api_url);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                        $response = curl_exec($ch);
-                        if (curl_errno($ch)) {
-                            echo "cURL Error: " . curl_error($ch);
-                        } else {
-                            $recommendations = json_decode($response, true);
-                        }
                         if (!empty($recommendations['Recommendations'])) {
                             foreach ($recommendations['Recommendations'] as $recommendation) {
                                 $jobSkillID = isset($recommendation['JobSkillID']) ? htmlspecialchars($recommendation['JobSkillID']) : 'N/A';
@@ -112,10 +101,16 @@
                                 $skillName = isset($recommendation['SkillName']) ? htmlspecialchars($recommendation['SkillName']) : 'N/A';
                                 $similarityScore = isset($recommendation['SimilarityScore']) ? number_format((float)$recommendation['SimilarityScore'], 2) : 'N/A';
                 
-                                echo "<p><strong>Skill Name:</strong> $skillName</p>";
-                                echo "<p><strong>Skill Description:</strong> $skillDescription</p>";
+                                echo "<p><strong>Skill Name:</strong><br> $skillName</p>";
+                                echo "<p><strong>Skill Description:</strong><br> $skillDescription</p>";
                                 echo "<hr>";
                             }
+                        }
+
+                        if (empty($recommendations ['Recommendations'])) {
+                            echo '<div class="skill-null">';
+                            echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
+                            echo '</div>';
                         }
                     ?>
                 <?php else: ?>
