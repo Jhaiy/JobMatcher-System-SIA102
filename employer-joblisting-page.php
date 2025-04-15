@@ -28,8 +28,6 @@
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="employer-joblisting-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
-
-
 </head>
 <body>
     <div class="navbar">
@@ -53,6 +51,52 @@
         </div>
     </div>
 
+    <div id="job-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="hideDiv('job-modal', event)">&times;</span>
+            <div class="modal-header">
+                <div class="logo-placeholder"></div>
+                <div class="job-meta">
+                    <h1>JOB TITLE</h1>
+                    <div class="details">
+                        <span>address</span>
+                        <span>qualification</span>
+                        <span>salary</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="tabs">
+                    <span class="active-tab">Job Details</span>
+                    <span class="tab">About Us</span>
+                </div>
+                <div class="job-details">
+                    <strong>Requirements</strong>
+                    <h1>
+
+                    </h1>
+                    <hr>
+                    <strong>Roles</strong>
+                    <h1>
+
+                    </h1>
+                    <hr>
+                    <strong>Additional Requirements</strong>
+                    <h1>
+
+                    </h1>
+                    <hr>
+                    <strong>Information</strong>
+                    <h1>
+                        
+                    </h1>
+                    <hr>
+                    <button class="submit-btn">Submit Resume</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="company-dashboard-banner">
         <div class="dashboard-banner">
@@ -71,7 +115,7 @@
     <section class="job-listing">
         <div class="section-title">
             <h2>Job Listing</h2>
-            <button class="add-button">Add+</button>
+            <button class="add-button" onclick="showDiv('job-modal', event)">Add+</button>
         </div>
 
         <div class="job-card-container">

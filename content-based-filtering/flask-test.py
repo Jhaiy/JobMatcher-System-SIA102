@@ -31,10 +31,13 @@ engine = create_engine('mysql+pymysql://root:@localhost/techsync_db')
 
 @app.route('/', methods=['GET'])
 def process_role_description():
-    applicant_id = request.args.get('applicant_id', 12, type=int)
+    applicant_id = request.args.get('applicant_id', 10, type=int)
     fetch_job_skills = """
-        SELECT skills.SkillDescription, skills.SkillName
-        FROM skills
+        SELECT joblistings.JobListingID, jobcategories.CategoryName, jobcategories.CategoryDescription, jobroles.RoleName, jobroles.RoleDescription
+        FROM joblistings
+        INNER JOIN jobcategories ON joblistings.JobCategoryID = jobcategories.JobCategoryID
+        INNER JOIN jobroles ON Joblistings.JobRoleID = jobroles.JobRoleID
+        WHERE joblistings.JobListingID
     """
     applicant_skills_query = """
         SELECT applicantskills.ApplicantID, skills.SkillName, skills.SkillDescription
@@ -42,6 +45,7 @@ def process_role_description():
         INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
         WHERE applicantskills.ApplicantID = %s
     """
+    
 
     sql_cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     sql_cursor.execute(applicant_skills_query, (applicant_id,))
