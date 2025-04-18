@@ -69,18 +69,54 @@
         $stmt = mysqli_prepare($link, $query);
     
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $applicant_id); // Bind the parameter
-            mysqli_stmt_execute($stmt); // Execute the statement
-            $result = mysqli_stmt_get_result($stmt); // Get the result
+            mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
     
             if ($row = mysqli_fetch_assoc($result)) {
-                return $row['ApplicantPic']; // Return the profile picture
+                return $row['ApplicantPic'];
             } else {
-                return null; // Return null if no result is found
+                return null;
             }
         } else {
-            error_log("Database error: " . mysqli_error($link)); // Log any errors
+            error_log("Database error: " . mysqli_error($link));
             return null;
         }
+    }
+
+    function fetch_company_profile_picture($link, $company_id) {
+        $query = "SELECT CompanyLogo FROM companydetails WHERE CompanyDetailsID = ?";
+        $stmt = mysqli_prepare($link, $query);
+    
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "i", $company_id);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+    
+            if ($row = mysqli_fetch_assoc($result)) {
+                return $row['CompanyLogo'];
+            } else {
+                return null;
+            }
+        } else {
+            error_log("Database error: " . mysqli_error($link));
+            return null;
+        }
+    }
+
+    function fetch_companies($link) {
+        $companies = [];
+        $sql = "SELECT * FROM company";
+        $result = mysqli_query($link, $sql);
+
+        if (!$result) {
+            error_log("Database error: " . mysqli_error($link));
+            return $companies;
+        }
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $companies[] = $row;
+        }
+        return $companies;
     }
 ?>

@@ -142,7 +142,7 @@
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="category-style.css">
     <link rel="stylesheet" href="applicant-profile-style.css">
-    <script src="javascript/page-scripts.js"></script>
+    <script src="javascript/page-scripts-default.js"></script>
 </head>
 <body>
     <form method="post" action="applicant-profile.php">
@@ -321,7 +321,6 @@
             <div id="hidden-category-div" class="hidden-category-div">
                 <div class="category-div-wrapper">
                     <?php 
-
                         $applicant_skills = fetch_skills($link);
                         foreach ($applicant_skills as $skills) {
                             if (in_array($skills['SkillID'], $selected_skill_ids)) {

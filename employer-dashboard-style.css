@@ -296,6 +296,7 @@ body {
 
 #company-icon-banner {
     margin: 0;
+    padding: 20px;
 }
 
 
@@ -368,4 +369,13 @@ body {
     color: white;
     font-weight: bold;
     font-size: 25px;
+}
+
+#company-icon-banner {
+    object-fit: cover;
+    border-radius: 50%;
+}
+.company-banner-icon img{
+    height: 250px;
+    width: 250px;
 }

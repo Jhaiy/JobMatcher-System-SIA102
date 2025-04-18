@@ -2,9 +2,12 @@
     session_start();
     require_once "db-config.php";
     include("functions/company-login-check.php");
+    include("functions/home-page-categories.php");
     include("functions/password-hash.php");
 
     $user_data = isset($_SESSION['CompanyID']) ? check_login_company($link) : null;
+    $company_id = isset($_SESSION['CompanyID']) ? $_SESSION['CompanyID'] : null;
+    $company_picture = fetch_company_profile_picture($link, $company_id);
 
     if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['logout'])) {
         session_unset();
@@ -27,8 +30,6 @@
     <title>Document</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
-
-
 </head>
 <body>
     <div class="navbar">
@@ -38,6 +39,7 @@
                     <li><a href="#" id="logo">TechSync</a></li>
                     <li><a href="employer-dashboard-page.php">Dashboard</a></li>
                     <li><a href="employer-joblisting-page.php">Job Listing</a></li>
+                    <li><a href="employer-profile-page.php">Company Profile</a></li>
                     <li><a href="employer-applications-page.php">Applicants</a></li>
                 </ul>
             </div>
@@ -61,8 +63,12 @@
                 <h2>Description</h2>
                 <button name="add-listing" id="add-listing-button"><a id="listing-link" href="employer-joblisting-page.php">Add Listing Now!</a></button>
             </div>
-            <div class="banner-icon">
-                <img id="company-icon-banner" src="assets/images/employer.png" alt="Employer Icon">
+            <div class="company-banner-icon">
+                <?php if ($company_picture): ?>
+                    <img id="company-icon-banner" src="assets/profile-uploads/<?php echo htmlspecialchars($company_picture); ?>" alt="Company Icon">
+                <?php else: ?>
+                    <img id="company-icon-banner" src="assets/images/employer.png" alt="Employer Icon">
+                <?php endif; ?>
             </div>
         </div>    
     </div>

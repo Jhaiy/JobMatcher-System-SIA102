@@ -19,6 +19,7 @@
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);
     $job_roles = fetch_job_roles($link);
+    $companies = fetch_companies($link);
 
     if (isset($_SESSION['ApplicantID'])) {
         $applicant_id = $_SESSION['ApplicantID'];
@@ -96,22 +97,46 @@
                     <?php 
                         if (!empty($recommendations['Recommendations'])) {
                             foreach ($recommendations['Recommendations'] as $recommendation) {
-                                $jobSkillID = isset($recommendation['JobSkillID']) ? htmlspecialchars($recommendation['JobSkillID']) : 'N/A';
-                                $skillDescription = isset($recommendation['SkillDescription']) ? htmlspecialchars($recommendation['SkillDescription']) : 'N/A';
-                                $skillName = isset($recommendation['SkillName']) ? htmlspecialchars($recommendation['SkillName']) : 'N/A';
+                                $jobListingID = isset($recommendation['JobListingID']) ? htmlspecialchars($recommendation['JobListingID']) : 'N/A';
+                                $jobDescription = isset($recommendation['JobDescription']) ? htmlspecialchars($recommendation['JobDescription']) : 'N/A';
+                                $jobTitle = isset($recommendation['JobTitle']) ? htmlspecialchars($recommendation['JobTitle']) : 'N/A';
                                 $similarityScore = isset($recommendation['SimilarityScore']) ? number_format((float)$recommendation['SimilarityScore'], 2) : 'N/A';
+                                $companyName = isset($recommendation['CompanyName']) ? htmlspecialchars(decryption($recommendation['CompanyName'])) : 'N/A';
                 
-                                echo "<p><strong>Skill Name:</strong><br> $skillName</p>";
-                                echo "<p><strong>Skill Description:</strong><br> $skillDescription</p>";
+                                echo "<p><strong>Company Name:</strong><br>$companyName";
+                                echo "<p><strong>Job Title:</strong><br> $jobTitle</p>";
+                                echo "<p><strong>Job Description:</strong><br> $jobDescription</p>";
                                 echo "<hr>";
                             }
                         }
 
                         if (empty($recommendations ['Recommendations'])) {
                             echo '<div class="skill-null">';
-                            echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
+                            echo '<p>No recommendations available at the moment.</p>';
                             echo '</div>';
                         }
+
+                    $applicant_id = $_SESSION['ApplicantID'];
+                    $fetch_applicant_skills = "
+                    SELECT skills.SkillName
+                    FROM applicantskills 
+                    INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
+                    WHERE applicantskills.ApplicantID = ?";
+                    $stmt = mysqli_prepare($link, $fetch_applicant_skills);
+                    mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $applicant_skills[] = $row['SkillName'];
+                        }
+                    } else {
+                        echo '<div class="skill-null">';
+                        echo '<p>You have not added any skills yet.</p>';
+                        echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
+                        echo '</div>';
+                    }
+                    mysqli_stmt_close($stmt);
                     ?>
                 <?php else: ?>
                     <h1>Recommendations</h1>

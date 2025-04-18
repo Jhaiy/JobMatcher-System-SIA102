@@ -39,6 +39,7 @@
                     <li><a href="#" id="logo">TechSync</a></li>
                     <li><a href="employer-dashboard-page.php">Dashboard</a></li>
                     <li><a href="employer-joblisting-page.php">Job Listing</a></li>
+                    <li><a href="employer-profile-page.php">Company Profile</a></li>
                     <li><a href="employer-applications-page.php">Applicants</a></li>
                 </ul>
             </div>
