@@ -294,7 +294,7 @@
                                         <?php 
                                             $applicant_id = $_SESSION['ApplicantID'];
                                             $fetch_applicant_skills = "
-                                            SELECT skills.SkillName
+                                            SELECT DISTINCT skills.SkillName
                                             FROM applicantskills 
                                             INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
                                             WHERE applicantskills.ApplicantID = ?";
@@ -302,11 +302,16 @@
                                             mysqli_stmt_bind_param($stmt, "i", $applicant_id);
                                             mysqli_stmt_execute($stmt);
                                             $result = mysqli_stmt_get_result($stmt);
-
+                                
+                                            $displayed_skills = [];
                                             while ($row = mysqli_fetch_assoc($result)) {
-                                                echo '<li>' . htmlspecialchars($row['SkillName']) . '</li>';
+                                                $skill_name = htmlspecialchars($row['SkillName']);
+                                                if (!in_array($skill_name, $displayed_skills)) {
+                                                    echo '<li>' . $skill_name . '</li>';
+                                                    $displayed_skills[] = $skill_name;
+                                                }
                                             }
-                            
+                                
                                             mysqli_stmt_close($stmt);
                                         ?>
                                     </ul>
