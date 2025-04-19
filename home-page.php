@@ -86,7 +86,6 @@
             <input type="text" placeholder="Search by job, company, or skills" id="search-query">
         </div>
         <button>SEARCH</button>
-
     </div>
     <div class="job-selection">
         <div class="job-categories">
@@ -143,20 +142,6 @@
                     <p>Please log in to see your recommendations.</p>
                 <?php endif; ?>
             <?php else: ?>
-                <h1>Categories</h1>
-                <div class="job-recommendation-blocks">
-                    <?php if (!empty($job_categories)): ?>
-                        <?php foreach ($job_categories as $category): ?>
-                            <a href="sign-up-choice.php">
-                                <div class="job-recommendation-block">
-                                    <h2 id="category-name"><?php echo htmlspecialchars($category['CategoryName']); ?></h2>
-                                </div>
-                            </a>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>No job categories found</p>
-                    <?php endif; ?>
-                </div> 
             <?php endif; ?>
         </div>
         <div class="job-categories">
