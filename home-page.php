@@ -23,7 +23,7 @@
 
     if (isset($_SESSION['ApplicantID'])) {
         $applicant_id = $_SESSION['ApplicantID'];
-        $api_url = "http://127.0.0.1:5000/?applicant_id=" . $applicant_id;
+        $api_url = "https://techsync-cbf-api.onrender.com/?applicant_id=" . $applicant_id;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
