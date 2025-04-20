@@ -27,7 +27,7 @@
                     '$encryptedprovince', '$applicant_id')";
 
         $result = mysqli_query($link, $sql_query);
-        if (empty($user_email) && empty($user_password) && empty($user_fname) && empty($user_lname) && empty($user_city) && empty($user_province)) {
+        if (empty($user_email) || empty($user_password) || empty($user_fname) || empty($user_lname) || empty($user_city) || empty($user_province)) {
             echo "Please input all fields";
         }
 
