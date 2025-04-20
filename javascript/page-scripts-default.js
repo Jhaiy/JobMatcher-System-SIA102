@@ -22,3 +22,33 @@ function hideDiv(divId) {
         targetDiv.style.display = 'none';
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector('form[action="applicant-profile.php"]');
+    const inputs = form.querySelectorAll('input[type="text"], input[type="email"], select');
+
+    form.addEventListener('submit', (event) => {
+        let isValid = true;
+        let hasChanges = false;
+
+        inputs.forEach((input) => {
+            const originalValue = input.getAttribute('data-original')?.trim() || '';
+            const currentValue = input.value.trim();
+
+            if (currentValue === '' || currentValue === originalValue) {
+                isValid = false;
+                input.classList.add('error');
+            } else {
+                input.classList.remove('error');
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            alert('Please fill out all fields or make changes before submitting.');
+        } else if (!hasChanges) {
+            event.preventDefault();
+            alert('No changes detected. Please make changes before submitting.');
+        }
+    });
+});

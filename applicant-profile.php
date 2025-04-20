@@ -84,7 +84,8 @@
         $applicant_city = encryption($_POST['city']);
         $applicant_province = encryption($_POST['province']);
 
-        $check_email_query = "SELECT * FROM applicants WHERE ApplicantEmail = '$applicant_email'";
+        $applicant_email = mysqli_real_escape_string($link, $applicant_email);
+        $check_email_query = "SELECT * FROM applicants WHERE ApplicantEmail = '$applicant_email' AND ApplicantID != '$applicant_id'";
         $email_result = mysqli_query($link, $check_email_query);
         if (mysqli_num_rows($email_result) > 0) {
             echo "Another account already exists with this email";
@@ -92,6 +93,14 @@
             if (!empty($applicant_fname) && !empty($applicant_lname) && !empty($applicant_sex) && !empty($applicant_bday) && !empty($applicant_email) && !empty($applicant_contact) && !empty($applicant_blklot) && !empty($applicant_street) && !empty($applicant_barangay) && !empty($applicant_city) && !empty($applicant_province)) {
                 $update_profile = "UPDATE applicants SET ApplicantID = '$applicant_id', ApplicantFName = '$applicant_fname', ApplicantLName = '$applicant_lname', ApplicantSex = '$applicant_sex', ApplicantBday = '$applicant_bday', ApplicantEmail = '$applicant_email', ApplicantContact = '$applicant_contact', ApplicantBlockLot = '$applicant_blklot', ApplicantStreet = '$applicant_street', ApplicantBarangay = '$applicant_barangay', ApplicantCity = '$applicant_city', ApplicantProvince = '$applicant_province', ApplicantProfileID = '$applicant_id' WHERE ApplicantID = '$applicant_id'";
                 $update_profile_result = mysqli_query($link, $update_profile);
+                if ($update_profile_result) {
+                    echo "Profile updated successfully!";
+                    header("Location: applicant-profile.php");
+                    exit;
+                } else {
+                    echo "Error updating profile: " . mysqli_error($link);
+                }
+                exit;
             } else {
                 echo "Error: " . mysqli_error($link); 
             }
@@ -114,11 +123,9 @@
             }
     
             if (move_uploaded_file($_FILES['profile-picture']['tmp_name'], $target_file)) {
-                // Update the database with the file name
                 $query = "UPDATE applicantprofiles SET ApplicantPic = '$file_name' WHERE ApplicantProfileID = '$applicant_id'";
                 if (mysqli_query($link, $query)) {
                     echo "Profile picture uploaded successfully!";
-                    // Refresh the page to show the updated profile picture
                     header("Location: applicant-profile.php");
                     exit;
                 } else {
@@ -208,51 +215,63 @@
                             <div class="applicant-profile-input">
                                 <div class="applicant-input-group">
                                     <label for="first-name">First Name <br></label>
-                                    <input type="text" id="first-name" name="first-name" value="<?php echo htmlspecialchars($user_data['ApplicantFName']); ?>" required><br>
+                                    <input type="text" id="first-name" name="first-name" value="<?php echo htmlspecialchars($user_data['ApplicantFName']); ?>" 
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantFName']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="last-name">Last Name <br></label>
-                                    <input type="text" id="last-name" name="last-name" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantLName'])); ?>" required><br>
+                                    <input type="text" id="last-name" name="last-name" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantLName'])); ?>" 
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantLName']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="email">Email <br></label>
-                                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantEmail'])); ?>" required><br>
+                                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantEmail'])); ?>"
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantEmail']); ?>"  required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="contact-number">Contact Number <br></label>
-                                    <input type="text" id="contact-number" name="contact-number" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantContact'])); ?>" required><br>
+                                    <input type="text" id="contact-number" name="contact-number" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantContact'])); ?>"
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantContact']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="applicant-sex">Sex</label>
                                     <select name="sex" id="sex">
                                         <option value="" disabled selected hidden></option>
-                                        <option value="Male" <?php echo (decryption($user_data['ApplicantSex']) == 'Male') ? 'selected' : ''; ?>>Male</option>
-                                        <option value="Female" <?php echo (decryption($user_data['ApplicantSex']) == 'Female') ? 'selected' : ''; ?>>Female</option>
+                                        <option value="Male" <?php echo (decryption($user_data['ApplicantSex']) == 'Male') ? 'selected' : ''; ?>
+                                        data-original="<?php echo htmlspecialchars($user_data['ApplicantSex']); ?>">Male</option>
+                                        <option value="Female" <?php echo (decryption($user_data['ApplicantSex']) == 'Female') ? 'selected' : ''; ?>
+                                        data-original="<?php echo htmlspecialchars($user_data['ApplicantSex']); ?>">Female</option>
                                     </select>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="applicant-birthdate">Birthdate <br></label>
-                                    <input type="text" id="applicant-birthdate" name="applicant-birthdate" placeholder="Month/Date/Year" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantBday'])); ?>" required><br>
+                                    <input type="text" id="applicant-birthdate" name="applicant-birthdate" placeholder="Month/Date/Year" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantBday'])); ?>"
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantBday']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="blklot">Block/Lot <br></label>
-                                    <input type="text" id="blklot" name="blklot" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantBlockLot'])); ?>" required><br>
+                                    <input type="text" id="blklot" name="blklot" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantBlockLot'])); ?>" 
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantBlockLot']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="street">Street <br></label>
-                                    <input type="text" id="street" name="street" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantStreet'])); ?>" required><br>
+                                    <input type="text" id="street" name="street" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantStreet'])); ?>" 
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantStreet']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="barangay">Barangay <br></label>
-                                    <input type="text" id="barangay" name="barangay" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantBarangay'])); ?>" required><br>
+                                    <input type="text" id="barangay" name="barangay" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantBarangay'])); ?>" 
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantBarangay']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="city">City <br></label>
-                                    <input type="text" id="city" name="city" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantCity'])); ?>" required><br>
+                                    <input type="text" id="city" name="city" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantCity'])); ?>" 
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantCity']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="province">Province <br></label>
-                                    <input type="text" id="province" name="province" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantProvince'])); ?>" required><br>
+                                    <input type="text" id="province" name="province" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantProvince'])); ?>" 
+                                    data-original="<?php echo htmlspecialchars($user_data['ApplicantProvince']); ?>" required><br>
                                 </div>
                             </div>
                             <div class="button-container">
@@ -290,11 +309,11 @@
                                     <button id="show-category" onclick="showDiv('hidden-category-div', event)"><img id="add-button" src="assets/images/plus.png"></button>
                                 </div>
                                 <div class="applicant-skills">
-                                    <ul>
+                                    <ul id="skills-list">
                                         <?php 
                                             $applicant_id = $_SESSION['ApplicantID'];
                                             $fetch_applicant_skills = "
-                                            SELECT DISTINCT skills.SkillName
+                                            SELECT DISTINCT skills.SkillName, skills.SkillID
                                             FROM applicantskills 
                                             INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
                                             WHERE applicantskills.ApplicantID = ?";
@@ -306,8 +325,9 @@
                                             $displayed_skills = [];
                                             while ($row = mysqli_fetch_assoc($result)) {
                                                 $skill_name = htmlspecialchars($row['SkillName']);
+                                                $skill_id = htmlspecialchars($row['SkillID']);
                                                 if (!in_array($skill_name, $displayed_skills)) {
-                                                    echo '<li>' . $skill_name . '</li>';
+                                                    echo '<li class="skill-item" data-skill-id="' . $skill_id . '">' . $skill_name . '</li>';
                                                     $displayed_skills[] = $skill_name;
                                                 }
                                             }

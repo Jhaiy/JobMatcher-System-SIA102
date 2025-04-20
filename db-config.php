@@ -3,6 +3,7 @@
     $user= "root";
     $password= "";
     $db = "db_techsync";
+    $db = "techsync_db";
 
     $link = mysqli_connect($host, $user, $password, $db);
 
