@@ -99,6 +99,7 @@ body {
         display: flex;
         justify-content: space-between;
         gap: 60px;
+        align-items: center;
     }
     .navbar-contents a {
         text-decoration: none;
@@ -157,6 +158,8 @@ body {
         background-color: transparent;
         border: none;
         width: 800px;
+        font-family: "Inter", serif;
+        font-size: 16px;
     }
     .search-outer input[type="text"]::placeholder {
         color: #A79A9A;
@@ -166,15 +169,13 @@ body {
     }
     .search-outer input[type="text"]:focus {
         outline: none;
-        font-family: "Inter", serif;
-        font-size: 16px;
     }
 
 .search-bar {
     display: flex;
     position: relative;
     border: none;
-    background-color: #D9D9D9;
+    background-color: white;
     height: 40px;
     align-items: center;
     justify-content: space-around;
@@ -287,10 +288,14 @@ body {
     font-family: "Inter", serif;
     font-weight: 400;
     font-size: 14px;
-    margin: 0 250px 0 250px;    
+    margin: 50px 50px;    
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+}
+#customhead {
+    font-size: 35px;
+    text-align: center;
 }
 
 .job-vacancy-categories {
@@ -421,16 +426,13 @@ body {
 
 .about-text {
     display: grid;
-    gap: 10px;
+    gap: 100px;
     justify-content: center;
-    justify-items: center;
+    justify-content: center;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, auto);
-    margin: 0 250px 0 250px;
-    padding: 20px;
-}
-.about-us-text {
-    width: 500px;
+    margin: 0 auto;
+    padding: 40px;
+    align-items: end;
 }
 
 .about-us-text h1 {

@@ -52,8 +52,6 @@
             }
         }
     }
-    
-
     $applicant_id = $_SESSION['ApplicantID'];
     $selected_skills = "
     SELECT SkillID
@@ -281,9 +279,25 @@
                     </div>
                 </div>
             </div>
+            <div class="about-applicant">
+                <h1>About Me</h1>
+                <div class="about-applicant-wrapper">
+                    <div class="applicant-bio">
+                        <h2>Bio</h2>
+                        <textarea id="applicant-bio" name="my-bio" rows="4" cols="50" placeholder="Bio"></textarea>
+                    </div>
+                    <div class="applicant-about">
+                        <h2>Background</h2>
+                        <textarea id="about-me" name="about-me" rows="4" cols="50" placeholder="Tell us about yourself..."></textarea>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <input type="submit" id="update-about" name="save-changes" value="Save Changes">
+                </div>
+            </div>
             <div class="applicant-picture-role-wrapper">
                 <div class="applicant-profile-picture">
-                    <h2>Profile Picture</h2>
+                    <h1>Profile Picture</h1>
                     <form method="post" action="applicant-profile.php" enctype="multipart/form-data">
                         <div class="profile-picture-wrapper">
                             <label for="profile-picture">
@@ -295,7 +309,7 @@
                             </label>
                         </div>
                         <input type="file" name="profile-picture" id="profile-picture" accept="image/*" style="display: none;">
-                        <button type="submit" id="update-picture-button" name="upload-picture">Change Profile Picture</button>
+                        <button type="submit" id="update-picture-button" name="upload-picture">Upload Profile Picture</button>
                     </form>
                 </div>
                 <div class="applicant-role-editor-wrapper">
@@ -331,7 +345,6 @@
                                                     $displayed_skills[] = $skill_name;
                                                 }
                                             }
-                                
                                             mysqli_stmt_close($stmt);
                                         ?>
                                     </ul>

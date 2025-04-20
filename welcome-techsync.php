@@ -122,6 +122,41 @@
                             <h3>Valentino III S. Vista</h3>
                             <p>Main Programmer</p>
                         </div>
+                        <div class="circle-icons hidden">
+                            <img src="assets/images/chaa.jpg" id="circle-icon">
+                            <h3>Charity Del Rosario</h3>
+                            <p>Assistant Programmer</p>
+                        </div>
+                        <div class="circle-icons hidden">
+                            <img src="assets/images/Vega.jpg" alt="Team Member" id="circle-icon">
+                            <h3>Jobet Jay Vega</h3>
+                            <p>Quality Assurance</p>
+                        </div>
+                        <div class="circle-icons hidden">
+                            <img src="assets/images/" alt="Team Member" id="circle-icon">
+                            <h3>Stephanie Dawn T Bauza</h3>
+                            <p>UI/UX Designer</p>
+                        </div>
+                        <div class="circle-icons hidden">
+                            <img src="assets/images/Toni.jpg" id="circle-icon">
+                            <h3>Toni Alinas</h3>
+                            <p>UI/UX Designer</p>
+                        </div>
+                        <div class="circle-icons hidden">
+                            <img src="assets/images/ELAI.jpg" id="circle-icon">
+                            <h3>Elaika Bernardo</h3>
+                            <p>Researcher</p>
+                        </div>
+                        <div class="circle-icons hidden">
+                            <img src="assets/images/erica.jpg" id="circle-icon">
+                            <h3>Erica Claudette Bonabon</h3>
+                            <p>Researcher</p>
+                        </div>
+                        <div class="circle-icons hidden">
+                            <img src="assets/images/linz.jpg" id="circle-icon">
+                            <h3>Lindzy Shakira Alinas</h3>
+                            <p>Researcher</p>
+                        </div>
                     </div>
                 </div>
             </div>

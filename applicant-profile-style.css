@@ -1,19 +1,17 @@
 .applicant-profile {
-    margin: 20px auto;
-    padding: 0 300px;
+    margin: 0 5%;
     display: grid;
     justify-content: center;
     justify-items: center;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
 }
 
 .applicant-credentials-wrapper {
     border: none;
     border-radius: 20px;
-    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     width: fit-content;
     margin: 0;
-    padding: 50px 70px 50px 70px;
 }
 
 .applicant-role-editor-wrapper {
@@ -21,8 +19,11 @@
     border-radius: 20px;
     width: fit-content;
     margin: 0;
-    padding: 50px 70px 50px 70px;
+    padding: 50px 30px;
     height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .applicant-profile-input {
@@ -72,11 +73,6 @@
     padding: 5px;
     border-radius: 20px;
     cursor: pointer;
-}
-
-.applicant-profile {
-    display: grid;
-
 }
 
 .hidden-category-div {
@@ -218,7 +214,7 @@
     align-items: center; /* Centers all child elements horizontally */
     justify-content: center;
     width: 100%; /* Ensures the container spans the full width */
-    margin: 20px auto;
+    margin: 0 auto;
 }
 .profile-picture-wrapper {
     display: flex;
@@ -269,3 +265,37 @@ input.error {
     border: 2px solid red;
     background-color: #ffe6e6;
 }
+
+.about-applicant {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+    .about-applicant textarea,
+    .about-applicant textarea:focus {
+        resize: none;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        box-sizing: border-box;
+        outline: none;
+        font-family: "Inter", sans-serif;
+        font-weight: 400;
+    }
+    #about-me {
+        height: 250px;
+    }
+    #update-about {
+        font-size: 1.2em;
+        width: 150px;
+        background-color: #d7e4d0;
+        border: none;
+        padding: 5px;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-top: 20px;
+    }

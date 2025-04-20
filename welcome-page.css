@@ -23,6 +23,7 @@ body {
     position: fixed;
     background-color: transparent;
     width: 100%;
+    backdrop-filter: blur(5px);
 }
 
 .navbar-contents {
@@ -336,11 +337,15 @@ footer {
 }
 
 .circle-container {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
+    place-items: center;
     align-items: center;
-    flex-direction: row;
     gap: 50px;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: center;
 }
 .circle-icons {
     display: flex;
@@ -360,10 +365,11 @@ footer {
     height: 80px;
     border-radius: 50%;
     margin-bottom: 20px;
+    object-fit: cover;
 }
 .container-4 #customh1 {
     font-size: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
     color: #3A3960;
 }
 
@@ -371,6 +377,8 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    margin: 0 200px;
 }
 
 
@@ -397,4 +405,9 @@ footer {
 
 .circle-icons:nth-child(2) {
     transition-delay: 200ms;
+}
+
+.team-section-wrapper {
+    text-align: center;
+    width: 100%;
 }

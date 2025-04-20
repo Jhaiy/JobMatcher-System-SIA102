@@ -23,7 +23,7 @@
 
     if (isset($_SESSION['ApplicantID'])) {
         $applicant_id = $_SESSION['ApplicantID'];
-        $api_url = "https://techsync-cbf-api.onrender.com/?applicant_id=" . $applicant_id;
+        $api_url = "http://127.0.0.1:5000/?applicant_id=" . $applicant_id;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -44,6 +44,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="category-style.css">
+    <link rel="stylesheet" href="job-recommendation-cards.css">
     <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
@@ -88,33 +89,12 @@
         <button>SEARCH</button>
     </div>
     <div class="job-selection">
+        <?php if ($user_data): ?>
+            <h1 id="customhead">Job Feed</h1>
+        <?php endif; ?>
         <div class="job-categories">
             <?php if ($user_data): ?>
-                
-                <h1>Recommendations</h1>
-                <?php if ($user_data): ?>
-                    <?php 
-                        if (!empty($recommendations['Recommendations'])) {
-                            foreach ($recommendations['Recommendations'] as $recommendation) {
-                                $jobListingID = isset($recommendation['JobListingID']) ? htmlspecialchars($recommendation['JobListingID']) : 'N/A';
-                                $jobDescription = isset($recommendation['JobDescription']) ? htmlspecialchars($recommendation['JobDescription']) : 'N/A';
-                                $jobTitle = isset($recommendation['JobTitle']) ? htmlspecialchars($recommendation['JobTitle']) : 'N/A';
-                                $similarityScore = isset($recommendation['SimilarityScore']) ? number_format((float)$recommendation['SimilarityScore'], 2) : 'N/A';
-                                $companyName = isset($recommendation['CompanyName']) ? htmlspecialchars(decryption($recommendation['CompanyName'])) : 'N/A';
-                
-                                echo "<p><strong>Company Name:</strong><br>$companyName";
-                                echo "<p><strong>Job Title:</strong><br> $jobTitle</p>";
-                                echo "<p><strong>Job Description:</strong><br> $jobDescription</p>";
-                                echo "<hr>";
-                            }
-                        }
-
-                        if (empty($recommendations ['Recommendations'])) {
-                            echo '<div class="skill-null">';
-                            echo '<p>No recommendations available at the moment.</p>';
-                            echo '</div>';
-                        }
-
+                <?php 
                     $applicant_id = $_SESSION['ApplicantID'];
                     $fetch_applicant_skills = "
                     SELECT skills.SkillName
@@ -136,30 +116,35 @@
                         echo '</div>';
                     }
                     mysqli_stmt_close($stmt);
-                    ?>
-                <?php else: ?>
-                    <h1>Recommendations</h1>
-                    <p>Please log in to see your recommendations.</p>
-                <?php endif; ?>
-            <?php else: ?>
-            <?php endif; ?>
-        </div>
-        <div class="job-categories">
-            <?php if ($user_data): ?>
-                <h1>Categories</h1>
-                <div class="job-recommendation-card">
-                <?php if (!empty($job_categories)): ?>
-                    <?php foreach ($job_categories as $category): ?>
-                        <div class="card-contents">
-                            <h2 id="category-name"><?php echo htmlspecialchars($category['CategoryName']); ?></h2>
-                            <p id="category-description"><?php echo htmlspecialchars($category['CategoryDescription']); ?></p>
+                ?>
+                <?php if (!empty($recommendations['Recommendations'])): ?>
+                    <?php foreach ($recommendations['Recommendations'] as $recommendation): ?>
+                        <div class="job-listings-container">
+                            <div class="job-listings-cards">
+                                <div class="job-listings-card">
+                                    <div class="job-listings-card-header">
+                                        <div class="logo-container">
+                                            <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($recommendation['CompanyLogo']); ?>" alt="Company Logo">
+                                        </div>
+                                        <h2 id="company-name"><?php echo htmlspecialchars(decryption($recommendation['CompanyName'])); ?></h2>
+                                    </div>
+                                    <div class="job-listings-details">
+                                        <h3 id="job-title"><?php echo htmlspecialchars($recommendation['JobTitle']); ?></h3>
+                                        <p id="job-description"><?php echo htmlspecialchars($recommendation['JobDescription']); ?></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p>No job categories found</p>
+                    <div class="skill-null">';
+                        <p>No recommendations available at the moment.</p>';
+                    </div>';
                 <?php endif; ?>
+            <?php else: ?>
+                <h1>Recommendations</h1>
+                <p>Please log in to see your recommendations.</p>
             <?php endif; ?>
-            </div>
         </div>
     </div>
     <footer>

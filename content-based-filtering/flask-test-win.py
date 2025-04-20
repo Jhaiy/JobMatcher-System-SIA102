@@ -32,11 +32,12 @@ engine = create_engine('mysql+pymysql://root:@localhost/techsync_db')
 def process_role_description():
     applicant_id = request.args.get('applicant_id', 10, type=int)
     fetch_job_skills = """
-        SELECT company.CompanyName, joblistings.JobListingID, joblistings.JobTitle, joblistings.JobDescription, jobcategories.CategoryName, jobcategories.CategoryDescription, jobroles.RoleName, jobroles.RoleDescription
+        SELECT companydetails.CompanyLogo, company.CompanyName, joblistings.JobListingID, joblistings.JobTitle, joblistings.JobDescription, jobcategories.CategoryName, jobcategories.CategoryDescription, jobroles.RoleName, jobroles.RoleDescription
         FROM joblistings
         INNER JOIN jobcategories ON joblistings.JobCategoryID = jobcategories.JobCategoryID
         INNER JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
         INNER JOIN company ON joblistings.CompanyID = company.CompanyID
+        INNER JOIN companydetails ON company.CompanyDetailsID = companydetails.CompanyDetailsID
     """
     applicant_skills_query = """
         SELECT applicantskills.ApplicantID, skills.SkillName, skills.SkillDescription
@@ -104,6 +105,7 @@ def process_role_description():
                 "CategoryName": category_description['CategoryName'].iloc[idx],
                 "RoleDescription": category_description['RoleDescription'].iloc[idx],
                 "RoleName": category_description['RoleName'].iloc[idx],
+                "CompanyLogo": category_description['CompanyLogo'].iloc[idx],
                 "SimilarityScore": float(score)
             }
             for idx, score, in top_similar_skills
