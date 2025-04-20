@@ -67,7 +67,7 @@
     <script src="javascript/page-scripts.js"></script>
 </head>
 <body>
-    <form action="sign-up-page-company.php" method="post">
+    <form id="signup-form" action="sign-up-page-company.php" method="post" novalidate>
         <div class="container">
             <div class="sign-up-container-company">
                 <h1>SIGN UP</h1>
@@ -119,6 +119,12 @@
             </div>
         </div>
     </form>
-    <script src="javascript/page-scripts.js"></script>
+    <div id="popup-error" class="popup-hidden">
+        <div class="popup-content">
+            <p id="popup-message"></p>
+            <button id="popup-close">OK</button>
+        </div>
+    </div>
+    <script src="javascript/validation-signup-company.js"></script>
 </body>
 </html>

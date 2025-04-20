@@ -116,6 +116,6 @@
                 <button id="popup-close">OK</button>
             </div>
         </div>
-        <script src="javascript/validation.js"></script>
+        <script src="javascript/validation-signup-applicant.js"></script>
 </body>
 </html>
