@@ -33,7 +33,7 @@
         $job_postal = mysqli_real_escape_string($link, trim($_POST['jobpostal']));
         $job_category_id = mysqli_real_escape_string($link, $_POST['category-item']);
         $job_role_id = mysqli_real_escape_string($link, $_POST['role-item']);
-        $job_additional_requirements = mysqli_real_escape_string($link, trim($_POST['additional-requirements']));
+        // $job_additional_requirements = mysqli_real_escape_string($link, trim($_POST['additional-requirements'])); (walang ganto sa db, lalagyan ba?)
 
         $category_check_query = "SELECT COUNT(*) AS count FROM jobcategories WHERE JobCategoryID = '$job_category_id'";
         $category_check_result = mysqli_query($link, $category_check_query);
@@ -55,8 +55,8 @@
         }
 
         // Insert the job listing into the database
-        $sql_query = "INSERT INTO joblistings (CompanyID, JobTitle, JobDescription, JobBlockLot, JobBarangay, JobStreet, JobCity, JobProvince, JobPostalCode, JobCategoryID, JobRoleID, AdditionalRequirements) 
-                    VALUES ('$company_id', '$job_title', '$job_description', '$job_blocklot', '$job_baranggay', '$job_street', '$job_city', '$job_province', '$job_postal', '$job_category_id', '$job_role_id', '$job_additional_requirements')";
+        $sql_query = "INSERT INTO joblistings (CompanyID, JobTitle, JobDescription, JobBlockLot, JobBarangay, JobStreet, JobCity, JobProvince, JobPostalCode, JobCategoryID, JobRoleID) 
+                    VALUES ('$company_id', '$job_title', '$job_description', '$job_blocklot', '$job_baranggay', '$job_street', '$job_city', '$job_province', '$job_postal', '$job_category_id', '$job_role_id')";
 
         $result = mysqli_query($link, $sql_query);
 

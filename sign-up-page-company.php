@@ -2,7 +2,7 @@
     session_start();
     require_once "db-config.php";
     include("functions/applicant-login-check.php");
-    include("functions/password-hash.php");
+    include_once("functions/password-hash.php");
     
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $company_name = $_POST['company-name'];
@@ -42,7 +42,7 @@
 
                     if ($result) {
                         $_SESSION['CompanyID'] = $company_id;
-                        header("Location: company-dashboard.php");
+                        header("Location: employer-dashboard-page.php");
                         exit;
                     } else {
                         echo "Error: " . mysqli_error($link);
