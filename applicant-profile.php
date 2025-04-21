@@ -158,8 +158,8 @@
                         <li><a href="#" id="logo">TechSync</a></li>
                         <li><a href="home-page.php">Jobs</a></li>
                         <?php if ($user_data): ?>
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">Status</a></li>
+                            <li><a href="applicant-profile.php">Profile</a></li>
+                            <li><a href="applicant-status.php">Status</a></li>
                         <?php endif; ?>
                         <li><a href="about-us-page.php">About Us</a></li>
                     </ul>

@@ -119,22 +119,27 @@
                 ?>
                 <?php if (!empty($recommendations['Recommendations'])): ?>
                     <?php foreach ($recommendations['Recommendations'] as $recommendation): ?>
-                        <div class="job-listings-container">
-                            <div class="job-listings-cards">
-                                <div class="job-listings-card">
-                                    <div class="job-listings-card-header">
-                                        <div class="logo-container">
-                                            <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($recommendation['CompanyLogo']); ?>" alt="Company Logo">
+                        <form method="GET" action="job-view-page.php">
+                            <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($recommendation['JobListingID']); ?>">
+                            <button type="submit" class="job-listings-button">
+                                <div class="job-listings-container">
+                                    <div class="job-listings-cards">
+                                        <div class="job-listings-card">
+                                            <div class="job-listings-card-header">
+                                                <div class="logo-container">
+                                                    <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($recommendation['CompanyLogo']); ?>" alt="Company Logo">
+                                                </div>
+                                                <h2 id="company-name"><?php echo htmlspecialchars(decryption($recommendation['CompanyName'])); ?></h2>
+                                            </div>
+                                            <div class="job-listings-details">
+                                                <h3 id="job-title"><?php echo htmlspecialchars($recommendation['JobTitle']); ?></h3>
+                                                <p id="job-description"><?php echo htmlspecialchars($recommendation['JobDescription']); ?></p>
+                                            </div>
                                         </div>
-                                        <h2 id="company-name"><?php echo htmlspecialchars(decryption($recommendation['CompanyName'])); ?></h2>
-                                    </div>
-                                    <div class="job-listings-details">
-                                        <h3 id="job-title"><?php echo htmlspecialchars($recommendation['JobTitle']); ?></h3>
-                                        <p id="job-description"><?php echo htmlspecialchars($recommendation['JobDescription']); ?></p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </button>
+                        </form>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="skill-null">';

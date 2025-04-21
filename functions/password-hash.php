@@ -4,6 +4,7 @@
     define('ENCRYPTION_IV', '1823761845747657');
 
     function encryption($string) {
+        $string = (string) $string;
         $key = hash('sha256', ENCRYPTION_KEY);
         $initializationVector = ENCRYPTION_IV;
         return base64_encode(openssl_encrypt($string, ENCRYPTION_METHOD, $key, 0, $initializationVector));
