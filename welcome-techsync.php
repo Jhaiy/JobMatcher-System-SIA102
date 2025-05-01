@@ -36,9 +36,9 @@
                     Our mission is to help you find the perfect job or the perfect candidate.
                 </p>
                 <div class="button-wrapper hidden">
-                    <button id="join-button"><a href="#">Start as an Applicant</a></button>
+                    <button id="join-button"><a href="login.php">Start as an Applicant</a></button>
                     <p>Or</p>
-                    <button id="join-button"><a href="#">Start as an Employer</a></button>
+                    <button id="join-button"><a href="login-company.php">Start as an Employer</a></button>
                 </div>
             </div>
         </div>
