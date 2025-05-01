@@ -44,7 +44,7 @@
     }
 
     $encrypted = 'c3hvaDlaWVk2RnVkZVRSeUs3bFczdz09';
-    $encrypted2 = 'QWFHWkxvTjJrb004b2oyeVBlSHlQUT09';
+    $encrypted2 = 'dVFJempDSDBlb1M2TWxIV3FGSjYxeXpTb0VIVkUyd3hjb2pBSGRhTUZXND0=';
 ?>
 
 <!DOCTYPE html>
@@ -126,55 +126,57 @@
             </div>
         </div>
     </div>
-    <div class="job-information-container">
-        <div class="job-information">
-            <div class="job-information-blocks">
-                <div class="job-information-block">
-                    <h1>Description</h1>
-                    <p><?php echo htmlspecialchars($job_details['JobDescription']); ?></p>
-                </div>
-                <div class="job-information-block">
-                    <h1>Requirements</h1>
-                    <p>Education: <?php htmlspecialchars($job_details['EducationAttainment']); ?></p>
-                    <p>Work Experience: <?php htmlspecialchars($job_details['WorkExperience']); ?></p>
-                    <p>Programming Language: <?php htmlspecialchars($job_details['ProgrammingLanguage']); ?></p>
-                </div>
-                <div class="job-information-block">
-                    <h1>About the Job</h1>
-                    <h3>Category:</h3>
-                    <p><?php echo htmlspecialchars($job_details['CategoryDescription']); ?></p>
-                    <h3>Role:</h3>
-                    <p><?php echo htmlspecialchars($job_details['RoleDescription']); ?></p>
-                </div>
-                <div class="job-information-block">
-                    <h1>Additional Requirements</h1>
-                    <p><?php echo htmlspecialchars($job_details['AdditionalRequirements']); ?></p>
+    <div class="job-view-container">
+        <div class="job-information-container">
+            <div class="job-information">
+                <div class="job-information-blocks">
+                    <div class="job-information-block">
+                        <h1>Description</h1>
+                        <p><?php echo htmlspecialchars($job_details['JobDescription']); ?></p>
+                    </div>
+                    <div class="job-information-block">
+                        <h1>Requirements</h1>
+                        <p>Education: <?php htmlspecialchars($job_details['EducationAttainment']); ?></p>
+                        <p>Work Experience: <?php htmlspecialchars($job_details['WorkExperience']); ?></p>
+                        <p>Programming Language: <?php htmlspecialchars($job_details['ProgrammingLanguage']); ?></p>
+                    </div>
+                    <div class="job-information-block">
+                        <h1>About the Job</h1>
+                        <h3>Category:</h3>
+                        <p><?php echo htmlspecialchars($job_details['CategoryDescription']); ?></p>
+                        <h3>Role:</h3>
+                        <p><?php echo htmlspecialchars($job_details['RoleDescription']); ?></p>
+                    </div>
+                    <div class="job-information-block">
+                        <h1>Additional Requirements</h1>
+                        <p><?php echo htmlspecialchars($job_details['AdditionalRequirements']); ?></p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="company-information">
-            <div class="company-information-block">
-                <h1>Company Information</h1>
-                <div class="company-information-section">
-                    <div class="subtext-group">
-                        <h2><?php echo htmlspecialchars(decryption($job_details['CompanyName'])); ?></h2>
-                        <p>Statuts: <?php echo htmlspecialchars($job_details['CompanyAccountStatus']); ?></p>
+            <div class="company-information">
+                <div class="company-information-block">
+                    <h1>Company Information</h1>
+                    <div class="company-information-section">
+                        <div class="subtext-group">
+                            <h2><?php echo htmlspecialchars(decryption($job_details['CompanyName'])); ?></h2>
+                            <p>Statuts: <?php echo htmlspecialchars($job_details['CompanyAccountStatus']); ?></p>
+                        </div>
+                        <p><?php echo htmlspecialchars(decryption($job_details['CompanyEmail'])); ?></p>
+                        <p><?php echo htmlspecialchars(decryption($job_details['CompanyContact'])); ?></p>
+                        <p>
+                            <?php 
+                                echo htmlspecialchars(
+                                    decryption($job_details['CompanyBlockLot']) . ', ' .
+                                    decryption($job_details['CompanyBarangay']) . ', ' .
+                                    decryption($job_details['CompanyStreet']) . ', ' .
+                                    decryption($job_details['CompanyCity']) . ', ' .
+                                    decryption($job_details['CompanyProvince'])
+                                );
+                            ?>
+                        </p>
+                        <h3>Company Description:</h3>
+                        <p><?php echo htmlspecialchars($job_details['CompanyDescription']); ?></p>
                     </div>
-                    <p><?php echo htmlspecialchars(decryption($job_details['CompanyEmail'])); ?></p>
-                    <p><?php echo htmlspecialchars(decryption($job_details['CompanyContact'])); ?></p>
-                    <p>
-                        <?php 
-                            echo htmlspecialchars(
-                                decryption($job_details['CompanyBlockLot']) . ', ' .
-                                decryption($job_details['CompanyBarangay']) . ', ' .
-                                decryption($job_details['CompanyStreet']) . ', ' .
-                                decryption($job_details['CompanyCity']) . ', ' .
-                                decryption($job_details['CompanyProvince'])
-                            );
-                        ?>
-                    </p>
-                    <h3>Company Description:</h3>
-                    <p><?php echo htmlspecialchars($job_details['CompanyDescription']); ?></p>
                 </div>
             </div>
         </div>
@@ -183,5 +185,21 @@
 
     <?php echo decryption($encrypted) ?>
     <?php echo decryption($encrypted2) ?>
+    <footer>
+        <div class="footer-content">
+            <p>CONTACT US:</p>
+            <P>09##########</P>
+            <div class="social-links">
+                <a href="#"><img src="assets/images/mail.png"></a>
+                <a href="#"><img src="assets/images/communication.png"></a>
+            </div>
+            <hr>
+            <div class="idk-texts">
+                <p>WebTitle 2025</p>
+                <p>|</p>
+                <p>All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
