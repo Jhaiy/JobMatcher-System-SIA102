@@ -142,9 +142,9 @@
                         </form>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <div class="skill-null">';
-                        <p>No recommendations available at the moment.</p>';
-                    </div>';
+                    <div class="skill-null">
+                        <p>No recommendations available at the moment.</p>
+                    </div>
                 <?php endif; ?>
             <?php else: ?>
                 <h1>Recommendations</h1>

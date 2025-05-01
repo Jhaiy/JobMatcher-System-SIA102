@@ -33,18 +33,6 @@
             $job_details = mysqli_fetch_assoc($result);
             mysqli_stmt_close($stmt);
     }
-
-    $encrypted_contact = 'aFcyZ3JpNkFrYkVrWnBa'; // Replace with the actual value from the database
-    $decrypted_contact = decryption($encrypted_contact);
-
-    if ($decrypted_contact === false) {
-        echo 'Decryption failed';
-    } else {
-        echo 'Decrypted Contact: ' . $decrypted_contact;
-    }
-
-    $encrypted = 'c3hvaDlaWVk2RnVkZVRSeUs3bFczdz09';
-    $encrypted2 = 'dVFJempDSDBlb1M2TWxIV3FGSjYxeXpTb0VIVkUyd3hjb2pBSGRhTUZXND0=';
 ?>
 
 <!DOCTYPE html>
@@ -157,12 +145,10 @@
                 <div class="company-information-block">
                     <h1>Company Information</h1>
                     <div class="company-information-section">
-                        <div class="subtext-group">
-                            <h2><?php echo htmlspecialchars(decryption($job_details['CompanyName'])); ?></h2>
-                            <p>Statuts: <?php echo htmlspecialchars($job_details['CompanyAccountStatus']); ?></p>
-                        </div>
+                        <h2><?php echo htmlspecialchars(decryption($job_details['CompanyName'])); ?></h2>
+                        <strong>Status: <?php echo htmlspecialchars($job_details['CompanyAccountStatus']); ?></strong>
                         <p><?php echo htmlspecialchars(decryption($job_details['CompanyEmail'])); ?></p>
-                        <p><?php echo htmlspecialchars(decryption($job_details['CompanyContact'])); ?></p>
+                        <strong><?php echo htmlspecialchars(decryption($job_details['CompanyContact'])); ?></strong>
                         <p>
                             <?php 
                                 echo htmlspecialchars(
@@ -181,10 +167,6 @@
             </div>
         </div>
     </div>
-    login:
-
-    <?php echo decryption($encrypted) ?>
-    <?php echo decryption($encrypted2) ?>
     <footer>
         <div class="footer-content">
             <p>CONTACT US:</p>

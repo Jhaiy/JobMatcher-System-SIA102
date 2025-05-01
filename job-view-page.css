@@ -13,7 +13,7 @@
     align-items: center;
     font-family: "Inter", serif;
     font-weight: 400;
-    padding: 80px 0 25px 0;
+    padding: 100px 0 25px 0;
 }
 
 .company-header {
@@ -95,5 +95,5 @@
 }
 
 .job-view-container {
-    margin: 25px 250px;
+    margin: 0 250px;
 }
