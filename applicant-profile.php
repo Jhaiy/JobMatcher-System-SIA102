@@ -105,6 +105,20 @@
         }
     }
 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save-about'])) {
+        $applicant_id = $_SESSION['ApplicantID'];
+        $applicant_bio = $_POST['my-bio'];
+        $applicant_about = $_POST['about-me'];
+        $applicant_bio = mysqli_real_escape_string($link, $applicant_bio);
+        $applicant_about = mysqli_real_escape_string($link, $applicant_about);
+        $update_bio = "UPDATE applicantprofiles SET ApplicantBio = '$applicant_bio', ApplicantBackground = '$applicant_about' WHERE ApplicantProfileID = '$applicant_id'";
+        $update_bio_result = mysqli_query($link, $update_bio);
+        if ($update_bio_result) {
+            header("Location: applicant-profile.php");
+            exit;
+        }
+    }
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload-picture'])) {
         $applicant_id = $_SESSION['ApplicantID'];
     
@@ -136,6 +150,17 @@
             echo "No file uploaded or an error occurred.";
         }
     }
+
+    $bio_query = "SELECT ApplicantBio, ApplicantBackground FROM applicantprofiles WHERE ApplicantProfileID = ?";
+    $stmt = mysqli_prepare($link, $bio_query);
+    mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $bio_data = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+
+    $bio = isset($bio_data['ApplicantBio']) ? $bio_data['ApplicantBio'] : '';
+    $background = isset($bio_data['ApplicantBackground']) ? $bio_data['ApplicantBackground'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -280,20 +305,24 @@
                 </div>
             </div>
             <div class="about-applicant">
-                <h1>About Me</h1>
-                <div class="about-applicant-wrapper">
-                    <div class="applicant-bio">
-                        <h2>Bio</h2>
-                        <textarea id="applicant-bio" name="my-bio" rows="4" cols="50" placeholder="Bio"></textarea>
+                <form method="post" action="applicant-profile.php">
+                    <h1>About Me</h1>
+                    <div class="about-applicant-wrapper">
+                        <div class="applicant-bio">
+                            <h2>Bio</h2>
+                            <textarea id="applicant-bio" name="my-bio" rows="4" cols="50" placeholder="Bio" 
+                            data-original="<?php echo htmlspecialchars($bio); ?>"><?php echo htmlspecialchars($bio); ?></textarea>
+                        </div>
+                        <div class="applicant-about">
+                            <h2>Background</h2>
+                            <textarea id="about-me" name="about-me" rows="4" cols="50" placeholder="Tell us about yourself..." 
+                            data-original="<?php echo htmlspecialchars($background); ?>"><?php echo htmlspecialchars($background); ?></textarea>
+                        </div>
                     </div>
-                    <div class="applicant-about">
-                        <h2>Background</h2>
-                        <textarea id="about-me" name="about-me" rows="4" cols="50" placeholder="Tell us about yourself..."></textarea>
+                    <div class="button-container">
+                        <input type="submit" id="update-about" name="save-about" value="Save Changes">
                     </div>
-                </div>
-                <div class="button-container">
-                    <input type="submit" id="update-about" name="save-changes" value="Save Changes">
-                </div>
+                </form>
             </div>
             <div class="applicant-picture-role-wrapper">
                 <div class="applicant-profile-picture">

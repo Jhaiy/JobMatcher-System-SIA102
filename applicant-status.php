@@ -23,6 +23,39 @@
     $job_categories = fetch_job_categories($link);
     $job_vacancies = fetch_job_vacancies($link);
     $job_roles = fetch_job_roles($link);
+
+    $applicant_id = $_SESSION['ApplicantID']; // Ensure the user is logged in and their ID is stored in the session
+
+    $applications_query = "
+        SELECT applications.ApplicationID, applications.ApplicationStatus,
+            joblistings.JobTitle, joblistings.JobDescription, joblistings.JobListingID,
+            company.CompanyName, companydetails.CompanyDescription, companydetails.CompanyLogo
+        FROM applications
+        INNER JOIN joblistings ON applications.JobListingID = joblistings.JobListingID
+        INNER JOIN company ON joblistings.CompanyID = company.CompanyID
+        INNER JOIN companydetails ON company.CompanyDetailsID = companydetails.CompanyDetailsID
+        WHERE applications.ApplicantID = ?
+    ";
+    $stmt = mysqli_prepare($link, $applications_query);
+    mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $applications = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_stmt_close($stmt);
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        if (isset($_POST['cancel']) && isset($_POST['application_id'])) {
+            $application_id = $_POST['application_id'];
+            $cancel_query = "DELETE FROM applications WHERE ApplicationID = ? AND ApplicantID = ?";
+            $stmt = mysqli_prepare($link, $cancel_query);
+            mysqli_stmt_bind_param($stmt, "ii", $application_id, $applicant_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+            header("Location: applicant-status.php");
+            exit();
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -90,25 +123,37 @@
         </div>
 
         <div class="status-container">
-        <h1>Your Application Status</h1>
-        <?php if (!empty($applications)): ?>
-            <?php foreach ($applications as $app): ?>
-                <div class="status-card">
-                    <div class="status-info">
-                        <h2><?php echo htmlspecialchars($app['CompanyName']); ?></h2>
-                        <p><?php echo htmlspecialchars($app['CompanyDescription']); ?></p>
-                        <p><strong>Status:</strong> <?php echo htmlspecialchars($app['ApplicationStatus']); ?></p>
+            <h1>Your Application Status</h1>
+            <?php if (!empty($applications)): ?>
+                <?php foreach ($applications as $app): ?>
+                    <div class="status-card">
+                        <div class="status-info">
+                            <div class="listing-group">
+                                <div class="logo-container">
+                                    <img src="assets/profile-uploads/<?php echo htmlspecialchars($app['CompanyLogo']); ?>" alt="Company Logo" id="company-logo">
+                                </div>
+                                <h1><?php echo htmlspecialchars($app['JobTitle']) ?></h1>
+                            </div>
+                            <h2><?php echo htmlspecialchars(decryption($app['CompanyName'])); ?></h2>
+                            <p><?php echo htmlspecialchars($app['JobDescription']); ?></p>
+                            <p><strong>Status:</strong> <?php echo htmlspecialchars($app['ApplicationStatus']); ?></p>
+                        </div>
+                        <div class="status-buttons">
+                            <form method="get" action="job-view-page.php">
+                                <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($app['JobListingID']); ?>">
+                                <button type="submit">Info</button>
+                            </form>
+                            <form method="post" action="applicant-status.php">
+                                <input type="hidden" name="application_id" value="<?php echo htmlspecialchars($app['ApplicationID']); ?>">
+                                <button type="submit" name="cancel">Cancel</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="status-buttons">
-                        <button>Status</button>
-                        <button>Info</button>
-                        <button>Cancel</button>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>No applications found.</p>
-        <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No applications found.</p>
+            <?php endif; ?>
+        </div>
     </div>
 
     <footer>

@@ -8,30 +8,44 @@
     $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
     $applicant_id = isset($_SESSION['ApplicantID']) ? $_SESSION['ApplicantID'] : null;
     $applicant_picture = fetch_profile_picture($link, $applicant_id);
+    $check_if_already_applied = false;
 
     if (isset($_GET['job_id'])) {
         $job_id = intval($_GET['job_id']);
         $fetch_job_details = "
-                SELECT joblistings.JobTitle, joblistings.JobType, joblistings.JobDescription, company.CompanyName, 
-                companydetails.CompanyLogo, jobcategories.CategoryDescription, jobroles.RoleDescription,
-                joblistings.JobBlockLot, joblistings.JobStreet, joblistings.JobBarangay, joblistings.JobCity, joblistings.JobProvince,
-                joblistings.SalaryRange, joblistings.JobType, joblistings.ExpiryDate, joblistings.PostDate,
-                joblistings.EducationAttainment, joblistings.WorkExperience, joblistings.ProgrammingLanguage, joblistings.AdditionalRequirements,
-                company.CompanyEmail, company.CompanyContact, company.CompanyAccountStatus,
-                company.CompanyBlockLot, company.CompanyStreet, company.CompanyBarangay, company.CompanyCity, company.CompanyProvince, companydetails.CompanyDescription
-                FROM joblistings
-                INNER JOIN company ON joblistings.CompanyID = company.CompanyID
-                INNER JOIN companydetails ON company.CompanyDetailsID = companydetails.CompanyDetailsID
-                INNER JOIN jobcategories ON joblistings.JobCategoryID = jobcategories.JobCategoryID
-                INNER JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
-                WHERE joblistings.JobListingID = ?
-            ";
-            $stmt = mysqli_prepare($link, $fetch_job_details);
-            mysqli_stmt_bind_param($stmt, "i", $job_id);
+            SELECT joblistings.JobTitle, joblistings.JobType, joblistings.JobDescription, company.CompanyName, 
+            companydetails.CompanyLogo, jobcategories.CategoryDescription, jobroles.RoleDescription,
+            joblistings.JobBlockLot, joblistings.JobStreet, joblistings.JobBarangay, joblistings.JobCity, joblistings.JobProvince,
+            joblistings.SalaryRange, joblistings.JobType, joblistings.ExpiryDate, joblistings.PostDate,
+            joblistings.EducationAttainment, joblistings.WorkExperience, joblistings.ProgrammingLanguage, joblistings.AdditionalRequirements,
+            company.CompanyEmail, company.CompanyContact, company.CompanyAccountStatus,
+            company.CompanyBlockLot, company.CompanyStreet, company.CompanyBarangay, company.CompanyCity, company.CompanyProvince, companydetails.CompanyDescription
+            FROM joblistings
+            INNER JOIN company ON joblistings.CompanyID = company.CompanyID
+            INNER JOIN companydetails ON company.CompanyDetailsID = companydetails.CompanyDetailsID
+            INNER JOIN jobcategories ON joblistings.JobCategoryID = jobcategories.JobCategoryID
+            INNER JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
+            WHERE joblistings.JobListingID = ?
+        ";
+        $stmt = mysqli_prepare($link, $fetch_job_details);
+        mysqli_stmt_bind_param($stmt, "i", $job_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $job_details = mysqli_fetch_assoc($result);
+        mysqli_stmt_close($stmt);
+        
+        if ($applicant_id) {
+            $check_application_to_database = "SELECT * FROM applications WHERE JobListingID = ? AND ApplicantID = ?";
+            $stmt = mysqli_prepare($link, $check_application_to_database);
+            mysqli_stmt_bind_param($stmt, "ii", $job_id, $applicant_id);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
-            $job_details = mysqli_fetch_assoc($result);
+    
+            if (mysqli_num_rows($result) > 0) {
+                $check_if_already_applied = true;
+            }
             mysqli_stmt_close($stmt);
+        }
     }
 ?>
 
@@ -102,7 +116,15 @@
                             ?>
                         </p>
                     </div>
-                    <button id="submit-application">Submit Application</button>
+                    <form method="post" action="functions/submit-application.php">
+                        <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($job_id); ?>">
+                        <input type="hidden" name="applicant_id" value="<?php echo htmlspecialchars($applicant_id); ?>">
+                        <?php if($check_if_already_applied): ?>
+                            <p style="color: rgb(125, 238, 125);">You have already applied for this job.</p>
+                        <?php else: ?>
+                            <button id="submit-application">Submit Application</button>
+                        <?php endif; ?>
+                    </form>
                 </div>
                 <div class="company-header-subtext">
                     <br>

@@ -33,7 +33,13 @@
         $job_postal = mysqli_real_escape_string($link, trim($_POST['jobpostal']));
         $job_category_id = mysqli_real_escape_string($link, $_POST['category-item']);
         $job_role_id = mysqli_real_escape_string($link, $_POST['role-item']);
-        // $job_additional_requirements = mysqli_real_escape_string($link, trim($_POST['additional-requirements'])); (walang ganto sa db, lalagyan ba?)
+        $job_education = mysqli_real_escape_string($link, trim($_POST['education']));
+        $job_experience = mysqli_real_escape_string($link, trim($_POST['experience']));
+        $job_programming_language = mysqli_real_escape_string($link, trim($_POST['programminglanguage']));
+        $job_closing_date = mysqli_real_escape_string($link, trim($_POST['job-closing-date']));
+        $job_salary_range = mysqli_real_escape_string($link, trim($_POST['salary-range']));
+        $job_type = mysqli_real_escape_string($link, trim($_POST['job-type']));
+        $job_additional_requirements = mysqli_real_escape_string($link, trim($_POST['additional-requirements']));
 
         $category_check_query = "SELECT COUNT(*) AS count FROM jobcategories WHERE JobCategoryID = '$job_category_id'";
         $category_check_result = mysqli_query($link, $category_check_query);
@@ -55,8 +61,8 @@
         }
 
         // Insert the job listing into the database
-        $sql_query = "INSERT INTO joblistings (CompanyID, JobTitle, JobDescription, JobBlockLot, JobBarangay, JobStreet, JobCity, JobProvince, JobPostalCode, JobCategoryID, JobRoleID) 
-                    VALUES ('$company_id', '$job_title', '$job_description', '$job_blocklot', '$job_baranggay', '$job_street', '$job_city', '$job_province', '$job_postal', '$job_category_id', '$job_role_id')";
+        $sql_query = "INSERT INTO joblistings (CompanyID, JobTitle, JobDescription, SalaryRange, JobType, ExpiryDate, JobBlockLot, JobBarangay, JobStreet, JobCity, JobProvince, JobPostalCode, JobCategoryID, JobRoleID, EducationAttainment, WorkExperience, ProgrammingLanguage, AdditionalRequirements) 
+                    VALUES ('$company_id', '$job_title', '$job_description', '$job_salary_range', '$job_type', '$job_closing_date', '$job_blocklot', '$job_baranggay', '$job_street', '$job_city', '$job_province', '$job_postal', '$job_category_id', '$job_role_id', '$job_education', '$job_experience', '$job_programming_language', '$job_additional_requirements')";
 
         $result = mysqli_query($link, $sql_query);
 
@@ -145,6 +151,14 @@
                                 <span class="active-tab">Job Details:</span>
                             </div>
                             <div class="job-details">
+                                <strong>Job Requirements</strong>
+                            </div>
+                            <div class="experience-group">
+                                <input type="text" name="education" class="job-education" placeholder="Education (e.g. Bachelor's Degree)">
+                                <input type="text" name="experience" class="job-experience" placeholder="Experience (e.g. 2 years experience)">
+                                <input type="text" name="programminglanguage" placeholder="Programming Language (e.g. Java, C++)">
+                            </div>
+                            <div class="job-details">
                                 <strong>Job Location</strong>
                             </div>
                             <div class="job-location">
@@ -207,6 +221,28 @@
                         </div>
                         <div class="modal-body">
                             <div class="job-details">
+                                <div class="specifications">
+                                    <strong>Job Closing</strong>
+                                    <input type="date" name="job-closing-date" class="job-closing-date" placeholder="Closing Date">
+                                </div>
+                                <div class="salary-range">
+                                    <strong>Salary Range</strong>
+                                    <select name="salary-range" id="salary-range">
+                                        <option value="" disabled selected hidden>Salary Range</option>
+                                        <option value="₱10,000 - ₱15,000">₱10,000 - ₱15,000</option>
+                                        <option value="₱16,000 - ₱30,000">₱16,000 - ₱30,000</option>
+                                        <option value="₱31,000 - ₱50,000">₱31,000 - ₱50,000</option>
+                                    </select>
+                                </div>
+                                <div class="job-type">
+                                    <strong>Job Type</strong>
+                                    <select name="job-type" id="job-type">
+                                        <option value="" disabled selected hidden>Job Type</option>
+                                        <option value="Full-time">Full-time</option>
+                                        <option value="Part-time">Part-time</option>
+                                        <option value="Contract">Contract</option>
+                                    </select>
+                                </div>
                                 <strong>Job Description</strong>
                                 <h1>
                                     <textarea id="job-requirements" name="job-description" rows="4" placeholder="Job Description"></textarea>

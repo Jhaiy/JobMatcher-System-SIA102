@@ -2,14 +2,15 @@
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background: #e6f2e6; /* Light greenish background */
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(1, 100%);
+    gap: 20px;
 }
 
 /* ✅ FIX: Status Card */
 .status-card {
-    background-color: #d8e6d3; /* Light green */
     padding: 20px;
     margin-bottom: 15px;
     border-radius: 10px;
@@ -17,6 +18,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
 }
 
 /* ✅ FIX: Status Info Section */
@@ -55,4 +57,33 @@
 
 .status-buttons button:hover {
     background-color: #3a4d41;
+}
+
+.status-info p{
+    margin: 5px 25px 0 0;
+}
+
+.listing-group {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.logo-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+#company-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.4);
 }

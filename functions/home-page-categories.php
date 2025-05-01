@@ -119,4 +119,20 @@
         }
         return $companies;
     }
+
+    function fetch_applications($link) {
+        $applications = [];
+        $sql = "SELECT * FROM applications";
+        $result = mysqli_query($link, $sql);
+
+        if (!$result) {
+            error_log("Database error: " . mysqli_error($link));
+            return $applications;
+        }
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $applications[] = $row;
+        }
+        return $applications;
+    }
 ?>

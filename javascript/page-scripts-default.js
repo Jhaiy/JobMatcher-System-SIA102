@@ -25,7 +25,7 @@ function hideDiv(divId) {
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector('form[action="applicant-profile.php"]');
-    const inputs = form.querySelectorAll('input[type="text"], input[type="email"], select');
+    const inputs = form.querySelectorAll('input[type="text"], input[type="email"], textarea, select');
 
     form.addEventListener('submit', (event) => {
         let isValid = true;

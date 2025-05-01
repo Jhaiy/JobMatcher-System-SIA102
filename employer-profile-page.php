@@ -167,7 +167,7 @@
         </div>
         <div class="applicant-profile">
             <div class="applicant-credentials-wrapper">
-                <h1>Personal Information</h1>
+                <h1>Company Information</h1>
                 <form method="post" action="employer-profile-page.php">
                 <div class="applicant-credentials">
                     <div class="applicant-personal-information">
