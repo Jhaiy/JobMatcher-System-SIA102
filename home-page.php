@@ -90,21 +90,19 @@
                         <li><a href="applicant-status.php">Status</a></li>
                     <?php endif; ?>
                     <li><a href="about-us-page.php">About Us</a></li>
-                    <?php if ($user_data): ?>
-                        <form method="post" action="home-page.php">
-                            <input type="submit" id="logout-button" name="logout" value="Log Out">
-                        </form>
-                    <?php endif; ?>
                 </ul>
             </div>
             <div class="los">
                 <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
-                    <li><p id="los-name">Welcome, <?php echo htmlspecialchars($user_data['ApplicantFName']) . ' ' . htmlspecialchars(decryption($user_data['ApplicantLName'])); ?></p></li>
+                    <li><p id="los-name"><?php echo htmlspecialchars($user_data['ApplicantFName']); ?></p></li>
                     <?php if (!empty($applicant_picture)): ?>
                         <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
                     <?php else: ?>
                         <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
                     <?php endif; ?>
+                    <form method="post" action="home-page.php">
+                        <input type="submit" name="logout" value="Log Out">
+                    </form>
                 <?php else: ?>
                     <li><a id="los" href="login.php">Log In</a></li>
                     <li><a id="los" href="sign-up-choice.php">Sign Up</a></li>
@@ -124,32 +122,11 @@
     </div>
     <div class="job-selection">
         <?php if ($user_data): ?>
-            <?php if ($is_search): ?>
-                <h1 id="customhead">Search Results</h1>
-            <?php else: ?>
-                <h1 id="customhead">Job Feed</h1>
-            <?php endif; ?>
-                <div class="job-categories">
-                    <?php
-                        $applicant_id = $_SESSION['ApplicantID'];
-                        $applicant_skills = [];
-                        $fetch_applicant_skills = "
-                        SELECT skills.SkillName
-                        FROM applicantskills 
-                        INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
-                        WHERE applicantskills.ApplicantID = ?";
-                        $stmt = mysqli_prepare($link, $fetch_applicant_skills);
-                        mysqli_stmt_bind_param($stmt, "i", $applicant_id);
-                        mysqli_stmt_execute($stmt);
-                        $result = mysqli_stmt_get_result($stmt);
-
-                        if (mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $applicant_skills[] = $row['SkillName'];
-                            }
-                    ?>
-                <h1 id="customhead">Job Feed</h1>
-                <?php
+            <h1 id="customhead">Job Feed</h1>
+        <?php endif; ?>
+        <div class="job-categories">
+            <?php if ($user_data): ?>
+                <?php 
                     $applicant_id = $_SESSION['ApplicantID'];
                     $fetch_applicant_skills = "
                     SELECT skills.SkillName
@@ -170,32 +147,19 @@
                         echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
                         echo '</div>';
                     }
-                } else {
-                    echo '<div class="skill-null">';
-                    echo '<p>You have not added any skills yet.</p>';
-                    echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
-                    echo '</div>';
-                }
-                mysqli_stmt_close($stmt);
+                    mysqli_stmt_close($stmt);
                 ?>
-                <?php if ($is_search): ?>
-                    <?php if (!empty($search_results)): ?>
-                        <?php foreach ($search_results as $job): ?>
-                            <form method="GET" action="job-view-page.php">
-                                <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($job['JobListingID']); ?>">
-                                <button type="submit" class="job-listings-button">
-                                    <div class="job-listings-container">
-                                        <div class="job-listings-cards">
-                                            <div class="job-listings-card">
-                                                <div class="job-listings-card-header">
-                                                    <div class="logo-container">
-                                                        <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($job['CompanyLogo']); ?>" alt="Company Logo">
-                                                    </div>
-                                                    <h2 id="company-name"><?php echo htmlspecialchars(decryption($job['CompanyName'])); ?></h2>
-                                                </div>
-                                                <div class="job-listings-details">
-                                                    <h3 id="job-title"><?php echo htmlspecialchars($job['JobTitle']); ?></h3>
-                                                    <p id="job-description"><?php echo htmlspecialchars($job['JobDescription']); ?></p>
+                <?php if (!empty($recommendations['Recommendations'])): ?>
+                    <?php foreach ($recommendations['Recommendations'] as $recommendation): ?>
+                        <form method="GET" action="job-view-page.php">
+                            <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($recommendation['JobListingID']); ?>">
+                            <button type="submit" class="job-listings-button">
+                                <div class="job-listings-container">
+                                    <div class="job-listings-cards">
+                                        <div class="job-listings-card">
+                                            <div class="job-listings-card-header">
+                                                <div class="logo-container">
+                                                    <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($recommendation['CompanyLogo']); ?>" alt="Company Logo">
                                                 </div>
                                             </div>
                                         </div>
@@ -261,13 +225,12 @@
                                 <p>No job recommendations available at the moment.</p>
                             </div>
                         <?php endif; ?>
+                    <?php else: ?>
+                        <h1>Recommendations</h1>
+                        <p>Please log in to see your recommendations.</p>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
-        <?php else: ?>
-            <h1>Recommendations</h1>
-            <p>Please log in to see your recommendations.</p>
-        <?php endif; ?>
     </div>
 
     <footer>

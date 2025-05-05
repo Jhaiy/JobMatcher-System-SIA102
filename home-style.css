@@ -77,7 +77,6 @@ body {
         .navbar-links li a {
             font-family: "Inter", serif;
             font-weight: 600;
-            font-size: 20px;
         }
 
         .navbar-links a:hover::after {
@@ -550,6 +549,7 @@ body {
     .card-contents p {
         font-size: 16px;
         text-align: left;
+<<<<<<< HEAD
     }
 
     .search-form {
@@ -585,3 +585,6 @@ body {
     width: 100%;
 }
 
+=======
+    }
+>>>>>>> parent of 619ca7f (Update (Patch 1.22.2))
