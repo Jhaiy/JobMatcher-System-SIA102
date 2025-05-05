@@ -73,7 +73,7 @@
         $applicant_fname = encryption($_POST['first-name']);
         $applicant_lname = encryption($_POST['last-name']);
         $applicant_sex = encryption($_POST['sex']);
-        $applicant_bday = encryption($_POST['applicant-birthdate']);
+        $applicant_bday = $_POST['applicant-birthdate'];
         $applicant_email = encryption($_POST['email']);
         $applicant_contact = encryption($_POST['contact-number']);
         $applicant_blklot = encryption($_POST['blklot']);
@@ -103,6 +103,26 @@
                 echo "Error: " . mysqli_error($link); 
             }
         }
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove-skill'])) {
+        $skill_id = intval($_POST['skill-id']);
+        $applicant_id = $_SESSION['ApplicantID'];
+    
+        // Delete the skill from the database
+        $delete_skill_query = "DELETE FROM applicantskills WHERE ApplicantID = ? AND SkillID = ?";
+        $stmt = mysqli_prepare($link, $delete_skill_query);
+        mysqli_stmt_bind_param($stmt, "ii", $applicant_id, $skill_id);
+    
+        if (mysqli_stmt_execute($stmt)) {
+            // Redirect to refresh the page and update the skills list
+            header("Location: applicant-profile.php");
+            exit;
+        } else {
+            echo "Error removing skill: " . mysqli_error($link);
+        }
+    
+        mysqli_stmt_close($stmt);
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save-about'])) {
@@ -268,7 +288,7 @@
                                 </div>
                                 <div class="applicant-input-group">
                                     <label for="applicant-birthdate">Birthdate <br></label>
-                                    <input type="text" id="applicant-birthdate" name="applicant-birthdate" placeholder="Month/Date/Year" value="<?php echo htmlspecialchars(decryption($user_data['ApplicantBday'])); ?>"
+                                    <input type="date" id="applicant-birthdate" name="applicant-birthdate" placeholder="Month/Date/Year" value="<?php echo htmlspecialchars($user_data['ApplicantBday']); ?>"
                                     data-original="<?php echo htmlspecialchars($user_data['ApplicantBday']); ?>" required><br>
                                 </div>
                                 <div class="applicant-input-group">
@@ -370,7 +390,12 @@
                                                 $skill_name = htmlspecialchars($row['SkillName']);
                                                 $skill_id = htmlspecialchars($row['SkillID']);
                                                 if (!in_array($skill_name, $displayed_skills)) {
-                                                    echo '<li class="skill-item" data-skill-id="' . $skill_id . '">' . $skill_name . '</li>';
+                                                    echo '<li class="skill-item">';
+                                                    echo '<form method="post" action="applicant-profile.php">';
+                                                    echo '<input type="hidden" name="skill-id" value="' . $skill_id . '">';
+                                                    echo '<button type="submit" name="remove-skill" class="remove-skill-button">' . $skill_name . '</button>';
+                                                    echo '</form>';
+                                                    echo '</li>';
                                                     $displayed_skills[] = $skill_name;
                                                 }
                                             }

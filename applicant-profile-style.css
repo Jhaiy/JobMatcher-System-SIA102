@@ -49,6 +49,8 @@
         border-radius: 5px;
         font-size: 1em;
         box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+        font-weight: 400;
     }
     .applicant-profile-input input[type="text"]:focus,
     .applicant-profile-input input[type="email"]:focus {
@@ -299,3 +301,24 @@ input.error {
         cursor: pointer;
         margin-top: 20px;
     }
+
+.remove-skill-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 1em;
+}
+
+.skill-item {
+    transition: background-color 0.3s ease;
+}
+.skill-item:hover {
+    background-color: rgb(252, 41, 41);
+}
+
+#applicant-birthdate {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+}
