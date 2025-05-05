@@ -60,19 +60,21 @@
                         <li><a href="applicant-status.php">Status</a></li>
                     <?php endif; ?>
                     <li><a href="about-us-page.php">About Us</a></li>
+                    <?php if ($user_data): ?>
+                        <form method="post" action="home-page.php">
+                            <input type="submit" id="logout-button" name="logout" value="Log Out">
+                        </form>
+                    <?php endif; ?>
                 </ul>
             </div>
             <div class="los">
                 <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
-                    <li><p id="los-name"><?php echo htmlspecialchars($user_data['ApplicantFName']); ?></p></li>
+                    <li><p id="los-name">Welcome, <?php echo htmlspecialchars($user_data['ApplicantFName']) . ' ' . htmlspecialchars(decryption($user_data['ApplicantLName'])); ?></p></li>
                     <?php if (!empty($applicant_picture)): ?>
                         <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
                     <?php else: ?>
                         <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
                     <?php endif; ?>
-                    <form method="post" action="home-page.php">
-                        <input type="submit" name="logout" value="Log Out">
-                    </form>
                 <?php else: ?>
                     <li><a id="los" href="login.php">Log In</a></li>
                     <li><a id="los" href="sign-up-choice.php">Sign Up</a></li>
@@ -91,10 +93,7 @@
     <div class="job-selection">
         <?php if ($user_data): ?>
             <h1 id="customhead">Job Feed</h1>
-        <?php endif; ?>
-        <div class="job-categories">
-            <?php if ($user_data): ?>
-                <?php 
+            <?php 
                     $applicant_id = $_SESSION['ApplicantID'];
                     $fetch_applicant_skills = "
                     SELECT skills.SkillName
@@ -117,6 +116,9 @@
                     }
                     mysqli_stmt_close($stmt);
                 ?>
+        <?php endif; ?>
+        <div class="job-categories">
+            <?php if ($user_data): ?>
                 <?php if (!empty($recommendations['Recommendations'])): ?>
                     <?php foreach ($recommendations['Recommendations'] as $recommendation): ?>
                         <form method="GET" action="job-view-page.php">
