@@ -131,6 +131,7 @@ body {
     font-family: "Inter", serif;
     font-weight: 400;
     padding: 80px 0 0 0;
+    flex-direction: row;
 }
     .search-outer h1 {
         width: 250px;
@@ -145,9 +146,8 @@ body {
         font-family: "Inter", serif;
         font-weight: 200;
         font-size: 20px;
-        padding: 0 20px 0 20px;
+        padding: 0 20px;
         color: #FFFFFF;
-        margin: 0 20px 0 20px;
         cursor: pointer;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     }
@@ -161,6 +161,7 @@ body {
         width: 800px;
         font-family: "Inter", serif;
         font-size: 16px;
+        margin-right: 20px;
     }
     .search-outer input[type="text"]::placeholder {
         color: #A79A9A;
@@ -551,6 +552,14 @@ body {
         text-align: left;
     }
 
+    .search-form {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+    }
+
+
 #logout-button {
     background-color: transparent;
     border: none;
@@ -575,3 +584,4 @@ body {
 #logout-button:hover::after {
     width: 100%;
 }
+
