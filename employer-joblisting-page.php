@@ -50,7 +50,6 @@
             return;
         }
 
-        // Check if JobRoleID exists
         $role_check_query = "SELECT COUNT(*) AS count FROM jobroles WHERE JobRoleID = '$job_role_id'";
         $role_check_result = mysqli_query($link, $role_check_query);
         $role_exists = mysqli_fetch_assoc($role_check_result)['count'];
@@ -60,7 +59,6 @@
             return;
         }
 
-        // Insert the job listing into the database
         $sql_query = "INSERT INTO joblistings (CompanyID, JobTitle, JobDescription, SalaryRange, JobType, ExpiryDate, JobBlockLot, JobBarangay, JobStreet, JobCity, JobProvince, JobPostalCode, JobCategoryID, JobRoleID, EducationAttainment, WorkExperience, ProgrammingLanguage, AdditionalRequirements) 
                     VALUES ('$company_id', '$job_title', '$job_description', '$job_salary_range', '$job_type', '$job_closing_date', '$job_blocklot', '$job_baranggay', '$job_street', '$job_city', '$job_province', '$job_postal', '$job_category_id', '$job_role_id', '$job_education', '$job_experience', '$job_programming_language', '$job_additional_requirements')";
 

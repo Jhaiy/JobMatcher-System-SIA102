@@ -97,3 +97,7 @@
 .job-view-container {
     margin: 0 250px;
 }
+
+.job-information-block:last-child {
+    margin-bottom: 50%;
+}
