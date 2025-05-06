@@ -1,102 +1,120 @@
 <?php
-    session_start();
-    require_once "db-config.php";
-    include("functions/company-login-check.php");
-    include("functions/password-hash.php");
-    include("functions/home-page-categories.php");
+session_start();
+require_once "db-config.php";
+include("functions/company-login-check.php");
+include("functions/password-hash.php");
+include("functions/home-page-categories.php");
 
-    $user_data = isset($_SESSION['CompanyID']) ? check_login_company($link) : null;
-    $company_id = isset($_SESSION['CompanyID']) ? $_SESSION['CompanyID'] : null;
-    $company_picture = fetch_company_profile_picture($link, $company_id);
+$user_data = isset($_SESSION['CompanyID']) ? check_login_company($link) : null;
+$company_id = isset($_SESSION['CompanyID']) ? $_SESSION['CompanyID'] : null;
+$company_picture = fetch_company_profile_picture($link, $company_id);
 
-    if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['logout'])) {
-        session_unset();
-        session_destroy();
-        header("Location: login.php");
-        die;
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    die;
+}
+
+if (!isset($_SESSION['CompanyID'])) {
+    header("Location: login-company.php");
+    exit();
+}
+
+function add_listing($link)
+{
+    $company_id = $_SESSION['CompanyID'];
+    $job_title = mysqli_real_escape_string($link, trim($_POST['job-title']));
+    $job_description = mysqli_real_escape_string($link, trim($_POST['job-description']));
+    $job_blocklot = mysqli_real_escape_string($link, trim($_POST['blocklot']));
+    $job_baranggay = mysqli_real_escape_string($link, trim($_POST['jobbaranggay']));
+    $job_street = mysqli_real_escape_string($link, trim($_POST['jobstreet']));
+    $job_city = mysqli_real_escape_string($link, trim($_POST['jobcity']));
+    $job_province = mysqli_real_escape_string($link, trim($_POST['jobprovince']));
+    $job_postal = mysqli_real_escape_string($link, trim($_POST['jobpostal']));
+    $job_category_id = mysqli_real_escape_string($link, $_POST['category-item']);
+    $job_role_id = mysqli_real_escape_string($link, $_POST['role-item']);
+    $job_education = mysqli_real_escape_string($link, trim($_POST['education']));
+    $job_experience = mysqli_real_escape_string($link, trim($_POST['experience']));
+    $job_closing_date = mysqli_real_escape_string($link, trim($_POST['job-closing-date']));
+    $job_salary_range = mysqli_real_escape_string($link, trim($_POST['salary-range']));
+    $job_type = mysqli_real_escape_string($link, trim($_POST['job-type']));
+    $job_additional_requirements = mysqli_real_escape_string($link, trim($_POST['additional-requirements']));
+
+    $category_check_query = "SELECT COUNT(*) AS count FROM jobcategories WHERE JobCategoryID = '$job_category_id'";
+    $category_check_result = mysqli_query($link, $category_check_query);
+    $category_exists = mysqli_fetch_assoc($category_check_result)['count'];
+
+    if ($category_exists == 0) {
+        echo "Invalid JobCategoryID.";
+        return;
     }
 
-    if (!isset($_SESSION['CompanyID'])) {
-        header("Location: login-company.php");
-        exit();
+    $role_check_query = "SELECT COUNT(*) AS count FROM jobroles WHERE JobRoleID = '$job_role_id'";
+    $role_check_result = mysqli_query($link, $role_check_query);
+    $role_exists = mysqli_fetch_assoc($role_check_result)['count'];
+
+    if ($role_exists == 0) {
+        echo "Invalid JobRoleID.";
+        return;
     }
 
-    function add_listing($link) {
-        $company_id = $_SESSION['CompanyID'];
-        $job_title = mysqli_real_escape_string($link, trim($_POST['job-title']));
-        $job_description = mysqli_real_escape_string($link, trim($_POST['job-description']));
-        $job_blocklot = mysqli_real_escape_string($link, trim($_POST['blocklot']));
-        $job_baranggay = mysqli_real_escape_string($link, trim($_POST['jobbaranggay']));
-        $job_street = mysqli_real_escape_string($link, trim($_POST['jobstreet']));
-        $job_city = mysqli_real_escape_string($link, trim($_POST['jobcity']));
-        $job_province = mysqli_real_escape_string($link, trim($_POST['jobprovince']));
-        $job_postal = mysqli_real_escape_string($link, trim($_POST['jobpostal']));
-        $job_category_id = mysqli_real_escape_string($link, $_POST['category-item']);
-        $job_role_id = mysqli_real_escape_string($link, $_POST['role-item']);
-        $job_education = mysqli_real_escape_string($link, trim($_POST['education']));
-        $job_experience = mysqli_real_escape_string($link, trim($_POST['experience']));
-        $job_programming_language = mysqli_real_escape_string($link, trim($_POST['programminglanguage']));
-        $job_closing_date = mysqli_real_escape_string($link, trim($_POST['job-closing-date']));
-        $job_salary_range = mysqli_real_escape_string($link, trim($_POST['salary-range']));
-        $job_type = mysqli_real_escape_string($link, trim($_POST['job-type']));
-        $job_additional_requirements = mysqli_real_escape_string($link, trim($_POST['additional-requirements']));
+    $job_id = isset($_POST['job-id']) ? intval($_POST['job-id']) : null;
+    if ($job_id) {
+        $sql_query = "UPDATE joblistings 
+            SET JobTitle = '$job_title', JobDescription = '$job_description', SalaryRange = '$job_salary_range', 
+            JobType = '$job_type', ExpiryDate = '$job_closing_date', JobBlockLot = '$job_blocklot', 
+            JobBarangay = '$job_baranggay', JobStreet = '$job_street', JobCity = '$job_city', 
+            JobProvince = '$job_province', JobPostalCode = '$job_postal', JobCategoryID = '$job_category_id', 
+            JobRoleID = '$job_role_id', EducationAttainment = '$job_education', WorkExperience = '$job_experience', 
+            AdditionalRequirements = '$job_additional_requirements'
+            WHERE JobListingID = '$job_id' AND CompanyID = '$company_id'";
+    } else {
+        $sql_query = "INSERT INTO joblistings (CompanyID, JobTitle, JobDescription, SalaryRange, JobType, ExpiryDate, JobBlockLot, JobBarangay, JobStreet, JobCity, JobProvince, JobPostalCode, JobCategoryID, JobRoleID, EducationAttainment, WorkExperience, AdditionalRequirements) 
+                    VALUES ('$company_id', '$job_title', '$job_description', '$job_salary_range', '$job_type', '$job_closing_date', '$job_blocklot', '$job_baranggay', '$job_street', '$job_city', '$job_province', '$job_postal', '$job_category_id', '$job_role_id', '$job_education', '$job_experience', '$job_additional_requirements')";
+    }
 
-        $category_check_query = "SELECT COUNT(*) AS count FROM jobcategories WHERE JobCategoryID = '$job_category_id'";
-        $category_check_result = mysqli_query($link, $category_check_query);
-        $category_exists = mysqli_fetch_assoc($category_check_result)['count'];
+    $result = mysqli_query($link, $sql_query);
 
-        if ($category_exists == 0) {
-            echo "Invalid JobCategoryID.";
-            return;
+    if ($result) {
+        header("Location: employer-joblisting-page.php");
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($link);
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['job-title'])) {
+    add_listing($link);
+}
+
+function view_listings($link)
+{
+    $sql = "SELECT joblistings.*, jobcategories.CategoryName, jobroles.RoleName
+    FROM joblistings 
+    LEFT JOIN jobcategories ON joblistings.JobCategoryID = jobcategories.JobCategoryID
+    LEFT JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
+    WHERE joblistings.CompanyID = '" . $_SESSION['CompanyID'] . "'";
+    $result = mysqli_query($link, $sql);
+    $job_listings = [];
+
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $job_listings[] = $row;
         }
-
-        $role_check_query = "SELECT COUNT(*) AS count FROM jobroles WHERE JobRoleID = '$job_role_id'";
-        $role_check_result = mysqli_query($link, $role_check_query);
-        $role_exists = mysqli_fetch_assoc($role_check_result)['count'];
-
-        if ($role_exists == 0) {
-            echo "Invalid JobRoleID.";
-            return;
-        }
-
-        $sql_query = "INSERT INTO joblistings (CompanyID, JobTitle, JobDescription, SalaryRange, JobType, ExpiryDate, JobBlockLot, JobBarangay, JobStreet, JobCity, JobProvince, JobPostalCode, JobCategoryID, JobRoleID, EducationAttainment, WorkExperience, ProgrammingLanguage, AdditionalRequirements) 
-                    VALUES ('$company_id', '$job_title', '$job_description', '$job_salary_range', '$job_type', '$job_closing_date', '$job_blocklot', '$job_baranggay', '$job_street', '$job_city', '$job_province', '$job_postal', '$job_category_id', '$job_role_id', '$job_education', '$job_experience', '$job_programming_language', '$job_additional_requirements')";
-
-        $result = mysqli_query($link, $sql_query);
-
-        if ($result) {
-            header("Location: employer-joblisting-page.php");
-            exit;
-        } else {
-            echo "Error: " . mysqli_error($link);
-        }
-    }
-    
-    if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['job-title'])) {
-        add_listing($link);
+    } else {
+        echo "Error: " . mysqli_error($link);
     }
 
-    function view_listings($link) {
-        $sql = "SELECT * FROM joblistings WHERE CompanyID = '" . $_SESSION['CompanyID'] . "'";
-        $result = mysqli_query($link, $sql);
-        $job_listings = [];
+    return $job_listings;
+}
 
-        if ($result) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $job_listings[] = $row;
-            }
-        } else {
-            echo "Error: " . mysqli_error($link);
-        }
-
-        return $job_listings;
-    }
-
-    $view_listings = view_listings($link);
+$view_listings = view_listings($link);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,6 +123,7 @@
     <link rel="stylesheet" href="employer-joblisting-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
 </head>
+
 <body>
     <div class="navbar">
         <div class="navbar-contents">
@@ -154,7 +173,6 @@
                             <div class="experience-group">
                                 <input type="text" name="education" class="job-education" placeholder="Education (e.g. Bachelor's Degree)">
                                 <input type="text" name="experience" class="job-experience" placeholder="Experience (e.g. 2 years experience)">
-                                <input type="text" name="programminglanguage" placeholder="Programming Language (e.g. Java, C++)">
                             </div>
                             <div class="job-details">
                                 <strong>Job Location</strong>
@@ -272,7 +290,7 @@
                     <img id="company-icon-banner" src="assets/images/employer.png" alt="Employer Icon">
                 <?php endif; ?>
             </div>
-        </div>    
+        </div>
     </div>
     <!-- Job Listing Section -->
     <section class="job-listing">
@@ -282,7 +300,7 @@
         </div>
         <div class="job-card-container">
             <!-- Job Card 1 -->
-            <?php if(!empty($view_listings)): ?>
+            <?php if (!empty($view_listings)): ?>
                 <?php foreach ($view_listings as $listings): ?>
                     <div class="job-card">
                         <div class="job-icon">
@@ -298,8 +316,9 @@
                             <p><?php echo htmlspecialchars($listings['JobDescription']) ?></p>
                         </div>
                         <div class="job-actions">
-                        <button class="view-details" id="viewDetailsBtn">View Details</button>
-                        <button class="applicants">Applicants</button>
+                            <button class="view-details" id="viewDetailsBtn" type="button"
+                                onclick="editJobDetails(<?php echo htmlspecialchars(json_encode($listings, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)); ?>)"> Edit Details</button>
+                            <button class="applicants">Applicants</button>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -314,14 +333,14 @@
     <form method="post" action="employer-joblisting-page.php">
         <div id="hidden-category-div" class="hidden-category-div">
             <div class="category-div-wrapper">
-                <?php 
-                    $job_categories = fetch_job_categories($link);
-                    foreach ($job_categories as $categories) {
-                        echo '<div>';
-                        echo '<input type="radio" id="category-type-' . htmlspecialchars($categories['JobCategoryID']) . '" name="category-types[]" value="' . htmlspecialchars($categories['JobCategoryID']) . '">';
-                        echo '<label for="category-type-' . htmlspecialchars($categories['JobCategoryID']) . '">' . htmlspecialchars($categories['CategoryName']) . '</label><br>';
-                        echo '</div>';
-                    }
+                <?php
+                $job_categories = fetch_job_categories($link);
+                foreach ($job_categories as $categories) {
+                    echo '<div>';
+                    echo '<input type="radio" id="category-type-' . htmlspecialchars($categories['JobCategoryID']) . '" name="category-types[]" value="' . htmlspecialchars($categories['JobCategoryID']) . '">';
+                    echo '<label for="category-type-' . htmlspecialchars($categories['JobCategoryID']) . '">' . htmlspecialchars($categories['CategoryName']) . '</label><br>';
+                    echo '</div>';
+                }
                 ?>
                 <button id="toggle-category-button">Done</button>
             </div>
@@ -330,14 +349,14 @@
     <form method="post" action="employer-joblisting-page.php">
         <div id="hidden-role-div" class="hidden-role-div">
             <div class="role-div-wrapper">
-                <?php 
-                    $job_roles = fetch_job_roles($link);
-                    foreach ($job_roles as $role) {
-                        echo '<div>';
-                        echo '<input type="radio" id="role-type-' . htmlspecialchars($role['JobRoleID']) . '" name="role-types[]" value="' . htmlspecialchars($role['JobRoleID']) . '">';
-                        echo '<label for="role-type-' . htmlspecialchars($role['JobRoleID']) . '">' . htmlspecialchars($role['RoleName']) . '</label><br>';
-                        echo '</div>';
-                    }
+                <?php
+                $job_roles = fetch_job_roles($link);
+                foreach ($job_roles as $role) {
+                    echo '<div>';
+                    echo '<input type="radio" id="role-type-' . htmlspecialchars($role['JobRoleID']) . '" name="role-types[]" value="' . htmlspecialchars($role['JobRoleID']) . '">';
+                    echo '<label for="role-type-' . htmlspecialchars($role['JobRoleID']) . '">' . htmlspecialchars($role['RoleName']) . '</label><br>';
+                    echo '</div>';
+                }
                 ?>
                 <button id="toggle-role-button">Done</button>
             </div>
@@ -362,5 +381,7 @@
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascript/page-scripts.js"></script>
+    <script src="javascript/page-scripts-default.js"></script>
 </body>
+
 </html>
