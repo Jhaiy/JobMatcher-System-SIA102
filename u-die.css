@@ -1,0 +1,15 @@
+.error-handler {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 20%;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+}

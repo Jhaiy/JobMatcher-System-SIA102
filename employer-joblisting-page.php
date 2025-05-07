@@ -32,8 +32,8 @@ function add_listing($link)
     $job_city = mysqli_real_escape_string($link, trim($_POST['jobcity']));
     $job_province = mysqli_real_escape_string($link, trim($_POST['jobprovince']));
     $job_postal = mysqli_real_escape_string($link, trim($_POST['jobpostal']));
-    $job_category_id = mysqli_real_escape_string($link, $_POST['category-item']);
-    $job_role_id = mysqli_real_escape_string($link, $_POST['role-item']);
+    $job_category_id = isset($_POST['category-item']) ? mysqli_real_escape_string($link, $_POST['category-item']) : null;
+    $job_role_id = isset($_POST['role-item']) ? mysqli_real_escape_string($link, $_POST['role-item']) : null;
     $job_education = mysqli_real_escape_string($link, trim($_POST['education']));
     $job_experience = mysqli_real_escape_string($link, trim($_POST['experience']));
     $job_closing_date = mysqli_real_escape_string($link, trim($_POST['job-closing-date']));
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['job-title'])) {
 
 function view_listings($link)
 {
-    $sql = "SELECT joblistings.*, jobcategories.CategoryName, jobroles.RoleName
+    $sql = "SELECT joblistings.JobListingID, joblistings.JobTitle, joblistings.JobDescription, jobcategories.CategoryName, jobroles.RoleName
     FROM joblistings 
     LEFT JOIN jobcategories ON joblistings.JobCategoryID = jobcategories.JobCategoryID
     LEFT JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
@@ -122,6 +122,9 @@ $view_listings = view_listings($link);
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="employer-joblisting-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="javascript/page-scripts.js"></script>
+    <script src="javascript/page-scripts-default.js"></script>
 </head>
 
 <body>
@@ -316,8 +319,10 @@ $view_listings = view_listings($link);
                             <p><?php echo htmlspecialchars($listings['JobDescription']) ?></p>
                         </div>
                         <div class="job-actions">
-                            <button class="view-details" id="viewDetailsBtn" type="button"
-                                onclick="editJobDetails(<?php echo htmlspecialchars(json_encode($listings, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)); ?>)"> Edit Details</button>
+                            <form method="GET" action="joblisting-edit.php">
+                                <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($listings['JobListingID']); ?>">
+                                <button type="submit" class="view-details" id="viewDetailsBtn">Edit Details</button>
+                            </form>
                             <button class="applicants">Applicants</button>
                         </div>
                     </div>
@@ -379,9 +384,6 @@ $view_listings = view_listings($link);
             </div>
         </div>
     </footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="javascript/page-scripts.js"></script>
-    <script src="javascript/page-scripts-default.js"></script>
 </body>
 
 </html>

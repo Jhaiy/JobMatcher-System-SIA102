@@ -56,9 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedCategoryList = document.getElementById(
         "selected-category-list"
     );
-    const form = document.querySelector(
-        'form[action="employer-joblisting-page.php"]'
-    );
+    const form = document.querySelector('form[action="joblisting-edit.php"]');
 
     doneButton.addEventListener("click", (event) => {
         event.preventDefault();
@@ -96,9 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const doneButton = document.getElementById("toggle-role-button");
     const roleDiv = document.getElementById("hidden-role-div");
     const selectedRoleList = document.getElementById("selected-role-list");
-    const form = document.querySelector(
-        'form[action="employer-joblisting-page.php"]'
-    );
+    const form = document.querySelector('form[action="joblisting-edit.php"]');
 
     doneButton.addEventListener("click", (event) => {
         event.preventDefault();
@@ -128,6 +124,41 @@ document.addEventListener("DOMContentLoaded", () => {
             roleDiv.style.display = "none";
         } else {
             alert("Please select a category before clicking Done.");
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector('form[action="joblisting-edit.php"]');
+    const updateButton = document.getElementById("update-button");
+
+    const hasChanges = () => {
+        const fields = form.querySelectorAll("[data-original]");
+        for (const field of fields) {
+            if (field.type === "checkbox" || field.type === "radio") {
+                if (
+                    field.checked !==
+                    (field.getAttribute("data-original") === "true")
+                ) {
+                    return true;
+                }
+            } else if (field.value !== field.getAttribute("data-original")) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    form.querySelectorAll("[data-original]").forEach((field) => {
+        field.addEventListener("input", () => {
+            updateButton.disabled = !hasChanges();
+        });
+    });
+
+    updateButton.addEventListener("click", (event) => {
+        if (!hasChanges()) {
+            event.preventDefault(); // Prevent form submission
+            alert("No changes detected. Please make changes before updating.");
         }
     });
 });
