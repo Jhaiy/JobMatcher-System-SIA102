@@ -1,18 +1,23 @@
 <?php
-    session_start();
-    require_once 'db-config.php';
-    include("functions/applicant-login-check.php");
-    include_once("functions/password-hash.php");
-    include("functions/home-page-categories.php");
+session_start();
+require_once 'db-config.php';
+include("functions/applicant-login-check.php");
+include_once("functions/password-hash.php");
+include("functions/home-page-categories.php");
 
-    $user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
-    $applicant_id = isset($_SESSION['ApplicantID']) ? $_SESSION['ApplicantID'] : null;
-    $applicant_picture = fetch_profile_picture($link, $applicant_id);
-    $check_if_already_applied = false;
+$user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
+$applicant_id = isset($_SESSION['ApplicantID']) ? $_SESSION['ApplicantID'] : null;
+$applicant_picture = fetch_profile_picture($link, $applicant_id);
+$check_if_already_applied = false;
 
-    if (isset($_GET['job_id'])) {
-        $job_id = intval($_GET['job_id']);
-        $fetch_job_details = "
+if (!isset($_SESSION['ApplicantID'])) {
+    header("Location: login.php");
+    exit();
+}
+
+if (isset($_GET['job_id'])) {
+    $job_id = intval($_GET['job_id']);
+    $fetch_job_details = "
             SELECT joblistings.JobTitle, joblistings.JobType, joblistings.JobDescription, company.CompanyName, 
             companydetails.CompanyLogo, jobcategories.CategoryDescription, jobroles.RoleDescription,
             joblistings.JobBlockLot, joblistings.JobStreet, joblistings.JobBarangay, joblistings.JobCity, joblistings.JobProvince,
@@ -27,30 +32,31 @@
             INNER JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
             WHERE joblistings.JobListingID = ?
         ";
-        $stmt = mysqli_prepare($link, $fetch_job_details);
-        mysqli_stmt_bind_param($stmt, "i", $job_id);
+    $stmt = mysqli_prepare($link, $fetch_job_details);
+    mysqli_stmt_bind_param($stmt, "i", $job_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $job_details = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+
+    if ($applicant_id) {
+        $check_application_to_database = "SELECT * FROM applications WHERE JobListingID = ? AND ApplicantID = ?";
+        $stmt = mysqli_prepare($link, $check_application_to_database);
+        mysqli_stmt_bind_param($stmt, "ii", $job_id, $applicant_id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-        $job_details = mysqli_fetch_assoc($result);
-        mysqli_stmt_close($stmt);
-        
-        if ($applicant_id) {
-            $check_application_to_database = "SELECT * FROM applications WHERE JobListingID = ? AND ApplicantID = ?";
-            $stmt = mysqli_prepare($link, $check_application_to_database);
-            mysqli_stmt_bind_param($stmt, "ii", $job_id, $applicant_id);
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
-    
-            if (mysqli_num_rows($result) > 0) {
-                $check_if_already_applied = true;
-            }
-            mysqli_stmt_close($stmt);
+
+        if (mysqli_num_rows($result) > 0) {
+            $check_if_already_applied = true;
         }
+        mysqli_stmt_close($stmt);
     }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,6 +64,7 @@
     <link rel="stylesheet" href="job-view-page.css">
     <title>Document</title>
 </head>
+
 <body>
     <div class="navbar">
         <div class="navbar-contents">
@@ -70,22 +77,25 @@
                         <li><a href="applicant-status.php">Status</a></li>
                     <?php endif; ?>
                     <li><a href="about-us-page.php">About Us</a></li>
+                    <li><a href="login.php">Log In</a></li>
+                    <li><a href="sign-up-choice.php">Sign Up</a></li>
+                    <?php if ($user_data): ?>
+                        <form method="post" action="home-page.php">
+                            <input type="submit" id="logout-button" name="logout" value="Log Out">
+                        </form>
+                    <?php endif; ?>
                 </ul>
             </div>
             <div class="los">
                 <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
-                    <li><p id="los-name"><?php echo htmlspecialchars($user_data['ApplicantFName']); ?></p></li>
+                    <li>
+                        <p id="los-name">Welcome, <?php echo htmlspecialchars($user_data['ApplicantFName']) . ' ' . htmlspecialchars(decryption($user_data['ApplicantLName'])); ?></p>
+                    </li>
                     <?php if (!empty($applicant_picture)): ?>
                         <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
                     <?php else: ?>
                         <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
                     <?php endif; ?>
-                    <form method="post" action="home-page.php">
-                        <input type="submit" name="logout" value="Log Out">
-                    </form>
-                <?php else: ?>
-                    <li><a id="los" href="login.php">Log In</a></li>
-                    <li><a id="los" href="sign-up-choice.php">Sign Up</a></li>
                 <?php endif; ?>
             </div>
         </div>
@@ -105,21 +115,21 @@
                     <div class="subtext-group">
                         <img src="assets/images/map.png" id="header-icon">
                         <p>
-                            <?php 
-                                echo htmlspecialchars(
+                            <?php
+                            echo htmlspecialchars(
                                 $job_details['JobBlockLot'] . ', ' .
                                     $job_details['JobBarangay'] . ', ' .
                                     $job_details['JobStreet'] . ', ' .
                                     $job_details['JobCity'] . ', ' .
                                     $job_details['JobProvince']
-                                );
+                            );
                             ?>
                         </p>
                     </div>
                     <form method="post" action="functions/submit-application.php">
                         <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($job_id); ?>">
                         <input type="hidden" name="applicant_id" value="<?php echo htmlspecialchars($applicant_id); ?>">
-                        <?php if($check_if_already_applied): ?>
+                        <?php if ($check_if_already_applied): ?>
                             <p style="color: rgb(125, 238, 125);">You have already applied for this job.</p>
                         <?php else: ?>
                             <button id="submit-application">Submit Application</button>
@@ -172,14 +182,14 @@
                         <p><?php echo htmlspecialchars(decryption($job_details['CompanyEmail'])); ?></p>
                         <strong><?php echo htmlspecialchars(decryption($job_details['CompanyContact'])); ?></strong>
                         <p>
-                            <?php 
-                                echo htmlspecialchars(
-                                    decryption($job_details['CompanyBlockLot']) . ', ' .
+                            <?php
+                            echo htmlspecialchars(
+                                decryption($job_details['CompanyBlockLot']) . ', ' .
                                     decryption($job_details['CompanyBarangay']) . ', ' .
                                     decryption($job_details['CompanyStreet']) . ', ' .
                                     decryption($job_details['CompanyCity']) . ', ' .
                                     decryption($job_details['CompanyProvince'])
-                                );
+                            );
                             ?>
                         </p>
                         <h3>Company Description:</h3>
@@ -206,4 +216,5 @@
         </div>
     </footer>
 </body>
+
 </html>

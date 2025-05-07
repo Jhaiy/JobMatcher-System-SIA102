@@ -16,7 +16,7 @@
 .section-title h2 {
     font-size: 28px;
     margin: 0;
-    color: #3a3960;
+    color: black;
 }
 
 .add-button {
@@ -45,10 +45,11 @@
 
 /* Job Card - Bigger and Wider */
 .job-card {
-    background-color: #d1e7d0;
+    background-color: white;
     border-radius: 15px;
     padding: 30px;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 12px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+        rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     display: flex;
     flex-direction: row; /* Align items in a row */
     align-items: center; /* Center vertically */
@@ -110,7 +111,8 @@
 
 /* Buttons - Bigger and More Clickable */
 .view-details,
-.applicants {
+.applicants,
+.delete-listing {
     background-color: #5f6f65;
     color: white;
     border: none;
@@ -186,7 +188,7 @@
 }
 
 .modal-wrapper {
-    background: #fcfcd1;
+    background: white;
     border-radius: 10px;
 }
 
@@ -289,7 +291,7 @@ hr {
 }
 
 .modal-header {
-    background-color: #d4dfc7;
+    background-color: #5f6f65;
     padding: 20px;
     display: flex;
     align-items: center;
@@ -341,7 +343,7 @@ hr {
 
 /* Modal Body */
 .modal-body {
-    background-color: #fcfcd1;
+    background-color: white;
     padding: 10px;
     border-radius: 10px;
 }
@@ -371,7 +373,7 @@ hr {
 }
 
 .submit-btn {
-    background-color: #2f2f5f;
+    background-color: #5f6f65;
     color: white;
     padding: 12px 25px;
     border: none;

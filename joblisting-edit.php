@@ -31,6 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-job-listing'])
         $expiry_date = mysqli_real_escape_string($link, $_POST['job-closing-date']);
         $job_description = mysqli_real_escape_string($link, $_POST['job-description']);
         $additional_requirements = mysqli_real_escape_string($link, $_POST['additional-requirements']);
+        $job_block_lot = mysqli_real_escape_string($link, $_POST['blklot']);
+        $job_street = mysqli_real_escape_string($link, $_POST['jobstreet']);
+        $job_barangay = mysqli_real_escape_string($link, $_POST['jobbaranggay']);
+        $job_city = mysqli_real_escape_string($link, $_POST['jobcountry']);
+        $job_province = mysqli_real_escape_string($link, $_POST['jobprovince']);
+        $job_zip = mysqli_real_escape_string($link, $_POST['jobzip']);
 
         // Validate required fields
         if (empty($job_title) || empty($job_status) || empty($salary_range) || empty($job_type) || empty($expiry_date) || empty($job_description)) {
@@ -61,6 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-job-listing'])
         SET
             JobTitle = '$job_title',
             JobStatus = '$job_status',
+            JobBlockLot = '$job_block_lot',
+            JobStreet = '$job_street',
+            JobBarangay = '$job_barangay',
+            JobCity = '$job_city',
+            JobProvince = '$job_province',
+            JobPostalCode = '$job_zip',
             JobCategoryID = '$job_category_id',
             JobRoleID = '$job_role_id',
             SalaryRange = '$salary_range',
@@ -81,6 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-job-listing'])
         echo "Invalid Job ID";
     }
 }
+$cities = fetch_city($link);
+$barangay = fetch_barangay($link);
+$street = fetch_street($link);
 ?>
 
 <!DOCTYPE html>
@@ -203,6 +218,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update-job-listing'])
                             <div class="input-group-item">
                                 <label for="job-closing-date">Job Closing Date</label>
                                 <input type="date" name="job-closing-date" id="job-closing-date" value="<?php echo htmlspecialchars($job_listing['ExpiryDate']); ?>" data-original="<?php echo htmlspecialchars($job_listing['ExpiryDate']); ?>" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-item">
+                                <label for="job-closing-date">Street</label>
+                                <input type="text" name="blklot" id="blklot" value="<?php echo htmlspecialchars($job_listing['JobBlockLot']); ?>" data-original="<?php echo htmlspecialchars($job_listing['JobBlockLot']); ?>" placeholder="Blk/Lot" required>
+                            </div>
+                            <div class="input-group-item">
+                                <label for="jobstreet">Street</label>
+                                <select name="jobstreet" id="country" data-original="<?php echo htmlspecialchars($job_listing['JobStreet']); ?>" required>
+                                    <option value="" disabled selected hidden>Street</option>
+                                    <?php foreach ($street as $st) : ?>
+                                        <option value="<?php echo htmlspecialchars($st['street_name']); ?>" <?php echo $job_listing['JobStreet'] == $st['street_name'] ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($st['street_name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="input-group-item">
+                                <label for="job-closing-date">Barangay</label>
+                                <select name="jobbaranggay" id="country" data-original="<?php echo htmlspecialchars($job_listing['JobBarangay']); ?>" required>
+                                    <option value="" disabled selected hidden>Baranggay</option>
+                                    <?php foreach ($barangay as $brgy) : ?>
+                                        <option value="<?php echo htmlspecialchars($brgy['barangay_name']); ?>" <?php echo $job_listing['JobBarangay'] == $brgy['barangay_name'] ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($brgy['barangay_name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class=input-group-item>
+                                <label for="jobcountry">City</label>
+                                <select name="jobcountry" id="country" data-original="<?php echo htmlspecialchars($job_listing['JobCity']); ?>" required>
+                                    <option value="" disabled selected hidden>City</option>
+                                    <?php foreach ($cities as $city) : ?>
+                                        <option value="<?php echo htmlspecialchars($city['city_name']); ?>" <?php echo $job_listing['JobCity'] == $city['city_name'] ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($city['city_name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="input-group-item">
+                                <label for="jobprovince">Province</label>
+                                <input type="text" name="jobprovince" id="blklot" value="<?php echo htmlspecialchars($job_listing['JobProvince']); ?>" data-original="<?php echo htmlspecialchars($job_listing['JobProvince']); ?>" placeholder="Province" required>
+                            </div>
+                            <div class="input-group-item">
+                                <label for="jobzip">Zip Code</label>
+                                <input type="text" name="jobzip" id="blklot" value="<?php echo htmlspecialchars($job_listing['JobPostalCode']); ?>" data-original="<?php echo htmlspecialchars($job_listing['JobPostalCode']); ?>" placeholder="Zip Code" required>
                             </div>
                         </div>
                         <label for="job-description">Job Description</label>

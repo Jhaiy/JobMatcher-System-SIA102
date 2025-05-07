@@ -32,7 +32,7 @@ engine = create_engine('mysql+pymysql://root:@localhost/techsync_db')
 def process_role_description():
     applicant_id = request.args.get('applicant_id', 10, type=int)
     fetch_job_skills = """
-        SELECT companydetails.CompanyLogo, company.CompanyName, joblistings.JobListingID, joblistings.JobTitle, joblistings.JobDescription, jobcategories.CategoryName, jobcategories.CategoryDescription, jobroles.RoleName, jobroles.RoleDescription
+        SELECT company.CompanyID, companydetails.CompanyLogo, company.CompanyName, joblistings.JobListingID, joblistings.JobTitle, joblistings.JobDescription, jobcategories.CategoryName, jobcategories.CategoryDescription, jobroles.RoleName, jobroles.RoleDescription
         FROM joblistings
         INNER JOIN jobcategories ON joblistings.JobCategoryID = jobcategories.JobCategoryID
         INNER JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
@@ -97,6 +97,7 @@ def process_role_description():
         "ApplicantSkillsDescription": combined_skills,
         "Recommendations": [
             {
+                "CompanyID": int(category_description['CompanyID'].iloc[idx]),
                 "JobListingID": int(category_description['JobListingID'].iloc[idx]),
                 "CompanyName": category_description['CompanyName'].iloc[idx],
                 "JobTitle": category_description['JobTitle'].iloc[idx],

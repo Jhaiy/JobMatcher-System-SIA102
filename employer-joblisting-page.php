@@ -109,6 +109,33 @@ function view_listings($link)
     return $job_listings;
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete-listing'])) {
+    if (isset($_POST['job_id']) && is_numeric($_POST['job_id'])) {
+        $job_id = intval($_POST['job_id']);
+        $company_id = $_SESSION['CompanyID']; // Ensure the user can only delete their own listings
+
+        // Prepare the DELETE query
+        $delete_query = "DELETE FROM joblistings WHERE JobListingID = ? AND CompanyID = ?";
+        $stmt = mysqli_prepare($link, $delete_query);
+        mysqli_stmt_bind_param($stmt, "ii", $job_id, $company_id);
+        mysqli_stmt_execute($stmt);
+
+        // Check if the deletion was successful
+        if (mysqli_stmt_affected_rows($stmt) > 0) {
+            mysqli_stmt_close($stmt);
+            header("Location: employer-joblisting-page.php?delete=success");
+            exit();
+        } else {
+            mysqli_stmt_close($stmt);
+            echo "<script>alert('Error: Unable to delete the job listing.');</script>";
+        }
+    } else {
+        echo "<script>alert('Invalid Job ID.');</script>";
+    }
+}
+$cities = fetch_city($link);
+$barangay = fetch_barangay($link);
+$street = fetch_street($link);
 $view_listings = view_listings($link);
 ?>
 
@@ -137,14 +164,16 @@ $view_listings = view_listings($link);
                     <li><a href="employer-joblisting-page.php">Job Listing</a></li>
                     <li><a href="employer-profile-page.php">Company Profile</a></li>
                     <li><a href="employer-applications-page.php">Applicants</a></li>
+                    <?php if ($user_data): ?>
+                        <form method="post" action="welcome-techsync.php">
+                            <input type="submit" id="logout-button" name="logout" value="Log Out">
+                        </form>
+                    <?php endif; ?>
                 </ul>
             </div>
             <div class="company-name">
                 <?php if ($user_data && isset($user_data['CompanyName'])): ?>
-                    <p><?php echo htmlspecialchars($user_data['CompanyName']); ?></p>
-                    <form method="post" action="home-page.php">
-                        <input type="submit" name="logout" value="Log Out">
-                    </form>
+                    <p>Welcome,<strong> <?php echo htmlspecialchars($user_data['CompanyName']); ?>!</strong></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -186,29 +215,24 @@ $view_listings = view_listings($link);
                             <div class="job-location">
                                 <select name="jobbaranggay" id="country">
                                     <option value="" disabled selected hidden>Baranggay</option>
-                                    <option value="baranggay1">Baranggay 1</option>
-                                    <option value="baranggay2">Baranggay 2</option>
-                                    <option value="baranggay3">Baranggay 3</option>
+                                    <?php foreach ($barangay as $brgy) : ?>
+                                        <option value="<?php echo $brgy['barangay_name']; ?>"><?php echo $brgy['barangay_name']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <select name="jobstreet" id="street">
                                     <option value="" disabled selected hidden>Street</option>
-                                    <option value="street1">Street 1</option>
-                                    <option value="street2">Street 2</option>
-                                    <option value="street3">Street 3</option>
+                                    <?php foreach ($street as $st) : ?>
+                                        <option value="<?php echo $st['street_name']; ?>"><?php echo $st['street_name']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="job-location">
-                                <select name="jobprovince" id="province">
-                                    <option value="" disabled selected hidden>Province</option>
-                                    <option value="province1">Province 1</option>
-                                    <option value="province2">Province 2</option>
-                                    <option value="province3">Province 3</option>
-                                </select>
+                                <input type="text" name="jobprovince" id="province" placeholder="Province (e.g. Cavite)">
                                 <select name="jobcity" id="city">
                                     <option value="" disabled selected hidden>City</option>
-                                    <option value="city1">City 1</option>
-                                    <option value="city2">City 2</option>
-                                    <option value="city3">City 3</option>
+                                    <?php foreach ($cities as $city) : ?>
+                                        <option value="<?php echo $city['city_name']; ?>"><?php echo $city['city_name']; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="job-location">
@@ -324,6 +348,10 @@ $view_listings = view_listings($link);
                                 <button type="submit" class="view-details" id="viewDetailsBtn">Edit Details</button>
                             </form>
                             <button class="applicants">Applicants</button>
+                            <form method="post" action="employer-joblisting-page.php">
+                                <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($listings['JobListingID']); ?>">
+                                <button type="submit" name="delete-listing" class="delete-listing">Delete</button>
+                            </form>
                         </div>
                     </div>
                 <?php endforeach; ?>

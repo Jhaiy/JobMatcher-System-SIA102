@@ -15,10 +15,8 @@
 .job-categories {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 10px;
+    gap: 5px;
     margin-top: 20px;
-    margin: auto 10%;
-    justify-items: center;
 }
 
 .job-listings-card-header {
@@ -43,9 +41,9 @@
     width: 350px;
 }
 .job-listings-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-10px); /* Moves the card slightly upward */
     box-shadow: rgba(14, 30, 37, 0.2) 0px 4px 8px 0px,
-        rgba(14, 30, 37, 0.4) 0px 4px 20px 0px;
+        rgba(14, 30, 37, 0.4) 0px 4px 20px 0px; /* Adds a more prominent shadow */
 }
 
 .job-listings-details {
@@ -54,8 +52,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
+    width: fit-content;
+    height: fit-content;
 }
 
 .logo-container {
