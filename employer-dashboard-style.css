@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 body {
     background-color: white;
     margin: 0;
     padding: 0;
 }
-
 
 /* Login Page */
 .container {
@@ -23,14 +22,15 @@ body {
     flex-direction: column;
     align-items: center;
     border-radius: 10px;
-    background-color: #C9DABF;
+    background-color: #c9dabf;
     font-family: "Inter", sans-serif;
     font-weight: bold;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+        rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 .login-container h1 {
-    color: #3A3960;
+    color: #3a3960;
 }
 
 .credentials {
@@ -42,74 +42,78 @@ body {
     gap: 50px;
 }
 
-    .email-container, .password-container {
-        border-bottom: 1px solid #5F6F65;
-        display: flex;
-        align-items: center;
-        padding: 3px;
-    }
+.email-container,
+.password-container {
+    border-bottom: 1px solid #5f6f65;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
 
-    .email-container img, .password-container img {
-        height: 20px;
-        margin: 0px 10px 0px 5px;
-    }
+.email-container img,
+.password-container img {
+    height: 20px;
+    margin: 0px 10px 0px 5px;
+}
 
-    .form-control {
-        background-color: transparent;
-        border: none;
-        flex: 1;
-        font-family: "Inter", serif;
-        font-weight: regular;
-    }
+.form-control {
+    background-color: transparent;
+    border: none;
+    flex: 1;
+    font-family: "Inter", serif;
+    font-weight: regular;
+}
 
-    .form-control:focus {
-        border: none;
-        outline: none;
-    }
+.form-control:focus {
+    border: none;
+    outline: none;
+}
 
-    #email-input, #password-input {
-        width: 100%;
-        font-size: 16px;
-    }
+#email-input,
+#password-input {
+    width: 100%;
+    font-size: 16px;
+}
 
-    .login-actions {
-        display: flex;
-        justify-content: flex-end;
-        width: 80%;
-        padding: 5px 0px 0px 0px;
-    }
+.login-actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+    padding: 5px 0px 0px 0px;
+}
 
-        .login-actions a {
-            color: #707672;
-            font-size: 14px;
-            text-decoration: none;
-            font-weight: 400;
-        }
+.login-actions a {
+    color: #707672;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 400;
+}
 
-            .login-button {
-                display: flex;
-                justify-content: center;
-                width: 100%;
-                padding: 85px 0px 0px 0px;
-            }
+.login-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 85px 0px 0px 0px;
+}
 
-            .login-button button {
-                box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-            }
+.login-button button {
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+        rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+        rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
 
-
-                .btn-login {
-                    background-color: #3A3960;
-                    border: none;
-                    border-radius: 5px;
-                    color: white;
-                    cursor: pointer;
-                    font-family: "Inter", sans-serif;
-                    font-weight: 200;
-                    font-size: 20px;
-                    padding: 5px;
-                    width: 25%;
-                }
+.btn-login {
+    background-color: #3a3960;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-weight: 200;
+    font-size: 20px;
+    padding: 5px;
+    width: 25%;
+}
 
 /* Sign Up Page */
 
@@ -121,15 +125,16 @@ body {
     flex-direction: column;
     align-items: center;
     border-radius: 10px;
-    background-color: #C9DABF;
+    background-color: #c9dabf;
     font-family: "Inter", serif;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+        rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
-    .sign-up-container h1 {
-        color: #3A3960;
-        margin: 30px 0 0 0;
-    }
+.sign-up-container h1 {
+    color: #3a3960;
+    margin: 30px 0 0 0;
+}
 
 .choice-container {
     display: flex;
@@ -139,83 +144,89 @@ body {
     gap: 30px;
 }
 
-    .hiring-container button, .employee-container button {
-        background-color: #5F6F65;
-        border: none;
-        color: white;
-        width: 250px;
-        height: 150px;
-        border-radius: 10px;
-        font-family: "Inter", serif;
-        font-weight: bold;
-        font-size: 15px;
-        cursor: pointer;
-        position: relative;
-        transition: background-color 0.3s ease;
-    }
-        .hiring-container button:hover, .employee-container button:hover {
-            background-color: #4d5a52;
-        }
-        .hiring-container button::after, .employee-container button::after {
-            content: '✔';
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 20px;
-            height: 20px;
-            color: green;
-            font-size: 20px;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .hiring-container button:hover::after, .employee-container button:hover::after {
-            display: flex;
-        }
+.hiring-container button,
+.employee-container button {
+    background-color: #5f6f65;
+    border: none;
+    color: white;
+    width: 250px;
+    height: 150px;
+    border-radius: 10px;
+    font-family: "Inter", serif;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+.hiring-container button:hover,
+.employee-container button:hover {
+    background-color: #4d5a52;
+}
+.hiring-container button::after,
+.employee-container button::after {
+    content: "✔";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    color: green;
+    font-size: 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.hiring-container button:hover::after,
+.employee-container button:hover::after {
+    display: flex;
+}
 
-    .signup-actions {
-        display: flex;
-        justify-items: center;
-        align-items: center;
-        flex-direction: column;
-    }  
-        .signup-actions p {
-            margin: 0 0 20px 0;
-            color: #1E1E1E;
-        }
+.signup-actions {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+}
+.signup-actions p {
+    margin: 0 0 20px 0;
+    color: #1e1e1e;
+}
 
-        .signup-actions a {
-            color: #1E1E1E;
-            font-size: 14px;
-            text-decoration: underline;
-        }
+.signup-actions a {
+    color: #1e1e1e;
+    font-size: 14px;
+    text-decoration: underline;
+}
 
-        .choice-icons {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            margin: 0 0 0 10px;
-        }
-            .cylinder {
-                content: '';
-                position: absolute;
-                left: 90%;
-                top: 5%;
-                width: 20px;
-                height: 20px;
-                background-color: white;
-                border-radius: 50%;
-            }
+.choice-icons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 0 0 10px;
+}
+.cylinder {
+    content: "";
+    position: absolute;
+    left: 90%;
+    top: 5%;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+}
 
-            #hiring-img, #employee-img {
-                height: 50px;
-                width: 50px;
-            }
+#hiring-img,
+#employee-img {
+    height: 50px;
+    width: 50px;
+}
 
-            .hiring-container h2, .employee-container h2 {
-                margin: 0 0 0 15px;
-                text-align: left;
-            }
+.hiring-container h2,
+.employee-container h2 {
+    margin: 0 0 0 15px;
+    text-align: left;
+}
 
 .login-selection {
     display: flex;
@@ -226,33 +237,33 @@ body {
     font-weight: 600;
     font-size: 18px;
 }
-    .login-selection select {
-        background-color: transparent;
-        border: none;
-        flex: 1;
-        font-family: "Inter", serif;
-        font-size: 16px;
-        color: #1E1E1E;
-        padding: 5px;
-    }
-    .login-selection select:focus {
-        border: 1px solid #3A3960;
-        border: none;
-        outline: none;
-    }
+.login-selection select {
+    background-color: transparent;
+    border: none;
+    flex: 1;
+    font-family: "Inter", serif;
+    font-size: 16px;
+    color: #1e1e1e;
+    padding: 5px;
+}
+.login-selection select:focus {
+    border: 1px solid #3a3960;
+    border: none;
+    outline: none;
+}
 
-    .login-selection option {
-        background-color: white;
-        color: #1E1E1E;
-        font-family: "Inter", serif;
-        font-weight: regular;
-        font-size: 16px;
-        border: none;
-        border-radius: 10px;
-    }
+.login-selection option {
+    background-color: white;
+    color: #1e1e1e;
+    font-family: "Inter", serif;
+    font-weight: regular;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+}
 
 .dashboard-banner {
-    background-color: #3A3960;
+    background-color: #3a3960;
     height: auto;
     display: flex;
     justify-content: center;
@@ -263,7 +274,6 @@ body {
     padding: 80px 0 0 0;
     display: flex;
     justify-content: space-evenly;
-
 }
 .dashboard-banner h1 {
     text-align: left;
@@ -279,7 +289,7 @@ body {
 }
 
 #add-listing-button {
-    background-color: #5F6F65;
+    background-color: #5f6f65;
     border: none;
     border-radius: 20px;
     color: white;
@@ -291,7 +301,8 @@ body {
     font-weight: 600;
     margin: 20px 0 0 0;
     padding: 5px 40px 5px 40px;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+        rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 #company-icon-banner {
@@ -299,11 +310,10 @@ body {
     padding: 20px;
 }
 
-
 /* Dashboard Section */
 .dashboard-container {
     padding: 40px;
-    background-color: #F3F4F6; /* Light gray background */
+    background-color: #f3f4f6; /* Light gray background */
     border-radius: 10px;
 }
 
@@ -317,7 +327,7 @@ body {
 
 /* Individual Card */
 .dashboard-card {
-    background-color: #D1E7D0; /* Light green background */
+    background-color: #d1e7d0; /* Light green background */
     padding: 20px;
     text-align: center;
     border-radius: 10px;
@@ -342,16 +352,14 @@ body {
 .dashboard-card h2 {
     font-size: 25px;
     font-weight: bold;
-    color: #3A3960;
+    color: #3a3960;
 }
 
 /* Card Description */
 .dashboard-card p {
     font-size: 25px;
-    color: #5E5E5E;
+    color: #5e5e5e;
 }
-
-
 
 /* Table Inside Card */
 .dashboard-card table {
@@ -375,7 +383,11 @@ body {
     object-fit: cover;
     border-radius: 50%;
 }
-.company-banner-icon img{
+.company-banner-icon img {
     height: 250px;
     width: 250px;
+}
+
+form {
+    margin: 0;
 }

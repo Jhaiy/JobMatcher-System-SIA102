@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['job-title'])) {
 
 function view_listings($link)
 {
-    $sql = "SELECT joblistings.JobListingID, joblistings.JobTitle, joblistings.JobDescription, jobcategories.CategoryName, jobroles.RoleName
+    $sql = "SELECT joblistings.JobListingID, joblistings.JobTitle, joblistings.JobDescription, jobcategories.CategoryName, jobroles.RoleName, joblistings.JobStatus
     FROM joblistings 
     LEFT JOIN jobcategories ON joblistings.JobCategoryID = jobcategories.JobCategoryID
     LEFT JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
@@ -339,6 +339,9 @@ $view_listings = view_listings($link);
                         </div>
                         <div class="job-details">
                             <h3><?php echo htmlspecialchars($listings['JobTitle']) ?></h3>
+                            <p class="job-status <?php echo strtolower(htmlspecialchars($listings['JobStatus'])); ?>">
+                                Status: <?php echo htmlspecialchars($listings['JobStatus']); ?>
+                            </p>
                             <p><?php echo htmlspecialchars($user_data['CompanyName']) ?></p>
                             <p><?php echo htmlspecialchars($listings['JobDescription']) ?></p>
                         </div>

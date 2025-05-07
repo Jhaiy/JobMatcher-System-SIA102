@@ -239,3 +239,39 @@ function fetch_distinct_job_listings($link, $company_id)
 
     return $job_listings;
 }
+
+function fetch_applicant_job($link, $applicant_id)
+{
+    $job_listings = [];
+    $sql = "SELECT 
+                joblistings.*, 
+                company.CompanyName, 
+                companydetails.CompanyLogo, 
+                joblistings.JobTitle, 
+                joblistings.JobDescription, 
+                applications.ApplicationStatus, 
+                applications.ApplicantID
+            FROM 
+                joblistings
+            INNER JOIN 
+                applications ON joblistings.JobListingID = applications.JobListingID
+            INNER JOIN 
+                company ON joblistings.CompanyID = company.CompanyID
+            INNER JOIN 
+                companydetails ON company.CompanyDetailsID = companydetails.CompanyDetailsID
+            WHERE 
+                applications.ApplicantID = '$applicant_id'
+                AND applications.ApplicationStatus = 'Accepted'";
+    $result = mysqli_query($link, $sql);
+
+    if (!$result) {
+        error_log("Database error: " . mysqli_error($link));
+        return $job_listings;
+    }
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $job_listings[] = $row;
+    }
+
+    return $job_listings;
+}

@@ -1,16 +1,15 @@
 <?php
 session_start();
 require_once "db-config.php";
-include("functions/applicant-login-check.php");
+include("functions/company-login-check.php");
 include_once("functions/password-hash.php");
 include("functions/home-page-categories.php");
 
-$user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
-$applicant_id = isset($_SESSION['ApplicantID']) ? $_SESSION['ApplicantID'] : null;
-$applicant_picture = fetch_profile_picture($link, $applicant_id);
+$user_data = isset($_SESSION['CompanyID']) ? check_login_company($link) : null;
+$company_id = isset($_SESSION['CompanyID']) ? $_SESSION['CompanyID'] : null;
 
-if (!isset($_SESSION['ApplicantID'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['CompanyID'])) {
+    header("Location: login-company.php");
     exit();
 }
 

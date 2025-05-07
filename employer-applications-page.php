@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 require_once "db-config.php";
@@ -19,7 +18,6 @@ if (!isset($_SESSION['CompanyID'])) {
     exit();
 }
 
-// Accept or reject applicant logic
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['accept_applicant'])) {
         $application_id = intval($_POST['application_id']);
@@ -55,19 +53,31 @@ if (isset($_POST['delete_hired_applicant'])) {
     exit();
 }
 
+if (isset($_GET['applicant_id'])) {
+    $applicant_id = intval($_GET['applicant_id']);
+    $query = "SELECT * FROM applicants WHERE ApplicantID = ?";
+    $stmt = mysqli_prepare($link, $query);
+    mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $applicant = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Employer Dashboard</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
     <link rel="stylesheet" href="employer-joblisting-style.css">
     <link rel="stylesheet" href="employer-applications-style.css">
 </head>
+
 <body>
     <div class="navbar">
         <div class="navbar-contents">
@@ -88,7 +98,6 @@ if (isset($_POST['delete_hired_applicant'])) {
             <div class="company-name">
                 <?php if ($user_data && isset($user_data['CompanyName'])): ?>
                     <p>Welcome,<strong> <?php echo htmlspecialchars($user_data['CompanyName']); ?>!</strong></p>
-                    <p><?php echo htmlspecialchars($user_data['CompanyName']); ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -97,7 +106,6 @@ if (isset($_POST['delete_hired_applicant'])) {
     <div class="company-dashboard-banner">
         <div class="dashboard-banner">
             <div class="dashboard-company-name">
-                <?php if ($user_data && isset($user_data['CompanyName'])); ?>
                 <h1><?php echo htmlspecialchars($user_data['CompanyName']); ?></h1>
                 <h2>Description</h2>
             </div>
@@ -105,7 +113,7 @@ if (isset($_POST['delete_hired_applicant'])) {
                 <img id="company-icon-banner" src="assets/images/employer.png" alt="Employer Icon">
             </div>
         </div>
-    </div>   
+    </div>
 
     <div class="applicants-section">
         <h2>Applicants</h2>
@@ -115,7 +123,7 @@ if (isset($_POST['delete_hired_applicant'])) {
             </tr>
             <?php
             $company_id = $_SESSION['CompanyID'];
-            $query = "SELECT a.ApplicationID, ap.ApplicantFName, pr.ApplicantPic, ap.ApplicantLName, a.ApplicationStatus
+            $query = "SELECT a.ApplicationID, a.ApplicantID, ap.ApplicantFName, pr.ApplicantPic, ap.ApplicantLName, a.ApplicationStatus
                       FROM applications a
                       INNER JOIN applicants ap ON a.ApplicantID = ap.ApplicantID
                       LEFT JOIN applicantprofiles pr ON ap.ApplicantProfileID = pr.ApplicantProfileID
@@ -125,29 +133,34 @@ if (isset($_POST['delete_hired_applicant'])) {
             if ($stmt = mysqli_prepare($link, $query)) {
                 mysqli_stmt_bind_param($stmt, "i", $company_id);
                 mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $application_id, $fname, $pic, $lname, $status);
+                mysqli_stmt_bind_result($stmt, $application_id, $applicant_id, $fname, $pic, $lname, $status);
 
                 while (mysqli_stmt_fetch($stmt)) {
-                    $profileSrc = (!empty($pic) && file_exists("assets/profile-uploads/" . $pic)) 
-                    ? "assets/profile-uploads/" . htmlspecialchars($pic) 
-                    : "assets/images/default-profile.png";                                    
+                    $profileSrc = (!empty($pic) && file_exists("assets/profile-uploads/" . $pic))
+                        ? "assets/profile-uploads/" . htmlspecialchars($pic)
+                        : "assets/images/default-profile.png";
                     $fullName = htmlspecialchars(decryption($fname)) . ' ' . htmlspecialchars(decryption($lname));
-                    
+
                     echo '<tr>
                             <td>
                                 <div class="applicant-row">
-                                    <img src="' . $profileSrc . '" alt="Profile" class="profile-pic">
-                                    <span>' . $fullName . '</span>
+                                    <form method="GET" action="check-profile-applicant.php">
+                                        <button type="submit" class="applicant-button" name="view_profile" value="' . $applicant_id . '">
+                                            <input type="hidden" name="applicant_id" value="' . $applicant_id . '">
+                                            <img src="' . $profileSrc . '" alt="Profile" class="profile-pic">
+                                            <span>' . $fullName . '</span>
+                                        </button>
+                                    </form>
                                     <div class="applicant-actions">';
-                    
-                                    if ($status === 'Accepted') {
-                                        echo '<form method="post" action="" style="display:inline-block;">
+
+                    if ($status === 'Accepted') {
+                        echo '<form method="post" action="" style="display:inline-block;">
                                                 <input type="hidden" name="application_id" value="' . $application_id . '">
                                                 <button class="accept" disabled>Hired</button>
                                                 <input type="submit" name="delete_hired_applicant" value="Delete" class="decline">
                                               </form>';
-                                    } else {
-                                        echo '<form method="post" action="" style="display:inline-block;">
+                    } else {
+                        echo '<form method="post" action="" style="display:inline-block;">
                                                 <input type="hidden" name="application_id" value="' . $application_id . '">
                                                 <input type="submit" name="accept_applicant" value="Accept" class="accept">
                                               </form>
@@ -155,8 +168,8 @@ if (isset($_POST['delete_hired_applicant'])) {
                                                 <input type="hidden" name="application_id" value="' . $application_id . '">
                                                 <input type="submit" name="reject_applicant" value="Reject" class="decline">
                                               </form>';
-                                    }
-                                    
+                    }
+
 
                     echo '          </div>
                                 </div>
@@ -192,4 +205,5 @@ if (isset($_POST['delete_hired_applicant'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascript/page-scripts.js"></script>
 </body>
+
 </html>

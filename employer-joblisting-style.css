@@ -625,3 +625,19 @@ input[type="date"] {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
+
+.job-status {
+    padding: 5px 5px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.job-status.open {
+    color: white;
+    background-color: green;
+}
+
+.job-status.closed {
+    color: white;
+    background-color: red;
+}

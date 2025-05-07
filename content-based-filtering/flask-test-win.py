@@ -38,6 +38,7 @@ def process_role_description():
         INNER JOIN jobroles ON joblistings.JobRoleID = jobroles.JobRoleID
         INNER JOIN company ON joblistings.CompanyID = company.CompanyID
         INNER JOIN companydetails ON company.CompanyDetailsID = companydetails.CompanyDetailsID
+        WHERE JobStatus = 'Open'
     """
     applicant_skills_query = """
         SELECT applicantskills.ApplicantID, skills.SkillName, skills.SkillDescription

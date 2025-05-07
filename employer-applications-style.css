@@ -2,21 +2,20 @@
 .applicants-section {
     width: 80%;
     margin: 40px auto;
-    background: #DDE5C2;
+    background: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Applicants Table */
 .applicants-table {
     width: 100%;
     border-collapse: collapse;
+    border-spacing: 0 20px;
 }
 
 .applicants-table th {
-    background: #5C665A;
-    color: white;
+    color: black;
     padding: 12px;
     text-align: left;
     font-size: 18px;
@@ -24,12 +23,14 @@
 
 .applicants-table td {
     padding: 12px;
-    border-bottom: 2px solid #5C665A;
     font-size: 16px;
+    border-radius: 10px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+        rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
 .applicants-table tr:nth-child(even) {
-    background: #C4D2B0;
+    background: white;
 }
 
 /* Ensure everything inside the name cell is aligned properly */
@@ -93,4 +94,30 @@
 .accept:hover,
 .decline:hover {
     opacity: 0.8;
+}
+
+form {
+    margin: 0;
+}
+
+.applicant-button {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+}
+.applicant-button span:hover {
+    text-decoration: underline;
+}
+
+.accept,
+.decline {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
 }
