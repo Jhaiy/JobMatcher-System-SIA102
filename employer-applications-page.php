@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 require_once "db-config.php";
@@ -17,11 +18,47 @@ if (!isset($_SESSION['CompanyID'])) {
     header("Location: login-company.php");
     exit();
 }
+
+// Accept or reject applicant logic
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (isset($_POST['accept_applicant'])) {
+        $application_id = intval($_POST['application_id']);
+        $update_query = "UPDATE applications SET ApplicationStatus = 'Accepted' WHERE ApplicationID = ?";
+        if ($stmt = mysqli_prepare($link, $update_query)) {
+            mysqli_stmt_bind_param($stmt, "i", $application_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+        }
+    }
+
+    if (isset($_POST['reject_applicant'])) {
+        $application_id = intval($_POST['application_id']);
+        $delete_query = "DELETE FROM applications WHERE ApplicationID = ?";
+        if ($stmt = mysqli_prepare($link, $delete_query)) {
+            mysqli_stmt_bind_param($stmt, "i", $application_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+        }
+        header("Location: employer-applications-page.php");
+        exit();
+    }
+}
+if (isset($_POST['delete_hired_applicant'])) {
+    $application_id = intval($_POST['application_id']);
+    $delete_query = "DELETE FROM applications WHERE ApplicationID = ?";
+    if ($stmt = mysqli_prepare($link, $delete_query)) {
+        mysqli_stmt_bind_param($stmt, "i", $application_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+    header("Location: employer-applications-page.php");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,9 +67,7 @@ if (!isset($_SESSION['CompanyID'])) {
     <link rel="stylesheet" href="employer-dashboard-style.css">
     <link rel="stylesheet" href="employer-joblisting-style.css">
     <link rel="stylesheet" href="employer-applications-style.css">
-
 </head>
-
 <body>
     <div class="navbar">
         <div class="navbar-contents">
@@ -53,11 +88,11 @@ if (!isset($_SESSION['CompanyID'])) {
             <div class="company-name">
                 <?php if ($user_data && isset($user_data['CompanyName'])): ?>
                     <p>Welcome,<strong> <?php echo htmlspecialchars($user_data['CompanyName']); ?>!</strong></p>
+                    <p><?php echo htmlspecialchars($user_data['CompanyName']); ?></p>
                 <?php endif; ?>
             </div>
         </div>
     </div>
-
 
     <div class="company-dashboard-banner">
         <div class="dashboard-banner">
@@ -70,46 +105,72 @@ if (!isset($_SESSION['CompanyID'])) {
                 <img id="company-icon-banner" src="assets/images/employer.png" alt="Employer Icon">
             </div>
         </div>
-    </div>
-    </div>
-
-    <!--Application -->
+    </div>   
 
     <div class="applicants-section">
         <h2>Applicants</h2>
         <table class="applicants-table">
             <tr>
-                <th>Name</th> <!-- Keep only the Name column -->
+                <th>Name</th>
             </tr>
-            <tr>
-                <td>
-                    <div class="applicant-row">
-                        <img src="assets/images/profile1.png" alt="Profile" class="profile-pic">
-                        <span>jobet</span>
-                        <div class="applicant-actions">
-                            <button class="view-resume">View Resume</button>
-                            <button class="accept">Accept</button>
-                            <button class="decline">Decline</button>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="applicant-row">
-                        <img src="assets/images/profile2.png" alt="Profile" class="profile-pic">
-                        <span>charity</span>
-                        <div class="applicant-actions">
-                            <button class="view-resume">View Resume</button>
-                            <button class="accept">Accept</button>
-                            <button class="decline">Decline</button>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+            <?php
+            $company_id = $_SESSION['CompanyID'];
+            $query = "SELECT a.ApplicationID, ap.ApplicantFName, pr.ApplicantPic, ap.ApplicantLName, a.ApplicationStatus
+                      FROM applications a
+                      INNER JOIN applicants ap ON a.ApplicantID = ap.ApplicantID
+                      LEFT JOIN applicantprofiles pr ON ap.ApplicantProfileID = pr.ApplicantProfileID
+                      INNER JOIN joblistings j ON a.JobListingID = j.JobListingID
+                      WHERE j.CompanyID = ?";
+
+            if ($stmt = mysqli_prepare($link, $query)) {
+                mysqli_stmt_bind_param($stmt, "i", $company_id);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $application_id, $fname, $pic, $lname, $status);
+
+                while (mysqli_stmt_fetch($stmt)) {
+                    $profileSrc = (!empty($pic) && file_exists("assets/profile-uploads/" . $pic)) 
+                    ? "assets/profile-uploads/" . htmlspecialchars($pic) 
+                    : "assets/images/default-profile.png";                                    
+                    $fullName = htmlspecialchars(decryption($fname)) . ' ' . htmlspecialchars(decryption($lname));
+                    
+                    echo '<tr>
+                            <td>
+                                <div class="applicant-row">
+                                    <img src="' . $profileSrc . '" alt="Profile" class="profile-pic">
+                                    <span>' . $fullName . '</span>
+                                    <div class="applicant-actions">';
+                    
+                                    if ($status === 'Accepted') {
+                                        echo '<form method="post" action="" style="display:inline-block;">
+                                                <input type="hidden" name="application_id" value="' . $application_id . '">
+                                                <button class="accept" disabled>Hired</button>
+                                                <input type="submit" name="delete_hired_applicant" value="Delete" class="decline">
+                                              </form>';
+                                    } else {
+                                        echo '<form method="post" action="" style="display:inline-block;">
+                                                <input type="hidden" name="application_id" value="' . $application_id . '">
+                                                <input type="submit" name="accept_applicant" value="Accept" class="accept">
+                                              </form>
+                                              <form method="post" action="" style="display:inline-block;">
+                                                <input type="hidden" name="application_id" value="' . $application_id . '">
+                                                <input type="submit" name="reject_applicant" value="Reject" class="decline">
+                                              </form>';
+                                    }
+                                    
+
+                    echo '          </div>
+                                </div>
+                            </td>
+                          </tr>';
+                }
+
+                mysqli_stmt_close($stmt);
+            } else {
+                echo "<tr><td>No applicants found.</td></tr>";
+            }
+            ?>
         </table>
     </div>
-
 
     <footer>
         <div class="footer-content">
@@ -127,8 +188,8 @@ if (!isset($_SESSION['CompanyID'])) {
             </div>
         </div>
     </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="javascript/page-scripts.js"></script>
 </body>
-
 </html>
