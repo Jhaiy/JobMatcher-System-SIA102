@@ -619,3 +619,9 @@ footer {
     font-size: 18px;
     cursor: pointer;
 }
+.search-form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
