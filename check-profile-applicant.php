@@ -51,7 +51,7 @@ $applicant_job = fetch_applicant_job($link, $applicant_id);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Profile - <?php echo htmlspecialchars(decryption($applicant_profile['ApplicantFName'])); ?></title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="check-profile-company.css">
     <link rel="stylesheet" href="company-job-card-listings.css">
@@ -95,6 +95,39 @@ $applicant_job = fetch_applicant_job($link, $applicant_id);
                 <h2><?php echo htmlspecialchars(decryption($applicant_profile['ApplicantFName'])) . ' ' . htmlspecialchars(decryption($applicant_profile['ApplicantLName'])) ?></h2>
                 <h3>Bio</h3>
                 <p><?php echo htmlspecialchars($applicant_profile['ApplicantBio']) ?></p>
+                <div class="skills-wrapper">
+                    <hr>
+                    <div class="applicant-skills">
+                        <h3>My Skills</h3>
+                        <ul id="skills-list">
+                            <?php
+                                $applicant_id = $_GET['applicant_id'];
+                                $fetch_applicant_skills = "
+                                SELECT DISTINCT skills.SkillName, skills.SkillID
+                                FROM applicantskills 
+                                INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
+                                WHERE applicantskills.ApplicantID = ?";
+                                $stmt = mysqli_prepare($link, $fetch_applicant_skills);
+                                mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+                                mysqli_stmt_execute($stmt);
+                                $result = mysqli_stmt_get_result($stmt);
+
+                                $displayed_skills = [];
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    $skill_name = htmlspecialchars($row['SkillName']);
+                                    $skill_id = htmlspecialchars($row['SkillID']);
+                                    if (!in_array($skill_name, $displayed_skills)) {
+                                        echo '<li class="skill-item">';
+                                        echo '<button type="submit" name="remove-skill" class="remove-skill-button">' . $skill_name . '</button>';
+                                        echo '</li>';
+                                        $displayed_skills[] = $skill_name;
+                                    }
+                                }
+                                mysqli_stmt_close($stmt);
+                            ?>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="middle">

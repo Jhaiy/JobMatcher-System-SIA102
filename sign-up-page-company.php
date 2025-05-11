@@ -68,64 +68,69 @@ $street = fetch_street($link);
     <meta charset="UTF-8">
     <meta name="viewport" content="width= , initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Company - Sign Up</title>
     <script src="javascript/page-scripts.js"></script>
 </head>
 
 <body>
-    <form id="signup-form" action="sign-up-page-company.php" method="post" novalidate>
-        <div class="container">
-            <div class="sign-up-container-company">
-                <h1>SIGN UP</h1>
-                <p id="sign-up-type">(Company)</p>
-                <div class="sign-up-inputs">
-                    <div class="input-group">
-                        <input type="text" name="company-name" id="company-name" placeholder="Company Name" required>
+    <div class="spacer layer1">
+        <div class="image-container">
+            <img id="image-left" src="assets/images/company-logo-tempo.png">
+        </div>
+        <form id="signup-form" action="sign-up-page-company.php" method="post" novalidate>
+            <div class="container">
+                <div class="sign-up-container-company">
+                    <h1>SIGN UP</h1>
+                    <p id="sign-up-type">(Company)</p>
+                    <div class="sign-up-inputs">
+                        <div class="input-group">
+                            <input type="text" name="company-name" id="company-name" placeholder="Company Name" required>
+                        </div>
+                        <input type="email" name="email" id="email" placeholder="Company Email" required>
+                        <input type="contact" name="contact" id="contact" placeholder="Company Contact Number" required>
+                        <div class="input-group">
+                            <input type="text" name="blklot" id="blklot" placeholder="Blk/Lot" required>
+                            <select type="text" name="street" id="street" required>
+                                <option value="" disabled selected hidden>Street</option>
+                                <?php foreach ($street as $st) : ?>
+                                    <option value="<?php echo $st['street_name']; ?>"><?php echo $st['street_name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <input type="text" name="province" id="brgy" placeholder="Province" required>
+                        <div class="input-group">
+                            <select name="city" id="city" required>
+                                <option value="" disabled selected hidden>City</option>
+                                <?php foreach ($cities as $city) : ?>
+                                    <option value="<?php echo $city['city_name']; ?>"><?php echo $city['city_name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <select name="barangay" id="province" required>
+                                <option value="" disabled selected hidden>Barangay</option>
+                                <?php foreach ($barangay as $brgy) : ?>
+                                    <option value="<?php echo $brgy['barangay_name']; ?>"><?php echo $brgy['barangay_name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <input type="text" name="zip" id="zip" placeholder="Zip Code" required>
+                        </div>
+                        <hr>
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
                     </div>
-                    <input type="email" name="email" id="email" placeholder="Company Email" required>
-                    <input type="contact" name="contact" id="contact" placeholder="Company Contact Number" required>
-                    <div class="input-group">
-                        <input type="text" name="blklot" id="blklot" placeholder="Blk/Lot" required>
-                        <select type="text" name="street" id="street" required>
-                            <option value="" disabled selected hidden>Street</option>
-                            <?php foreach ($street as $st) : ?>
-                                <option value="<?php echo $st['street_name']; ?>"><?php echo $st['street_name']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                    <div class="signup-actions">
+                        <input type="checkbox" name="terms" id="terms" required>
+                        <label for="terms">
+                            <p>Yes, I understand the Terms and Aggreement, Privacy & Policy.</p>
+                        </label>
                     </div>
-                    <input type="text" name="province" id="brgy" placeholder="Province" required>
-                    <div class="input-group">
-                        <select name="city" id="city" required>
-                            <option value="" disabled selected hidden>City</option>
-                            <?php foreach ($cities as $city) : ?>
-                                <option value="<?php echo $city['city_name']; ?>"><?php echo $city['city_name']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <select name="barangay" id="province" required>
-                            <option value="" disabled selected hidden>Barangay</option>
-                            <?php foreach ($barangay as $brgy) : ?>
-                                <option value="<?php echo $brgy['barangay_name']; ?>"><?php echo $brgy['barangay_name']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <input type="text" name="zip" id="zip" placeholder="Zip Code" required>
+                    <div class="sign-up-choices">
+                        <a id="cancel-button" href="sign-up-choice.php">CANCEL</a>
+                        <input type="submit" name="proceed" id="proceed" value="PROCEED">
                     </div>
-                    <hr>
-                    <input type="password" name="password" id="password" placeholder="Password" required>
-                    <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
-                </div>
-                <div class="signup-actions">
-                    <input type="checkbox" name="terms" id="terms" required>
-                    <label for="terms">
-                        <p>Yes, I understand the Terms and Aggreement, Privacy & Policy.</p>
-                    </label>
-                </div>
-                <div class="sign-up-choices">
-                    <a id="cancel-button" href="sign-up-choice.php">CANCEL</a>
-                    <input type="submit" name="proceed" id="proceed" value="PROCEED">
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
     <div id="popup-error" class="popup-hidden">
         <div class="popup-content">
             <p id="popup-message"></p>

@@ -62,7 +62,7 @@ if (isset($_GET['job_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="job-view-page.css">
-    <title>Document</title>
+    <title><?php echo htmlspecialchars($job_details['JobTitle']) ?></title>
 </head>
 
 <body>

@@ -36,6 +36,36 @@ if (isset($_SESSION['ApplicantID'])) {
         $recommendations = json_decode($response, true);
     }
 }
+
+    $search_results = [];
+    $is_search = false;
+    $has_search_results = false;
+
+    if (isset($_GET['search_query']) && !empty(trim($_GET['search_query']))) {
+        $is_search = true;
+        $search_query = '%' . trim($_GET['search_query']) . '%';
+        $sql = "
+        SELECT jl.*, c.CompanyName, cd.CompanyLogo
+        FROM joblistings jl
+        INNER JOIN company c ON jl.CompanyID = c.CompanyID
+        INNER JOIN companydetails cd ON c.CompanyID = cd.CompanyDetailsID
+        WHERE jl.JobTitle LIKE ? 
+        OR jl.JobDescription LIKE ? 
+        OR c.CompanyName LIKE ?
+        ";
+
+        $stmt = mysqli_prepare($link, $sql);
+        mysqli_stmt_bind_param($stmt, "sss", $search_query, $search_query, $search_query);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $search_results[] = $row;
+        }
+
+        $has_search_results = count($search_results) > 0;
+        mysqli_stmt_close($stmt);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +74,7 @@ if (isset($_SESSION['ApplicantID'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TechSync - Home</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="category-style.css">
     <link rel="stylesheet" href="job-recommendation-cards.css">
@@ -54,141 +84,155 @@ if (isset($_SESSION['ApplicantID'])) {
 <body>
     <script src="javascript/page-scripts.js"></script>
     <div class="navbar">
-        <div class="navbar-contents">
-            <div class="navbar-links">
-                <ul>
-                    <li><a href="#" id="logo">TechSync</a></li>
-                    <li><a href="home-page.php">Jobs</a></li>
-                    <?php if ($user_data): ?>
-                        <li><a href="applicant-profile.php">Profile</a></li>
-                        <li><a href="applicant-status.php">Status</a></li>
+            <div class="navbar-contents">
+                <div class="navbar-links">
+                    <ul>
+                        <li><a href="#" id="logo">TechSync</a></li>
+                        <li><a href="home-page.php">Jobs</a></li>
+                        <?php if ($user_data): ?>
+                            <li><a href="applicant-profile.php">Profile</a></li>
+                            <li><a href="applicant-status.php">Status</a></li>
+                        <?php endif; ?>
+                        <li><a href="about-us-page.php">About Us</a></li>
+                        <?php if ($user_data): ?>
+                            <form method="post" action="home-page.php">
+                                <input type="submit" id="logout-button" name="logout" value="Log Out">
+                            </form>
+                        <?php else: ?>
+                            <li><a href="login.php">Log In</a></li>
+                            <li><a href="sign-up-choice.php">Sign Up</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+                <div class="los">
+                    <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
+                        <li>
+                            <p id="los-name">Welcome, <?php echo htmlspecialchars($user_data['ApplicantFName']) . ' ' . htmlspecialchars(decryption($user_data['ApplicantLName'])); ?></p>
+                        </li>
+                        <?php if (!empty($applicant_picture)): ?>
+                            <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
+                        <?php else: ?>
+                            <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
+                        <?php endif; ?>
                     <?php endif; ?>
-                    <li><a href="about-us-page.php">About Us</a></li>
-                    <?php if ($user_data): ?>
-                        <form method="post" action="home-page.php">
-                            <input type="submit" id="logout-button" name="logout" value="Log Out">
-                        </form>
-                    <?php else: ?>
-                        <li><a href="login.php">Log In</a></li>
-                        <li><a href="sign-up-choice.php">Sign Up</a></li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-            <div class="los">
-                <?php if ($user_data && isset($user_data['ApplicantFName'])): ?>
-                    <li>
-                        <p id="los-name">Welcome, <?php echo htmlspecialchars($user_data['ApplicantFName']) . ' ' . htmlspecialchars(decryption($user_data['ApplicantLName'])); ?></p>
-                    </li>
-                    <?php if (!empty($applicant_picture)): ?>
-                        <img id="navbar-picture" src="assets/profile-uploads/<?php echo htmlspecialchars($applicant_picture); ?>" alt="Profile Picture">
-                    <?php else: ?>
-                        <img id="navbar-picture" src="assets/profile-uploads/user.png" alt="Default Profile Picture">
-                    <?php endif; ?>
-                <?php endif; ?>
+                </div>
             </div>
         </div>
-    </div>
     <div class="search-outer">
         <h1>Navigate to success.</h1>
-        <div class="search-bar">
-            <img src="assets/images/search-interface-symbol.png">
-            <input type="text" placeholder="Search by job, company, or skills" id="search-query">
-        </div>
-        <button>SEARCH</button>
+        <form class="search-form" method="GET" action="home-page.php">
+            <div class="search-bar">
+                <img src="assets/images/search-interface-symbol.png">
+                <input type="text" placeholder="Search by job, company, or skills" id="search-query" name="search_query">
+            </div>
+            <button type="submit">SEARCH</button>
+        </form>
     </div>
     <div class="job-selection">
         <?php if ($user_data): ?>
-            <h1 id="customhead">Job Feed</h1>
-            <?php
-            $applicant_id = $_SESSION['ApplicantID'];
-            $fetch_applicant_skills = "
+            <?php if ($is_search): ?>
+                <h1 id="customhead">Search Results</h1>
+            <?php else: ?>
+                <h1 id="customhead">Job Feed</h1>
+            <?php endif; ?>
+            <div class="job-categories">
+                <?php
+                $applicant_id = $_SESSION['ApplicantID'];
+                $applicant_skills = [];
+                $fetch_applicant_skills = "
                 SELECT skills.SkillName
                 FROM applicantskills 
                 INNER JOIN skills ON applicantskills.SkillID = skills.SkillID 
                 WHERE applicantskills.ApplicantID = ?";
-            $stmt = mysqli_prepare($link, $fetch_applicant_skills);
-            mysqli_stmt_bind_param($stmt, "i", $applicant_id);
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $applicant_skills[] = $row['SkillName'];
+                $stmt = mysqli_prepare($link, $fetch_applicant_skills);
+                mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $applicant_skills[] = $row['SkillName'];
+                    }
+                } else {
+                    echo '<div class="skill-null">';
+                    echo '<p>You have not added any skills yet.</p>';
+                    echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
+                    echo '</div>';
                 }
-            } else {
-                echo '<div class="skill-null">';
-                echo '<p>You have not added any skills yet.</p>';
-                echo '<button><a id="edit-profile-button" href="applicant-profile.php">Add your skills!</a></button>';
-                echo '</div>';
-            }
-            mysqli_stmt_close($stmt);
-            ?>
-        <?php else: ?>
-            <h1 id="customhead">Job Listings</h1>
-            <div class="job-categories">
-                <?php foreach ($job_listings as $jobs): ?>
-                    <form method="GET" action="job-view-page.php">
-                        <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($jobs['JobListingID']); ?>">
-                        <button type="submit" class="job-listings-button">
-                            <div class="job-listings-container">
-                                <div class="job-listings-cards">
-                                    <div class="job-listings-card">
-                                        <div class="job-listings-card-header">
-                                            <div class="logo-container">
-                                                <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($jobs['CompanyLogo']); ?>" alt="Company Logo">
-                                            </div>
-                                            <h2 id="company-name"><?php echo htmlspecialchars(decryption($jobs['CompanyName'])); ?></h2>
-                                        </div>
-                                        <div class="job-listings-details">
-                                            <h3 id="job-title"><?php echo htmlspecialchars($jobs['JobTitle']); ?></h3>
-                                            <p id="job-description"><?php echo htmlspecialchars($jobs['JobDescription']); ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </button>
-                    </form>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        <div class="job-categories">
-            <?php if ($user_data): ?>
-                <?php if (!empty($recommendations['Recommendations'])): ?>
-                    <?php foreach ($recommendations['Recommendations'] as $recommendation): ?>
-                        <div class="job-listings-container">
-                            <div class="job-listings-cards">
-                                <div class="job-listings-card">
-                                    <div class="job-listings-card-header">
-                                        <form method="GET" action="check-profile-company.php">
-                                            <input type="hidden" name="company_id" value="<?php echo htmlspecialchars($recommendation['CompanyID']); ?>">
-                                            <button type="submit" class="job-listings-button">
-                                                <div class="logo-container">
-                                                    <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($recommendation['CompanyLogo']); ?>" alt="Company Logo">
+                mysqli_stmt_close($stmt);
+                ?>
+                <?php if ($is_search): ?>
+                    <?php if (!empty($search_results)): ?>
+                        <?php foreach ($search_results as $job): ?>
+                            <form method="GET" action="job-view-page.php">
+                                <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($job['JobListingID']); ?>">
+                                <button type="submit" class="job-listings-button">
+                                    <div class="job-listings-container">
+                                        <div class="job-listings-cards">
+                                            <div class="job-listings-card">
+                                                <div class="job-listings-card-header">
+                                                    <div class="logo-container">
+                                                        <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($job['CompanyLogo']); ?>" alt="Company Logo">
+                                                    </div>
+                                                    <h2 id="company-name"><?php echo htmlspecialchars(decryption($job['CompanyName'])); ?></h2>
                                                 </div>
-                                                <h2 id="company-name"><?php echo htmlspecialchars(decryption($recommendation['CompanyName'])); ?></h2>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <form method="GET" action="job-view-page.php">
-                                        <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($recommendation['JobListingID']); ?>">
-                                        <button type="submit" class="job-listings-button">
-                                            <div class="job-listings-details">
-                                                <h3 id="job-title"><?php echo htmlspecialchars($recommendation['JobTitle']); ?></h3>
-                                                <p id="job-description"><?php echo htmlspecialchars($recommendation['JobDescription']); ?></p>
+                                                <div class="job-listings-details">
+                                                    <h3 id="job-title"><?php echo htmlspecialchars($job['JobTitle']); ?></h3>
+                                                    <p id="job-description"><?php echo htmlspecialchars($job['JobDescription']); ?></p>
+                                                </div>
                                             </div>
-                                            <button type="submit" class="job-listings-button"></button>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </form>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="skill-null">
+                            <p>No results found for your search.</p>
                         </div>
-                    <?php endforeach; ?>
+                    <?php endif; ?>
                 <?php else: ?>
-                    <div class="skill-null">
-                        <p>No recommendations available at the moment.</p>
-                    </div>
+                    <?php if (!empty($recommendations['Recommendations'])): ?>
+                                <?php foreach ($recommendations['Recommendations'] as $recommendation): ?>
+                                    <div class="job-listings-container">
+                                        <div class="job-listings-cards">
+                                            <div class="job-listings-card">
+                                                <div class="job-listings-card-header">
+                                                    <form method="GET" action="check-profile-company.php">
+                                                        <input type="hidden" name="company_id" value="<?php echo htmlspecialchars($recommendation['CompanyID']); ?>">
+                                                        <button type="submit" class="job-listings-button">
+                                                            <div class="logo-container">
+                                                                <img id="company-logo" src="assets/profile-uploads/<?php echo htmlspecialchars($recommendation['CompanyLogo']); ?>" alt="Company Logo">
+                                                            </div>
+                                                            <h2 id="company-name"><?php echo htmlspecialchars(decryption($recommendation['CompanyName'])); ?></h2>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                <form method="GET" action="job-view-page.php">
+                                                    <input type="hidden" name="job_id" value="<?php echo htmlspecialchars($recommendation['JobListingID']); ?>">
+                                                    <button type="submit" class="job-listings-button">
+                                                        <div class="job-listings-details">
+                                                            <h3 id="job-title"><?php echo htmlspecialchars($recommendation['JobTitle']); ?></h3>
+                                                            <p id="job-description"><?php echo htmlspecialchars($recommendation['JobDescription']); ?></p>
+                                                        </div>
+                                                        <button type="submit" class="job-listings-button"></button>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="skill-null">
+                                    <p>No recommendations available at the moment.</p>
+                                </div>
+                            <?php endif; ?>
                 <?php endif; ?>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php else: ?>
+            <h1>Recommendations</h1>
+            <p>Please log in to see your recommendations.</p>
+        <?php endif; ?>
     </div>
     <footer>
         <div class="footer-content">

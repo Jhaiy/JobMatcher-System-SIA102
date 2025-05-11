@@ -1,17 +1,12 @@
 <?php
 session_start();
 require_once "db-config.php";
-include("functions/company-login-check.php");
+include("functions/applicant-login-check.php");
 include_once("functions/password-hash.php");
 include("functions/home-page-categories.php");
 
-$user_data = isset($_SESSION['CompanyID']) ? check_login_company($link) : null;
-$company_id = isset($_SESSION['CompanyID']) ? $_SESSION['CompanyID'] : null;
-
-if (!isset($_SESSION['CompanyID'])) {
-    header("Location: login-company.php");
-    exit();
-}
+$user_data = isset($_SESSION['ApplicantID']) ? check_login($link) : null;
+$company_id = isset($_SESSION['ApplicantID']) ? $_SESSION['ApplicantID'] : null;
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['logout'])) {
     session_unset();
@@ -48,7 +43,7 @@ $job_listings = fetch_distinct_job_listings($link, $company_id);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><?php echo htmlspecialchars(decryption($company_profile['CompanyName'])); ?></title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="check-profile-company.css">
     <link rel="stylesheet" href="company-job-card-listings.css">
@@ -152,22 +147,6 @@ $job_listings = fetch_distinct_job_listings($link, $company_id);
     <br>
     <br>
     <br>
-    <footer>
-        <div class="footer-content">
-            <p>CONTACT US:</p>
-            <P>09##########</P>
-            <div class="social-links">
-                <a href="#"><img src="assets/images/mail.png"></a>
-                <a href="#"><img src="assets/images/communication.png"></a>
-            </div>
-            <hr>
-            <div class="idk-texts">
-                <p>WebTitle 2025</p>
-                <p>|</p>
-                <p>All Rights Reserved</p>
-            </div>
-        </div>
-    </footer>
 </body>
 
 </html>

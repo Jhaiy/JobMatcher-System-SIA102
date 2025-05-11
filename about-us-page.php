@@ -15,7 +15,7 @@ $applicant_picture = fetch_profile_picture($link, $applicant_id);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>About Us</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="applicant-about-us-style.css">
     <script src="javascript/page-scripts.js"></script>

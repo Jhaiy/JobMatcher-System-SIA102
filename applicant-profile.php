@@ -193,7 +193,7 @@ $street = fetch_street($link);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit Profile</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="category-style.css">
     <link rel="stylesheet" href="applicant-profile-style.css">

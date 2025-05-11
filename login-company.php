@@ -52,37 +52,41 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width= , initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Company - Login</title>
     <script src="javascript/page-scripts.js"></script>
 </head>
 
 <body>
     <script src="javascript/page-scripts.js"></script>
-    <div class="container">
-        <form action="login-company.php" method="post">
-            <div class="login-container">
-                <h1>Company Sign In</h1>
-                <div class="credentials">
-                    <div class="email-container">
-                        <img id="email-icon" src="assets/images/profile.png">
-                        <input type="text" name="email" id="email-input" class="form-control" placeholder="Email">
+    <div class="spacer layer1">
+        <div class="image-container">
+            <img id="image-left" src="assets/images/company-logo-tempo.png">
+        </div>
+        <div class="container">
+            <form action="login-company.php" method="post">
+                <div class="login-container">
+                    <h1>Company Sign In</h1>
+                    <div class="credentials">
+                        <div class="email-container">
+                            <img id="email-icon" src="assets/images/profile.png">
+                            <input type="text" name="email" id="email-input" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="password-container">
+                            <img id="password-icon" src="assets/images/padlock.png">
+                            <input type="password" name="password" id="password-input" class="form-control" placeholder="Password">
+                        </div>
                     </div>
-                    <div class="password-container">
-                        <img id="password-icon" src="assets/images/padlock.png">
-                        <input type="password" name="password" id="password-input" class="form-control" placeholder="Password">
+                    <div class="login-actions">
+                        <div class="password-forgot">
+                        </div>
+                    </div>
+                    <div class="login-button">
+                        <button type="submit" name="login-button" class="btn-login">Log In</button>
+                        <a href="welcome-techsync.php" class="back-button">Back to Home</a>
                     </div>
                 </div>
-                <div class="login-actions">
-                    <div class="password-forgot">
-                        <a href="#">Forgot Password?</a>
-                    </div>
-                </div>
-                <div class="login-button">
-                    <button type="submit" name="login-button" class="btn-login">Log In</button>
-                    <a href="welcome-techsync.php" class="back-button">Back to Home</a>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </body>
 

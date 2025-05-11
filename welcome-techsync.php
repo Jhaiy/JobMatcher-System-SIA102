@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="welcome-page.css">
     <script src="javascript/welcome-page.js"></script>
-    <title>TechSync</title>
+    <title>Welcome to TechSync</title>
 </head>
 <body>
     <div class="navbar">

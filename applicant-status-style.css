@@ -3,7 +3,6 @@
     margin: 20px auto;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     display: grid;
     grid-template-columns: repeat(1, 100%);
     gap: 20px;
@@ -86,4 +85,16 @@
     height: 100%;
     object-fit: cover;
     transform: scale(1.4);
+}
+
+.application-status.pending {
+    color: #555;
+}
+
+.application-status.accepted {
+    color: green;
+}
+
+.application-status.rejected {
+    color: red;
 }

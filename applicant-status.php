@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Applicantions</title>
+    <title>Application Status</title>
     <link rel="stylesheet" href="applicant-status-style.css">
     <link rel="stylesheet" href="home-style.css">
     <script src="javascript/page-scripts.js"></script>
@@ -145,7 +145,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         </div>
                         <h2><?php echo htmlspecialchars(decryption($app['CompanyName'])); ?></h2>
                         <p><?php echo htmlspecialchars($app['JobDescription']); ?></p>
-                        <p><strong>Status:</strong> <?php echo htmlspecialchars($app['ApplicationStatus']); ?></p>
+                        <p class="application-status <?php echo strtolower(htmlspecialchars($app['ApplicationStatus'])); ?>">
+                            <strong>Status: </strong><?php echo htmlspecialchars($app['ApplicationStatus']); ?>
+                        </p>
                     </div>
                     <div class="status-buttons">
                         <form method="get" action="job-view-page.php">

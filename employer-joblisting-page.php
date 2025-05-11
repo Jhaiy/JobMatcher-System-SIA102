@@ -145,7 +145,7 @@ $view_listings = view_listings($link);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><?php echo htmlspecialchars($user_data['CompanyName']); ?></title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="employer-joblisting-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
@@ -165,7 +165,7 @@ $view_listings = view_listings($link);
                     <li><a href="employer-profile-page.php">Company Profile</a></li>
                     <li><a href="employer-applications-page.php">Applicants</a></li>
                     <?php if ($user_data): ?>
-                        <form method="post" action="welcome-techsync.php">
+                        <form method="post" action="employer-joblisting-page.php">
                             <input type="submit" id="logout-button" name="logout" value="Log Out">
                         </form>
                     <?php endif; ?>

@@ -18,6 +18,30 @@ if (!isset($_SESSION['CompanyID'])) {
     exit();
 }
 
+function view_listings($link)
+{
+    $sql = "SELECT hiredapplicants.*, applicants.ApplicantFName, applicants.ApplicantLName, joblistings.JobTitle, company.CompanyName, company.CompanyID, joblistings.JobListingID 
+    FROM hiredapplicants
+    LEFT JOIN company ON hiredapplicants.CompanyID = company.CompanyID
+    LEFT JOIN applicants ON hiredapplicants.ApplicantID = applicants.ApplicantID
+    LEFT JOIN joblistings ON hiredapplicants.JobListingID = joblistings.JobListingID
+    WHERE hiredapplicants.CompanyID = '" . $_SESSION['CompanyID'] . "'";
+    $result = mysqli_query($link, $sql);
+    $hired_applicants = [];
+
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $hired_applicants[] = $row;
+        }
+    } else {
+        echo "Error: " . mysqli_error($link);
+    }
+
+    return $hired_applicants;
+}
+
+$hired_personnel = view_listings($link);
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['accept_applicant'])) {
         $application_id = intval($_POST['application_id']);
@@ -71,7 +95,7 @@ if (isset($_GET['applicant_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employer Dashboard</title>
+    <title>Applications</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="employer-dashboard-style.css">
     <link rel="stylesheet" href="employer-joblisting-style.css">
@@ -89,7 +113,7 @@ if (isset($_GET['applicant_id'])) {
                     <li><a href="employer-profile-page.php">Company Profile</a></li>
                     <li><a href="employer-applications-page.php">Applicants</a></li>
                     <?php if ($user_data): ?>
-                        <form method="post" action="welcome-techsync.php">
+                        <form method="post" action="employer-applications-page.php">
                             <input type="submit" id="logout-button" name="logout" value="Log Out">
                         </form>
                     <?php endif; ?>
@@ -123,7 +147,8 @@ if (isset($_GET['applicant_id'])) {
             </tr>
             <?php
             $company_id = $_SESSION['CompanyID'];
-            $query = "SELECT a.ApplicationID, a.ApplicantID, ap.ApplicantFName, pr.ApplicantPic, ap.ApplicantLName, a.ApplicationStatus
+            $query = "SELECT a.ApplicationID, a.ApplicantID, ap.ApplicantFName, pr.ApplicantPic, ap.ApplicantLName, a.ApplicationStatus,
+                    j.JobListingID, j.CompanyID
                       FROM applications a
                       INNER JOIN applicants ap ON a.ApplicantID = ap.ApplicantID
                       LEFT JOIN applicantprofiles pr ON ap.ApplicantProfileID = pr.ApplicantProfileID
@@ -133,7 +158,7 @@ if (isset($_GET['applicant_id'])) {
             if ($stmt = mysqli_prepare($link, $query)) {
                 mysqli_stmt_bind_param($stmt, "i", $company_id);
                 mysqli_stmt_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $application_id, $applicant_id, $fname, $pic, $lname, $status);
+                mysqli_stmt_bind_result($stmt, $application_id, $applicant_id, $fname, $pic, $lname, $status, $listing_id, $company_id);
 
                 while (mysqli_stmt_fetch($stmt)) {
                     $profileSrc = (!empty($pic) && file_exists("assets/profile-uploads/" . $pic))
@@ -156,6 +181,9 @@ if (isset($_GET['applicant_id'])) {
                     if ($status === 'Accepted') {
                         echo '<form method="post" action="" style="display:inline-block;">
                                                 <input type="hidden" name="application_id" value="' . $application_id . '">
+                                                <input type="hidden" name="applicant_id" value="' . $applicant_id . '">
+                                                <input type="hidden" name="listing_id" value= "' . $listing_id . '">
+                                                <input type="hidden" name="company_id" value= "' . $company_id . '">
                                                 <button class="accept" disabled>Hired</button>
                                                 <input type="submit" name="delete_hired_applicant" value="Delete" class="decline">
                                               </form>';

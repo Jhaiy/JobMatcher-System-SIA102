@@ -104,7 +104,7 @@ $street = fetch_street($link);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><?php echo htmlspecialchars($job_listing['JobTitle']) ?></title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="edit-style.css">
     <link rel="stylesheet" href="employer-joblisting-style.css">

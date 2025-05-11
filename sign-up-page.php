@@ -91,7 +91,7 @@ $street = fetch_street($link);
     <meta charset="UTF-8">
     <meta name="viewport" content="width= , initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Applicant - Sign Up</title>
     <script src="javascript/page-scripts.js"></script>
     <script src="javascript/validation-signup-applicant.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -99,81 +99,86 @@ $street = fetch_street($link);
 
 
 <body>
-    <div class="container">
-        <form action="sign-up-page.php" method="post" novalidate>
-            <div class="sign-up-container">
-                <h1>SIGN UP</h1>
-                <p id="sign-up-type">(Applicant)</p>
-                <div class="sign-up-inputs">
-                    <div id="g_id_onload"
-                        data-client_id="312170454729-cj9bh2se02pbgn92e8rjtsbufv0pb9b0.apps.googleusercontent.com"
-                        data-context="signup"
-                        data-ux_mode="popup"
-                        data-callback="handleGoogleSignIn"
-                        data-auto_prompt="false"
-                        data-auto_select="false"> <!-- Explicitly disable auto-select -->
-                    </div>
+    <div class="spacer3 layer3">
+        <div class="image-container">
+            <img id="image-left" src="assets/images/company-logo-tempo.png">
+        </div>
+        <div class="container">
+            <form action="sign-up-page.php" method="post" novalidate>
+                <div class="sign-up-container">
+                    <h1>SIGN UP</h1>
+                    <p id="sign-up-type">(Applicant)</p>
+                    <div class="sign-up-inputs">
+                        <div id="g_id_onload"
+                            data-client_id="312170454729-cj9bh2se02pbgn92e8rjtsbufv0pb9b0.apps.googleusercontent.com"
+                            data-context="signup"
+                            data-ux_mode="popup"
+                            data-callback="handleGoogleSignIn"
+                            data-auto_prompt="false"
+                            data-auto_select="false"> <!-- Explicitly disable auto-select -->
+                        </div>
 
 
-                    <div class="g_id_signin"
-                        data-type="standard"
-                        data-size="large"
-                        data-theme="outline"
-                        data-text="signup_with"
-                        data-shape="rectangular"
-                        data-logo_alignment="left">
-                    </div>
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-size="large"
+                            data-theme="outline"
+                            data-text="signup_with"
+                            data-shape="rectangular"
+                            data-logo_alignment="left">
+                        </div>
 
 
-                    <div class="input-group">
-                        <input type="text" name="first-name" id="first-name" placeholder="First Name" required>
-                        <input type="text" name="last-name" id="last-name" placeholder="Last Name" required>
+                        <div class="input-group">
+                            <input type="text" name="first-name" id="first-name" placeholder="First Name" required>
+                            <input type="text" name="last-name" id="last-name" placeholder="Last Name" required>
+                        </div>
+                        <input type="email" name="email" id="email" placeholder="Email" required>
+                        <div class="input-group">
+                            <select name="city" id="city" required>
+                                <?php foreach ($cities as $city): ?>
+                                    <option value="" disabled selected hidden>City</option>
+                                    <option value="<?php echo htmlspecialchars($city['city_name']); ?>"><?php echo htmlspecialchars($city['city_name']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <select name="barangay" id="barangay" required>
+                                <?php foreach ($barangay as $barangay): ?>
+                                    <option value="" disabled selected hidden>Barangay</option>
+                                    <option value="<?php echo htmlspecialchars($barangay['barangay_name']); ?>"><?php echo htmlspecialchars($barangay['barangay_name']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select name="street" id="street" required>
+                                <?php foreach ($street as $street): ?>
+                                    <option value="" disabled selected hidden>Street</option>
+                                    <option value="<?php echo htmlspecialchars($street['street_name']); ?>"><?php echo htmlspecialchars($street['street_name']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <input type="text" name="province" id="province" placeholder="Province" required>
+                        </div>
+                        <hr>
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
                     </div>
-                    <input type="email" name="email" id="email" placeholder="Email" required>
-                    <div class="input-group">
-                        <select name="city" id="city" required>
-                            <?php foreach ($cities as $city): ?>
-                                <option value="" disabled selected hidden>City</option>
-                                <option value="<?php echo htmlspecialchars($city['city_name']); ?>"><?php echo htmlspecialchars($city['city_name']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <select name="barangay" id="barangay" required>
-                            <?php foreach ($barangay as $barangay): ?>
-                                <option value="" disabled selected hidden>Barangay</option>
-                                <option value="<?php echo htmlspecialchars($barangay['barangay_name']); ?>"><?php echo htmlspecialchars($barangay['barangay_name']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                    <div class="signup-actions">
+                        <input type="checkbox" name="terms" id="terms" required>
+                        <label for="terms">
+                            <p>Yes, I understand the Terms and Aggreement, Privacy & Policy.</p>
+                        </label>
                     </div>
-                    <div class="input-group">
-                        <select name="street" id="street" required>
-                            <?php foreach ($street as $street): ?>
-                                <option value="" disabled selected hidden>Street</option>
-                                <option value="<?php echo htmlspecialchars($street['street_name']); ?>"><?php echo htmlspecialchars($street['street_name']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <input type="text" name="province" id="province" placeholder="Province" required>
+                    <div class="sign-up-choices">
+                        <a id="cancel-button" href="sign-up-choice.php">CANCEL</a>
+                        <input type="submit" name="proceed" id="proceed" value="PROCEED">
                     </div>
-                    <hr>
-                    <input type="password" name="password" id="password" placeholder="Password" required>
-                    <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
                 </div>
-                <div class="signup-actions">
-                    <input type="checkbox" name="terms" id="terms" required>
-                    <label for="terms">
-                        <p>Yes, I understand the Terms and Aggreement, Privacy & Policy.</p>
-                    </label>
-                </div>
-                <div class="sign-up-choices">
-                    <a id="cancel-button" href="sign-up-choice.php">CANCEL</a>
-                    <input type="submit" name="proceed" id="proceed" value="PROCEED">
-                </div>
+            </form>
+        </div>
+        <div id="popup-error" class="popup-hidden">
+            <div class="popup-content">
+                <p id="popup-message"></p>
+                <button id="popup-close">OK</button>
             </div>
-        </form>
-    </div>
-    <div id="popup-error" class="popup-hidden">
-        <div class="popup-content">
-            <p id="popup-message"></p>
-            <button id="popup-close">OK</button>
         </div>
     </div>
 
